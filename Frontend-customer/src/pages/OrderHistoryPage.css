@@ -1,0 +1,73 @@
+.order-history-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.order-history-container h1 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* This wrapper makes the table horizontally scrollable on small screens */
+.table-wrapper {
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
+.orders-table thead {
+  background-color: #f9f9f9;
+}
+
+.orders-table th {
+  font-weight: bold;
+  color: #333;
+}
+
+.orders-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Style for the "Details" button in the table */
+.details-btn {
+  background-color: #333;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.details-btn:hover {
+  background-color: #555;
+}
+
+/* Message for when the user has no orders */
+.no-orders-message {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 3rem 0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.no-orders-message a {
+  color: #333;
+  font-weight: bold;
+}

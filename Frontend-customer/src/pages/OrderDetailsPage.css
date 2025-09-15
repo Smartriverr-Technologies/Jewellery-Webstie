@@ -1,0 +1,125 @@
+.order-details-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.order-details-container h1 {
+  font-size: 1.5rem; /* Smaller for ID */
+  word-break: break-all; /* Prevents long ID from breaking layout */
+  margin-bottom: 2rem;
+}
+
+.order-details-grid {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.order-main-details {
+  flex: 2;
+}
+
+.detail-section {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-section:last-child {
+  border-bottom: none;
+}
+
+.detail-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.detail-section p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+/* Status boxes for Paid/Delivered */
+.status-box {
+  padding: 0.8rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.status-box.success {
+  background-color: #e8f5e9; /* Light green */
+  color: #2e7d32;
+}
+
+.status-box.error {
+  background-color: #ffebee; /* Light red */
+  color: #c62828;
+}
+
+/* Reusing classes from PlaceOrderPage.css for consistency */
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.order-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.order-item-name {
+  flex-grow: 1;
+  text-decoration: none;
+  color: #333;
+}
+
+.order-item-name:hover {
+  text-decoration: underline;
+}
+
+.order-item-price {
+  font-weight: bold;
+}
+
+.order-summary-card {
+  flex: 1;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.order-summary-card h2 {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  text-align: center;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.summary-row.total {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+  .order-details-grid {
+    flex-direction: column;
+  }
+}

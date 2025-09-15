@@ -1,0 +1,60 @@
+/* Main sidebar container */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background-color: #2c3e50; /* Dark blue-gray */
+  color: #ecf0f1; /* Light gray-white */
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 1.5rem 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #34495e;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Navigation list styling */
+.sidebar-nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 0.5rem;
+}
+
+/* Styling for each navigation link */
+.sidebar-nav a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #ecf0f1;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+/* Hover effect for links */
+.sidebar-nav a:hover {
+  background-color: #34495e; /* Slightly lighter dark blue */
+}
+
+/*
+ * This is the special class automatically added by NavLink
+ * to the currently active route. This is how we highlight the
+ * selected menu item.
+*/
+.sidebar-nav a.active {
+  background-color: #2980b9; /* A nice blue */
+  font-weight: bold;
+}

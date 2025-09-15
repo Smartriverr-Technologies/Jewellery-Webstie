@@ -1,0 +1,78 @@
+/* Container to hold the card and position the wishlist button */
+.product-card-container {
+  position: relative;
+}
+
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.product-card-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.product-card-info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.product-card-info h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-card-info p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Wishlist Button Styles */
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.1);
+  background: white;
+}
+
+.wishlist-btn.active {
+  color: #e74c3c; /* Red color for the heart */
+}

@@ -1,0 +1,28 @@
+/*
+ * This is the main container for the entire admin view.
+ * We use flexbox to place the sidebar and main content side-by-side.
+*/
+.admin-layout {
+  display: flex;
+}
+
+/*
+ * This is the main content area that will hold our pages (Dashboard, Products, etc.)
+*/
+.main-content {
+  /* This is the most important rule. It pushes the main content
+     to the right by the exact width of the sidebar (240px). */
+  margin-left: 240px;
+
+  /* Make the content area take up the remaining width */
+  flex-grow: 1;
+
+  /* Add some padding for breathing room */
+  padding: 2rem;
+  
+  /* Set a background color for the content area */
+  background-color: #f4f7f6;
+
+  /* Ensure the content area always takes up at least the full height of the screen */
+  min-height: 100vh;
+}
