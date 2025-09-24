@@ -1,43 +1,33 @@
-// frontend-customer/src/pages/HomePage.jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import ProductCard from '../components/ProductCard'; // <-- Import
-import './HomePage.css';
+import React from 'react';
+import { Container } from '@mui/material';
+import HeroCarousel from '../components/HeroCarousel';
+import MainCarousel from '../components/MainCarousel';
+import Categories from '../components/Categories';
+import LatestProducts from '../components/LatestProducts';
+import TestimonialCarousel from '../components/TestimonialCarousel';
+import ShortVideos from '../components/ShortVideos';
+import SocialFeed from '../components/SocialFeed';
 
 const HomePage = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:4000/api/products');
-        setProducts(data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch products');
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
-
   return (
-    <div className="homepage">
-      <h1>Latest Products</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p className="error-message">{error}</p>
-      ) : (
-        <div className="product-grid">
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} /> // <-- Use Component
-          ))}
-        </div>
-      )}
-    </div>
+    <>
+      {/* --- Full-Width Sections --- */}
+      <HeroCarousel />
+       <Categories />
+       <LatestProducts />
+       <MainCarousel />
+     
+
+      {/* --- Contained-Width Sections --- */}
+      {/* Remove the sx prop from this Container */}
+      <Container>
+      
+        
+        {/* <ShortVideos /> */}
+        {/* <SocialFeed /> */}
+      </Container>
+      <TestimonialCarousel />
+    </>
   );
 };
 

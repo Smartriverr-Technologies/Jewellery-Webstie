@@ -29,6 +29,10 @@ import express from 'express';
 import productRoutes from './productRoutes.js';
 import userRoutes from './userRoutes.js';
 import orderRoutes from './orderRoutes.js';
+import carouselRoutes from './carouselRoutes.js';
+import testimonialRoutes from './testimonialRoutes.js';
+import heroCarouselRoutes from './heroCarouselRoutes.js';
+import categoryRoutes from './categoryRoutes.js';
 
 // We will create the auth routes and middleware in a future step.
 // For now, they must be commented out to prevent errors.
@@ -46,6 +50,10 @@ router.get('/ping', (req, res) => res.json({ ok: true, time: new Date().toISOStr
 router.use('/products', productRoutes);
 router.use('/users', userRoutes);
 router.use('/orders', orderRoutes); 
+router.use('/carousel', carouselRoutes);
+router.use('/testimonials', testimonialRoutes);
+router.use('/hero-carousel', heroCarouselRoutes);
+router.use('/categories', categoryRoutes); // <-- Yeh line add karein
 
 // These routes are commented out because we haven't built them yet.
 // router.use('/auth', authRoutes);

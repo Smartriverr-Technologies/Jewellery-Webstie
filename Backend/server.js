@@ -10,10 +10,12 @@ import path from 'path';
 import connectDB from './config/db123.js';
 import apiRoutes from './routes/index.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 // --- Initialization ---
 const app = express();
 const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // --- Middlewares ---
 app.use(helmet());
@@ -50,6 +52,7 @@ app.use(rateLimit({
 
     // --- API Routes ---
     app.use('/api', apiRoutes);
+    app.use('/api/upload', uploadRoutes); 
 
     // --- Serve Frontend in Production ---
     if (process.env.NODE_ENV === 'production') {

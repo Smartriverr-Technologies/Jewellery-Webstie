@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
+import { useSnackbar } from 'notistack';
 // 1. Create the context
 const CartContext = createContext();
 
@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
       return [];
     }
   };
-
+  const { enqueueSnackbar } = useSnackbar(); // <-- Use the hook
   const [cartItems, setCartItems] = useState(initialState);
   const clearCart = () => {
   setCartItems([]);
@@ -48,6 +48,7 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product, qty) => {
     // Check if the product is already in the cart
+    
     const exist = cartItems.find((x) => x._id === product._id);
 
     if (exist) {
@@ -61,6 +62,7 @@ export const CartProvider = ({ children }) => {
       // If it's a new product, add it to the cart
       setCartItems([...cartItems, { ...product, qty }]);
     }
+    // enqueueSnackbar(`${product.title} added to cart!`, { variant: 'success' });
   };
 
   const removeFromCart = (productId) => {

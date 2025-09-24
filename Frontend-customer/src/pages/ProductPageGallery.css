@@ -1,0 +1,34 @@
+/* Gallery container shadow & rounded */
+.premium-gallery .image-gallery-slide img {
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: zoom-in;
+}
+
+/* Zoom on hover */
+.premium-gallery .image-gallery-slide img:hover {
+  transform: scale(1.2);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Thumbnails */
+.premium-gallery .image-gallery-thumbnails-container {
+  margin-top: 10px;
+}
+
+.premium-gallery .image-gallery-thumbnails img {
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: border 0.3s ease, transform 0.3s ease;
+}
+
+.premium-gallery .image-gallery-thumbnails img:hover,
+.premium-gallery .image-gallery-thumbnails .active img {
+  border-color: #B8860B; /* Gold highlight */
+  transform: scale(1.05);
+}
+
+/* Smooth slide animation */
+.premium-gallery .image-gallery-slide {
+  transition: transform 0.5s ease-in-out;
+}

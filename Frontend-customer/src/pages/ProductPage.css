@@ -1,4 +1,4 @@
-.product-page-container {
+/* .product-page-container {
   display: flex;
   gap: 2rem;
   margin-top: 2rem;
@@ -69,4 +69,68 @@
 .add-to-cart-btn:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+} */
+ /* In frontend-customer/src/pages/ProductPage.css */
+/* In frontend-customer/src/pages/ProductPage.css */
+
+.product-image-gallery-wrapper {
+  max-height: 450px; /* Reduced from 550px for a smaller overall gallery */
+  overflow: hidden; 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+}
+
+.product-image-gallery-wrapper .image-gallery {
+  width: 100%;
+  height: 100%;
+}
+
+/* Specific styling for main image */
+.product-image-gallery-wrapper .image-gallery-image {
+  max-height: 380px; /* Reduced from 450px for main image height */
+  object-fit: contain; 
+  width: auto; 
+  margin: 0 auto; 
+}
+
+/* Adjust thumbnail size and styling */
+.product-image-gallery-wrapper .image-gallery-thumbnail-inner {
+  height: 70px; /* Slightly reduced thumbnail height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-image-gallery-wrapper .image-gallery-thumbnail-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain; 
+}
+/* productPage.css */
+.custom-gallery .image-gallery-slide img {
+  max-height: 500px;   /* Fix container ki height */
+  width: auto;         /* Maintain aspect ratio */
+  object-fit: contain; /* Image shrink hoke box ke andar fit ho */
+}
+.custom-gallery .image-gallery-thumbnails {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.custom-gallery .image-gallery-thumbnail {
+  width: 70px;         /* thoda bada thumbnail */
+  height: 70px;
+  border-radius: 8px;  /* premium look */
+  overflow: hidden;
+  margin: 0 5px;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 900px) { /* For md and smaller */
+  .product-image-gallery-wrapper {
+    max-height: 350px; /* Even smaller height on mobile */
+  }
+  .product-image-gallery-wrapper .image-gallery-image {
+    max-height: 280px; /* Further reduced main image height on mobile */
+  }
 }

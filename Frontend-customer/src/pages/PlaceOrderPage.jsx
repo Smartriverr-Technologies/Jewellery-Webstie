@@ -1,8 +1,10 @@
+// PlaceOrderPage.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import './PlaceOrderPage.css';
 
 const PlaceOrderPage = () => {
@@ -13,14 +15,12 @@ const PlaceOrderPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Redirect if shipping address is missing or cart is empty
   useEffect(() => {
     if (!shippingAddress.address) {
       navigate('/shipping');
     }
   }, [shippingAddress, cartItems, navigate]);
 
-  // --- Calculation Logic ---
   const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
 
   const itemsPrice = addDecimals(
@@ -34,7 +34,6 @@ const PlaceOrderPage = () => {
     Number(taxPrice)
   ).toFixed(2);
 
-  // --- Handler for Placing Order ---
   const placeOrderHandler = async () => {
     setLoading(true);
     setError('');
@@ -51,7 +50,7 @@ const PlaceOrderPage = () => {
         {
           orderItems: cartItems,
           shippingAddress,
-          paymentMethod: 'PayPal', // Hardcoded for now
+          paymentMethod: 'PayPal',
           itemsPrice,
           taxPrice,
           shippingPrice,
@@ -61,7 +60,6 @@ const PlaceOrderPage = () => {
       );
 
       clearCart();
-      // We will create the order details page in the next step
       navigate(`/order/${createdOrder._id}`);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred while placing the order.');
@@ -71,48 +69,78 @@ const PlaceOrderPage = () => {
   };
 
   return (
-    <div className="place-order-container">
-      <h1>Review Your Order</h1>
+    <motion.div 
+      className="place-order-container"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <h1 className="checkout-title">Review & Place Your Order</h1>
       <div className="place-order-grid">
+        {/* Left Side */}
         <div className="place-order-details">
-          <div className="detail-section">
-            <h2>Shipping</h2>
+          <motion.div 
+            className="detail-section"
+            whileHover={{ scale: 1.02 }}
+          >
+            <h2> Shipping</h2>
             <p>
               <strong>Address: </strong>
               {shippingAddress.address}, {shippingAddress.city}{' '}
               {shippingAddress.postalCode}, {shippingAddress.country}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="detail-section">
+          <motion.div 
+            className="detail-section"
+            whileHover={{ scale: 1.02 }}
+          >
             <h2>Payment Method</h2>
-            <p>
-              <strong>Method: </strong>
-              PayPal or Credit Card
-            </p>
-          </div>
+            <p><strong>Method: </strong> PayPal or Credit Card</p>
+          </motion.div>
 
-          <div className="detail-section">
-            <h2>Order Items</h2>
+          <motion.div 
+            className="detail-section"
+            whileHover={{ scale: 1.02 }}
+          >
+            <h2> Order Items</h2>
             {cartItems.map((item) => (
-              <div key={item._id} className="order-item">
-                <img src={item.images[0]?.url} alt={item.title} className="order-item-image" />
-                <Link to={`/product/${item.slug}`} className="order-item-name">{item.title}</Link>
+              <motion.div 
+                key={item._id} 
+                className="order-item"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <img 
+                  src={`http://localhost:4000${item.images[0]?.url}`} 
+                  alt={item.title} 
+                  className="order-item-image" 
+                />
+                <Link to={`/product/${item.slug}`} className="order-item-name">
+                  {item.title}
+                </Link>
                 <div className="order-item-price">
                   {item.qty} x ${item.price} = ${addDecimals(item.qty * item.price)}
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
-        <div className="order-summary-card">
+        {/* Right Side - Summary */}
+        <motion.div 
+          className="order-summary-card"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h2>Order Summary</h2>
           <div className="summary-row"><span>Items:</span><span>${itemsPrice}</span></div>
           <div className="summary-row"><span>Shipping:</span><span>${shippingPrice}</span></div>
           <div className="summary-row"><span>Tax:</span><span>${taxPrice}</span></div>
           <div className="summary-row total"><span>Total:</span><span>${totalPrice}</span></div>
-          
+
           {error && <div className="error-message">{error}</div>}
 
           <button
@@ -121,11 +149,11 @@ const PlaceOrderPage = () => {
             disabled={cartItems.length === 0 || loading}
             onClick={placeOrderHandler}
           >
-            {loading ? 'Placing Order...' : 'Place Order'}
+            {loading ? 'Placing Order...' : ' Place Order'}
           </button>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

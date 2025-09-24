@@ -10,27 +10,14 @@ const Sidebar = () => {
       </div>
       <nav className="sidebar-nav">
         <ul>
-          <li>
-            {/* The 'end' prop is crucial here to prevent this link from always being active */}
-            <NavLink to="/" end>
-              Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/products">
-              Products
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/orders">
-              Orders
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/users">
-              Users
-            </NavLink>
-          </li>
+          <li><NavLink to="/" end>Dashboard</NavLink></li>
+          <li><NavLink to="/products">Products</NavLink></li>
+          <li><NavLink to="/orders">Orders</NavLink></li>
+          <li><NavLink to="/users">Users</NavLink></li>
+          <li><NavLink to="/hero-management">Hero Carousel</NavLink></li>
+          <li><NavLink to="/main-carousel">Main Carousel</NavLink></li> {/* <-- Change this */}
+          <li><NavLink to="/testimonials">Testimonials</NavLink></li>
+          <li><NavLink to="/categories">Categories</NavLink></li>
         </ul>
       </nav>
     </aside>

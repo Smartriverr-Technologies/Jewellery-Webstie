@@ -8,6 +8,8 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProducts,
+  getLatestProducts,
 } from '../controllers/productController.js';
 
 import { protect } from '../middleware/authMiddleware.js';
@@ -19,8 +21,11 @@ router.route('/admin').get(protect, admin, getProductsAdmin);
 // --- Public Routes ---
 router.route('/').get(getProducts).post(protect, admin, createProduct);
 
+router.route('/search').get(searchProducts);
+
 // GET /api/products/slug/:slug - For customers (Now specific)
 router.route('/slug/:slug').get(getProductBySlug);
+router.route('/latest').get(getLatestProducts);
 
 // --- Routes by ID (Dynamic, come last) ---
 // This will now correctly handle requests for /api/products/some-id

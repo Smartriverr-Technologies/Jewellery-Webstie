@@ -1,0 +1,145 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Box, Typography, Grid, Skeleton } from "@mui/material";
+import { motion } from "framer-motion";
+
+const fetchCategories = async () => {
+  const { data } = await axios.get("http://localhost:4000/api/categories");
+  return data;
+};
+
+const Categories = () => {
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
+
+  return (
+    <Box sx={{ py: 2, textAlign: "center", background: "#fdfdfd" }}>
+      {/* Section Heading */}
+      <Typography
+        variant="h4"
+        component="h2"
+        gutterBottom
+        sx={{
+          fontWeight: 600,
+          fontFamily: "Cormorant Garamond, serif", // Elegant premium font
+          letterSpacing: "0.5px",
+          color: "#222",
+          fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem" },
+        }}
+      >
+        Shop by Category
+      </Typography>
+      {/* Gold Underline */}
+      <Box
+        sx={{
+          width: 200,
+          height: 4,
+          backgroundColor: "#B8860B", // Gold underline
+          borderRadius: 2,
+          mx: "auto",
+          mb: 6,
+        }}
+      />
+
+      <Grid container spacing={6} justifyContent="center">
+        {isLoading ? (
+          Array.from(new Array(6)).map((_, index) => (
+            <Grid item key={index} xs={6} sm={4} md={2}>
+              <Skeleton variant="circular" width={120} height={120} />
+              <Skeleton width="60%" sx={{ mt: 2, mx: "auto" }} />
+            </Grid>
+          ))
+        ) : (
+          categories?.map((category, index) => (
+            <Grid item key={category.name} xs={6} sm={4} md={2}>
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.12 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.05, rotate: -1 }}
+              >
+                <Link
+                  to={`/category/${category.slug}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 2,
+                      cursor: "pointer",
+                      "&:hover .category-circle": {
+                        // boxShadow: "0 10px 24px rgba(184,134,11,0.4)",
+                      },
+                      "&:hover .category-name": {
+                        color: "#B8860B",
+                        fontWeight: 600,
+                      },
+                    }}
+                  >
+                    {/* Circle Image */}
+                    <Box
+                      className="category-circle"
+                      sx={{
+                        width: { xs: 100, sm: 130 },
+                        height: { xs: 100, sm: 130 },
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        background: "#fff",
+                        boxShadow: "0px 6px 14px rgba(0,0,0,0.1)",
+                        transition: "all 0.4s ease",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <img
+                        src={`http://localhost:4000${category.image}`}
+                        alt={category.name}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          transition: "transform 0.5s ease",
+                        }}
+                        onMouseOver={(e) =>
+                          (e.currentTarget.style.transform = "scale(1.1)")
+                        }
+                        onMouseOut={(e) =>
+                          (e.currentTarget.style.transform = "scale(1)")
+                        }
+                      />
+                    </Box>
+
+                    {/* Name */}
+                    <Typography
+                      variant="subtitle1"
+                      className="category-name"
+                      sx={{
+                        mt: 1,
+                        fontWeight: 500,
+                        fontFamily: "Poppins, sans-serif",
+                        color: "#444",
+                        transition: "all 0.3s ease",
+                      }}
+                    >
+                      {category.name}
+                    </Typography>
+                  </Box>
+                </Link>
+              </motion.div>
+            </Grid>
+          ))
+        )}
+      </Grid>
+    </Box>
+  );
+};
+
+export default Categories;

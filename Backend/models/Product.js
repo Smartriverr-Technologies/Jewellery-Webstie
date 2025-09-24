@@ -31,7 +31,32 @@ const productSchema = new mongoose.Schema({
   tags: [String],
   attributes: { type: Map, of: String },
   active: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now }
+  isLatest: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+  category: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Category',
+  required: true,
+},
+
+  //  category: {
+  //   type: String,
+  //   required: true,
+  //   enum: [ // This enforces that the category must be one of these values
+  //     'Rings',
+  //     'Chains',
+  //     'Lockets',
+  //     'Bracelets',
+  //     'Earrings',
+  //     'Pendants',
+  //     'Solitaires',
+  //     'Jewelry Watches',
+  //     'Mangalsutras',
+  //     'Nosepins',
+  //     'Bangles',
+  //     'Kada'
+  //   ]
+  // },
 }, { timestamps: true });
 
 // text index for search

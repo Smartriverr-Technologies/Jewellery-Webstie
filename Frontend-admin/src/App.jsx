@@ -10,6 +10,11 @@ import ProductEditPage from './pages/ProductEditPage';
 import OrderListPage from './pages/OrderListPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
 import UserListPage from './pages/UserListPage'; 
+import CarouselManagePage from './pages/MainCarouselManagePage'
+import TestimonialManagePage from './pages/TestimonialManagePage';
+import HeroManagePage from './pages/HeroManagePage';
+import MainCarouselManagePage from './pages/MainCarouselManagePage';
+import CategoryManagePage from './pages/CategoryManagePage';
 function App() {
   return (
     <Routes>
@@ -24,6 +29,10 @@ function App() {
           <Route path="orders" element={<OrderListPage />} /> 
           <Route path="orders/:id" element={<OrderDetailsPage />} />
            <Route path="users" element={<UserListPage />} /> 
+           <Route path="main-carousel" element={<MainCarouselManagePage />} />
+           <Route path="testimonials" element={<TestimonialManagePage />} />
+           <Route path="hero-management" element={<HeroManagePage />} />
+           <Route path="categories" element={<CategoryManagePage />} />
           {/* Routes for orders and users will go here */}
         </Route>
       </Route>
