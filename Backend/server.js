@@ -85,7 +85,7 @@ app.use((req, res, next) => {
 
   // The "catch-all" handler: for any request that doesn't match one above,
   // send back the main index.html file.
-  app.get('*', (req, res) =>
+  app.get('/*anything', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
   );
 } else {
