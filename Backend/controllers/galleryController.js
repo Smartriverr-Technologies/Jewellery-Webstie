@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import GalleryImage from '../models/galleryImageModel.js';
 import fs from 'fs';
 import path from 'path';
-
+//test
 // @desc    Fetch all gallery images
 const getGalleryImages = asyncHandler(async (req, res) => {
   const images = await GalleryImage.find({}).sort({ createdAt: -1 });
