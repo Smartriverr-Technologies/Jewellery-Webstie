@@ -44,10 +44,10 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { Container, Typography, CircularProgress, Alert, Box, Divider, Chip } from "@mui/material"
 import CategoryRow from "../components/CategoryRow"
-
+import api from "../api/axiosConfig"
 // Fetches the list of all categories
 const fetchCategories = async () => {
-  const { data } = await axios.get("http://localhost:4000/api/categories")
+  const { data } = await api.get("/api/categories")
   return data
 }
 

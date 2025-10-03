@@ -7,6 +7,7 @@ import ImageGallery from 'react-image-gallery';
 import { Box, Typography, Button, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import 'react-image-gallery/styles/css/image-gallery.css';
+import api from '../api/axiosConfig';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -24,7 +25,7 @@ const ProductPage = () => {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`http://localhost:4000/api/products/slug/${slug}`);
+        const { data } = await api.get(`/api/products/slug/${slug}`);
         setProduct(data);
       } catch (err) {
         setError('Failed to fetch product details');
@@ -57,8 +58,8 @@ const ProductPage = () => {
   const stockCount = product.variants[0]?.stock || 0;
 
   const imagesForGallery = product.images.map(img => ({
-    original: `http://localhost:4000${img.url}`,
-    thumbnail: `http://localhost:4000${img.url}`,
+    original: `${import.meta.env.VITE_API_URL}${img.url}`,
+    thumbnail: `${import.meta.env.VITE_API_URL}${img.url}`,
     originalAlt: product.title,
     thumbnailAlt: product.title,
   }));

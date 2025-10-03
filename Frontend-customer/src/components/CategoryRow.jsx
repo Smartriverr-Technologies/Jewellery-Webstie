@@ -55,13 +55,15 @@ import axios from "axios"
 import { Link } from "react-router-dom"
 import { Box, Typography, Button, Skeleton, Paper, Stack } from "@mui/material"
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded"
-import ProductCard from "./ProductCard"
+import ProductCard from "./ProductCard";
+import { motion } from "framer-motion"
+import api from "../api/axiosConfig"
 
 // Fetch products
 const fetchProductsForCategory = async (categoryId) => {
   if (!categoryId) return []
-  const { data } = await axios.get(
-    `http://localhost:4000/api/products?category=${categoryId}&pageSize=5`
+  const { data } = await api.get(
+    `/api/products?category=${categoryId}&pageSize=5`
   )
   return data.products
 }

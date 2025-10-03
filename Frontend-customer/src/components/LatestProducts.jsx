@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Box, Typography, Grid, Skeleton, Button } from '@mui/material';
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
+import api from '../api/axiosConfig';
 
 const LatestProducts = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ const LatestProducts = () => {
   useEffect(() => {
     const fetchLatestProducts = async () => {
       try {
-        const { data } = await axios.get('http://localhost:4000/api/products/latest');
+        const { data } = await api.get('/api/products/latest');
         setProducts(data);
       } catch (error) {
         console.error('Failed to fetch latest products', error);

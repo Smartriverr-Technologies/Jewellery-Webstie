@@ -7,10 +7,11 @@ import { Box, Typography, Button, Skeleton } from '@mui/material';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './HeroCarousel.css';
+import api from '../api/axiosConfig';
 
 // Data fetch function
 const fetchHeroSlides = async () => {
-  const { data } = await axios.get('http://localhost:4000/api/hero-carousel');
+  const { data } = await api.get('/api/hero-carousel');
   return data;
 };
 
@@ -49,7 +50,7 @@ const HeroCarousel = () => {
             <Box key={slide._id} component={Wrapper} to={slide.link || undefined} className="hero-slide-item">
               <Box
                 className="hero-slide-background"
-                sx={{ backgroundImage: `url(http://localhost:4000${slide.image})` }}
+                sx={{ backgroundImage: `url(${import.meta.env.VITE_API_URL}${slide.image})` }}
               />
               <Box className="hero-slide-overlay" />
               <Box className="hero-slide-content">

@@ -47,7 +47,7 @@ const CartPage = () => {
                   transition={{ duration: 0.4 }}
                 >
                   <img
-                    src={`http://localhost:4000${item.images[0]?.url}`}
+                    src={`${import.meta.env.VITE_API_URL}${item.images[0]?.url}`}
                     alt={item.title}
                     className="cart-item-image"
                   />

@@ -24,11 +24,11 @@ import {
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@mui/material";
-
+import api from '../api/axiosConfig';
 
 
 const fetchSettings = async () => {
-  const { data } = await axios.get('http://localhost:4000/api/settings');
+  const { data } = await api.get('/api/settings');
   return data;
 };
 
@@ -40,8 +40,8 @@ const placeOrderFn = async ({ order, token }) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const { data } = await axios.post(
-    "http://localhost:4000/api/orders",
+  const { data } = await api.post(
+    "/api/orders",
     order,
     config
   );
@@ -50,8 +50,8 @@ const placeOrderFn = async ({ order, token }) => {
 
 const createRazorpayOrderFn = async ({ orderId, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.post(
-    `http://localhost:4000/api/orders/${orderId}/create-razorpay-order`,
+  const { data } = await api.post(
+    `/api/orders/${orderId}/create-razorpay-order`,
     {},
     config
   );
@@ -60,8 +60,8 @@ const createRazorpayOrderFn = async ({ orderId, token }) => {
 
 const verifyPaymentFn = async ({ orderId, paymentResult, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.post(
-    `http://localhost:4000/api/orders/${orderId}/verify-payment`,
+  const { data } = await api.post(
+    `/api/orders/${orderId}/verify-payment`,
     paymentResult,
     config
   );
@@ -244,7 +244,7 @@ const PlaceOrderPage = () => {
         <ListItemAvatar sx={{ minWidth: 90 }}>
           <Avatar
             variant="square"
-            src={`http://localhost:4000${item.images[0]?.url}`}
+            src={`${import.meta.env.VITE_API_URL}${item.images[0]?.url}`}
             sx={{
               width: 100,
               height: 100,

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-
+import api from '../api/axiosConfig';
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const fetchWishlist = async (token) => {
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get('http://localhost:4000/api/users/wishlist', config);
+      const { data } = await api.get('/api/users/wishlist', config);
       setWishlist(data);
     } catch (error) {
       console.error("Failed to fetch wishlist");
@@ -47,8 +47,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     const config = { headers: { 'Content-Type': 'application/json' } };
-    const { data } = await axios.post(
-      'http://localhost:4000/api/users/register',
+    const { data } = await api.post(
+      '/api/users/register',
       { name, email, password },
       config
     );
@@ -59,8 +59,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const config = { headers: { 'Content-Type': 'application/json' } };
-    const { data } = await axios.post(
-      'http://localhost:4000/api/users/login',
+    const { data } = await api.post(
+      '/api/users/login',
       { email, password },
       config
     );
@@ -77,13 +77,13 @@ export const AuthProvider = ({ children }) => {
 
   const addToWishlistCtx = async (productId) => {
     const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-    const { data } = await axios.post('http://localhost:4000/api/users/wishlist', { productId }, config);
+    const { data } = await api.post('/api/users/wishlist', { productId }, config);
     setWishlist(data); // Update state with the returned list
   };
 
   const removeFromWishlistCtx = async (productId) => {
     const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-    const { data } = await axios.delete(`http://localhost:4000/api/users/wishlist/${productId}`, config);
+    const { data } = await api.delete(`/api/users/wishlist/${productId}`, config);
     setWishlist(data); // Update state
   };
    

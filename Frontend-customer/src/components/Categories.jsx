@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Box, Typography, Grid, Skeleton } from "@mui/material";
 import { motion } from "framer-motion";
+import api from "../api/axiosConfig";
 
 const fetchCategories = async () => {
-  const { data } = await axios.get("http://localhost:4000/api/categories");
+  const { data } = await api.get("/api/categories");
   return data;
 };
 
@@ -123,7 +124,7 @@ mb: 2,
                       }}
                     >
                       <img
-                        src={`http://localhost:4000${category.image}`}
+                        src={`${import.meta.env.VITE_API_URL}${category.image}`}
                         alt={category.name}
                         style={{
                           width: "100%",

@@ -7,6 +7,8 @@ import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import './ProductCard.css';
 import { useSnackbar } from 'notistack';
+import { red } from '@mui/material/colors';
+
 
 const ProductCard = ({ product }) => {
   const { userInfo, wishlist, addToWishlistCtx, removeFromWishlistCtx } = useAuth();
@@ -70,7 +72,7 @@ const ProductCard = ({ product }) => {
           <CardMedia
   component="img"
   height="200"   // smaller height
-  image={`http://localhost:4000${product.images[0]?.url}`}
+  image={`${import.meta.env.VITE_API_URL}${product.images[0]?.url}`}
   alt={product.title}
   sx={{ 
     objectFit: 'cover',

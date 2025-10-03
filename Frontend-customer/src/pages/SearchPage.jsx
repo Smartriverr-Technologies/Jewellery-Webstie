@@ -11,6 +11,7 @@ import {
   Box,
   Skeleton,
 } from '@mui/material';
+import api from '../api/axiosConfig';
 
 const SearchPage = () => {
   const { keyword } = useParams();
@@ -22,8 +23,8 @@ const SearchPage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(
-          `http://localhost:4000/api/products/search?keyword=${keyword}`
+        const { data } = await api.get(
+          `/api/products/search?keyword=${keyword}`
         );
         setProducts(data);
         setError('');

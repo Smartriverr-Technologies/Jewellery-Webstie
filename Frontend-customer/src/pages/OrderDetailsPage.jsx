@@ -118,13 +118,13 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-
+import api from '../api/axiosConfig';
 // --- API Functions ---
 const fetchOrderDetails = async ({ queryKey, token }) => {
   const [_key, orderId] = queryKey;
   if (!token) return null;
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.get(`http://localhost:4000/api/orders/${orderId}`, config);
+  const { data } = await api.get(`/api/orders/${orderId}`, config);
   return data;
 };
 
@@ -265,7 +265,7 @@ const OrderDetailsPage = () => {
                   <ListItemAvatar>
                     <Avatar
                       variant="rounded"
-                      src={`http://localhost:4000${item.image}`}
+                      src={`${import.meta.env.VITE_API_URL}${item.image}`}
                       sx={{ width: 64, height: 64, mr: 2, borderRadius: 2 }}
                     />
                   </ListItemAvatar>

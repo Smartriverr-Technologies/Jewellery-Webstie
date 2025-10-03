@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Box, Typography, Grid, Paper, Skeleton } from '@mui/material';
 import { motion } from 'framer-motion';
-
+import api from '../api/axiosConfig';
 const fetchSocialVideos = async () => {
-  const { data } = await axios.get('http://localhost:4000/api/social-videos');
+  const { data } = await api.get('/api/social-videos');
   return data;
 };
 
@@ -72,7 +72,7 @@ const SocialFeed = () => {
                     opacity: 0, transition: 'opacity 0.3s ease'
                   }}/>
                   <video
-                    src={`http://localhost:4000${video.videoUrl}`}
+                    src={`${import.meta.env.VITE_API_URL}${video.videoUrl}`}
                     width="100%"
                     height="100%"
                     autoPlay

@@ -4,7 +4,10 @@ import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import { Box, Typography, Button, Skeleton } from '@mui/material';
 import './MainCarousel.css';
-
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import api from '../api/axiosConfig'; 
+ 
 const MainCarousel = () => {
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +15,7 @@ const MainCarousel = () => {
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const { data } = await axios.get('http://localhost:4000/api/carousel');
+        const { data } = await api.get('/api/carousel');
         setSlides(data);
       } catch (error) {
         console.error('Failed to fetch carousel slides', error);

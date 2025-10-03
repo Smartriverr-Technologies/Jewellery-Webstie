@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import { Box, Typography, Card, CardContent, Rating, CardMedia } from '@mui/material';
 import { motion } from 'framer-motion';
 import './TestimonialCarousel.css';
+import api from '../api/axiosConfig';
 
 const TestimonialCarousel = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -12,7 +13,7 @@ const TestimonialCarousel = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const { data } = await axios.get('http://localhost:4000/api/testimonials');
+        const { data } = await api.get('/api/testimonials');
         setTestimonials(data);
       } catch (error) {
         console.error('Failed to fetch testimonials', error);
@@ -45,7 +46,7 @@ const TestimonialCarousel = () => {
   return (
     <Box
       sx={{
-        py: 5,
+        py: 2,
         px: { xs: 2, sm: 4, md: 8 },
         position: "relative",
         overflow: "hidden",
@@ -77,8 +78,8 @@ const TestimonialCarousel = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Box sx={{ textAlign: "center", mb: 6 }}>
-          <Typography 
+        <Box sx={{ textAlign: "center", mb: 6  }}>
+          {/* <Typography 
             variant="h4" 
             component="h2" 
             sx={{ 
@@ -99,7 +100,16 @@ const TestimonialCarousel = () => {
             }}
           >
             What Our Customers Say
-          </Typography>
+          </Typography> */}
+          <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ 
+                        fontWeight: 700,
+                        background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        mb: 2,
+                      }}>
+            What Our Customers Say
+                </Typography>
         </Box>
       </motion.div>
 
@@ -130,7 +140,7 @@ const TestimonialCarousel = () => {
                   <CardMedia
                     component="img"
                     height="150"
-                    image={`http://localhost:4000${testimonial.imageUrl}`}
+                    image={`${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
                     alt={testimonial.name}
                     sx={{
                       objectFit: "cover",

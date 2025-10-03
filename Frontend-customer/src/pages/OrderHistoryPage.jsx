@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Box, Typography, CircularProgress, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Fade, Tooltip } from '@mui/material';
 import './OrderHistoryPage.css';
+import api from '../api/axiosConfig';
 
 const OrderHistoryPage = () => {
   const { userInfo } = useAuth();
@@ -15,7 +16,7 @@ const OrderHistoryPage = () => {
     const fetchMyOrders = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        const { data } = await axios.get('http://localhost:4000/api/orders/myorders', config);
+        const { data } = await api.get('/api/orders/myorders', config);
         setOrders(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch orders');

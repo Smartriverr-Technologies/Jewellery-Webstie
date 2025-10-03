@@ -6,16 +6,17 @@ import ShopLayout from '../components/ShopLayout';
 import ProductCard from '../components/ProductCard';
 import { Typography, Skeleton, Box, Pagination, Breadcrumbs, Link as MuiLink, Grid, Alert } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import api from '../api/axiosConfig';
 
 const fetchCategoryData = async ({ queryKey }) => {
   const [_key, { slug, searchParamsString }] = queryKey;
-  const { data: category } = await axios.get(`http://localhost:4000/api/categories/slug/${slug}`);
+  const { data: category } = await api.get(`/api/categories/slug/${slug}`);
   if (!category) throw new Error('Category not found');
   
   const params = new URLSearchParams(searchParamsString);
   params.set('category', category._id);
   
-  const { data: productData } = await axios.get(`http://localhost:4000/api/products?${params.toString()}`);
+  const { data: productData } = await api.get(`/api/products?${params.toString()}`);
   return { ...productData, categoryName: category.name };
 };
 
