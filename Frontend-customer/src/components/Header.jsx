@@ -20,7 +20,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 
-const navLinks = ['rings', 'chains', 'lockets', 'bracelets', 'earrings', 'pendants', 'solitaires'];
+const navLinks = ['rings', 'chains', 'kada', 'bracelets', 'earrings', 'mangalsutras', 'choker-necklace' ,];
 
 const Header = () => {
   const navigate = useNavigate();
@@ -171,6 +171,7 @@ const Header = () => {
                 >
                   {userInfo.name}
                 </Button>
+                {/* <Link to="/gallery" style={{ textDecoration: 'none' }}>Galllery</Link> */}
                 <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}

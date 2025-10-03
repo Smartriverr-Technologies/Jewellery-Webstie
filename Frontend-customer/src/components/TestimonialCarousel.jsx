@@ -93,7 +93,7 @@ const TestimonialCarousel = () => {
                 height: '4px',
                 bottom: -8,
                 left: '20%',
-                backgroundColor: '#1976d2',
+                backgroundColor: '#B8860B',
                 borderRadius: '2px'
               }
             }}
@@ -115,7 +115,7 @@ const TestimonialCarousel = () => {
             >
               <Card
                 sx={{
-                  minHeight: 300,
+                  minHeight: 100,
                   display: 'flex',
                   flexDirection: 'column',
                   borderRadius: 3,

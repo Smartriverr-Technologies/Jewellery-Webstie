@@ -89,7 +89,7 @@ const getProductById = asyncHandler(async (req, res) => {
 // @route   GET /api/products/admin
 // @access  Private/Admin
 const getProductsAdmin = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  const products = await Product.find({}).populate('category');
   res.json(products);
 });
 

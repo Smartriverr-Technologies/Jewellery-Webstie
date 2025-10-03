@@ -3,36 +3,38 @@ const router = express.Router();
 import {
   registerUser,
   loginUser,
+  // verifyEmail,
   getUsers,
   deleteUser,
-  getUserWishlist,    // <-- Import this
-  addToWishlist,      // <-- Import this
-  removeFromWishlist, // <-- Import this
+  getUserWishlist,
+  addToWishlist,
+  removeFromWishlist,
+  forgotPassword,
+  resetPassword,
 } from '../controllers/userController.js';
-
 import { protect } from '../middleware/authMiddleware.js';
 import { admin } from '../middleware/adminMiddleware.js';
 
-// --- Auth & User Management Routes ---
-router.route('/register').post(registerUser);
-router.route('/login').post(loginUser);
+// --- Auth & Verification Routes ---
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+// router.get('/verifyemail/:token', verifyEmail);
 
-// Admin-only user list
-router.route('/').get(protect, admin, getUsers);
+// --- Password Reset Routes ---
+router.post('/forgotpassword', forgotPassword);
+router.put('/resetpassword/:resettoken', resetPassword);
 
-// Admin-only delete user
-router.route('/:id').delete(protect, admin, deleteUser);
-
-
-// --- Wishlist Routes ---
-router
-  .route('/wishlist')
+// --- Wishlist Routes (Protected) ---
+router.route('/wishlist')
   .get(protect, getUserWishlist)
   .post(protect, addToWishlist);
-
-router
-  .route('/wishlist/:productId')
+router.route('/wishlist/:productId')
   .delete(protect, removeFromWishlist);
 
+// --- Admin-Only User Management Routes (Protected & Admin) ---
+router.route('/')
+  .get(protect, admin, getUsers);
+router.route('/:id')
+  .delete(protect, admin, deleteUser);
 
 export default router;

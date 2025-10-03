@@ -24,7 +24,7 @@ const LatestProducts = () => {
   }, []);
 
   return (
-    <Box sx={{ py: 8, background: 'linear-gradient(to bottom, #f9f9f9, #ffffff)' }}>
+    <Box sx={{ py: 4, background: 'linear-gradient(to bottom, #f9f9f9, #ffffff)' }}>
       {/* Section Title */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
@@ -32,28 +32,56 @@ const LatestProducts = () => {
         transition={{ duration: 0.6 }}
       >
         <Box sx={{ textAlign: "center", mb: 6 }}>
-    <Typography 
+    {/* <Typography 
       variant="h4" 
       component="h2" 
       sx={{ 
-        fontWeight: 'bold', 
+        // fontWeight: 'bold', 
         display: "inline-block",
         position: "relative",
-        px: 2,
-        '&::after': {
-          content: '""',
-          position: 'absolute',
-          width: '50%',
-          height: '4px',
-          bottom: -8,
-          left: '25%',
-          backgroundColor: '#1976d2',
-          borderRadius: '2px'
-        }
+        // px: 2,
+        fontWeight: 700,
+              background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              mb: 2,
+        // '&::after': {
+        //   content: '""',
+        //   position: 'absolute',
+        //   width: '50%',
+        //   height: '4px',
+        //   bottom: -8,
+        //   left: '25%',
+        //   backgroundColor: '#B8860B',
+        //   // background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+        //   borderRadius: '2px'
+        // }
+        // sx={{ 
+        //       fontWeight: 700,
+        //       background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+        //       WebkitBackgroundClip: 'text',
+        //       WebkitTextFillColor: 'transparent',
+        //       mb: 2,
+        //     }}
       }}
     >
       Our Latest Products
-    </Typography>
+    </Typography> */}
+    <Typography 
+                variant="h4" 
+                component="h2" 
+                align="center" 
+                gutterBottom
+                sx={{ 
+                  fontWeight: 700,
+                  background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  mb: 5,
+                }}
+              >
+               Latest Products
+              </Typography>
   </Box>
       </motion.div>
 
@@ -98,7 +126,8 @@ const LatestProducts = () => {
       <Box sx={{ textAlign: 'center', mt: 6 }}>
         <Button 
           component={Link} 
-          to="/" 
+          // to="" 
+          to="/shop"
           variant="contained" 
           size="large"
           sx={{

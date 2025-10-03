@@ -33,7 +33,10 @@ import carouselRoutes from './carouselRoutes.js';
 import testimonialRoutes from './testimonialRoutes.js';
 import heroCarouselRoutes from './heroCarouselRoutes.js';
 import categoryRoutes from './categoryRoutes.js';
-
+import dashboardRoutes from './dashboardRoutes.js';
+import settingRoutes from './settingRoutes.js';
+import galleryRoutes from './galleryRoutes.js';
+import socialVideoRoutes from './socialVideoRoutes.js';
 // We will create the auth routes and middleware in a future step.
 // For now, they must be commented out to prevent errors.
 // import authRoutes from './auth.js';
@@ -55,6 +58,10 @@ router.use('/testimonials', testimonialRoutes);
 router.use('/hero-carousel', heroCarouselRoutes);
 router.use('/categories', categoryRoutes); // <-- Yeh line add karein
 
+router.use('/dashboard', dashboardRoutes); 
+router.use('/settings', settingRoutes);
+router.use('/gallery', galleryRoutes);
+router.use('/social-videos', socialVideoRoutes);
 // These routes are commented out because we haven't built them yet.
 // router.use('/auth', authRoutes);
 // router.get('/protected', authMiddleware, (req, res) => {

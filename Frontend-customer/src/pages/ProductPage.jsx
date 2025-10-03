@@ -99,7 +99,7 @@ const ProductPage = () => {
         </Typography>
 
         <Typography variant="h5" sx={{ mb: 2, color: '#B8860B', fontWeight: 600 }}>
-          ${product.price.toFixed(2)}
+          ₹{product.price.toFixed(2)}
         </Typography>
 
         <Typography

@@ -6,17 +6,26 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import './ProductCard.css';
+import { useSnackbar } from 'notistack';
 
 const ProductCard = ({ product }) => {
   const { userInfo, wishlist, addToWishlistCtx, removeFromWishlistCtx } = useAuth();
+   const { enqueueSnackbar } = useSnackbar();
   const isWishlisted = userInfo && wishlist.some(item => item._id === product._id);
 
-  const toggleWishlist = (e) => {
+  const toggleWishlist = async (e) => {
     e.preventDefault();
-    if (isWishlisted) {
-      removeFromWishlistCtx(product._id);
-    } else {
-      addToWishlistCtx(product._id);
+    try {
+      if (isWishlisted) {
+        await removeFromWishlistCtx(product._id);
+        enqueueSnackbar(`${product.title} removed from wishlist`, { variant: 'info' });
+      } else {
+        await addToWishlistCtx(product._id);
+        // --- 3. Show toast on success ---
+        enqueueSnackbar(`${product.title} added to wishlist`, { variant: 'success' });
+      }
+    } catch (error) {
+      enqueueSnackbar('Could not update wishlist', { variant: 'error' });
     }
   };
 

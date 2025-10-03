@@ -57,7 +57,7 @@ const UserListPage = () => {
         <table className="admin-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>USER ID</th>
               <th>NAME</th>
               <th>EMAIL</th>
               <th>ADMIN</th>

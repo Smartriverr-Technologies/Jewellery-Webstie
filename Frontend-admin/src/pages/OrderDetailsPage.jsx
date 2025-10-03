@@ -1,102 +1,101 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import './OrderDetailsPage.css'; // We'll create this CSS file next
+import { Container, Paper, Typography, Grid, Box, CircularProgress, Alert, Button, Divider, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@mui/material';
+
+// API Functions
+const fetchOrderDetails = async ({ queryKey, token }) => {
+  const [_key, orderId] = queryKey;
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const { data } = await axios.get(`http://localhost:4000/api/orders/${orderId}`, config);
+  return data;
+};
+
+const markAsDelivered = async ({ orderId, token }) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const { data } = await axios.put(`http://localhost:4000/api/orders/${orderId}/deliver`, {}, config);
+  return data;
+};
 
 const OrderDetailsPage = () => {
   const { id: orderId } = useParams();
   const { userInfo } = useAuth();
+  const queryClient = useQueryClient();
 
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { data: order, isLoading, isError, error } = useQuery({
+    queryKey: ['orderDetails', orderId],
+    queryFn: () => fetchOrderDetails({ queryKey: ['orderDetails', orderId], token: userInfo.token }),
+    enabled: !!userInfo,
+  });
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-        const { data } = await axios.get(`http://localhost:4000/api/orders/${orderId}`, config);
-        setOrder(data);
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to fetch order');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const deliverMutation = useMutation({
+    mutationFn: markAsDelivered,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['orderDetails', orderId]);
+      alert('Order marked as delivered!');
+    },
+    onError: (err) => alert(err.response?.data?.message || 'Failed to update order'),
+  });
 
-    if (userInfo) {
-      fetchOrder();
-    }
-  }, [orderId, userInfo]);
+  const deliverHandler = () => {
+    deliverMutation.mutate({ orderId, token: userInfo.token });
+  };
 
-  if (loading) return <div>Loading order details...</div>;
-  if (error) return <div className="error-message">{error}</div>;
-  if (!order) return <div>Order not found.</div>;
-
-  const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
+  if (isLoading) return <CircularProgress />;
+  if (isError) return <Alert severity="error">{error.message}</Alert>;
+  if (!order) return null;
 
   return (
-    <div className="order-details-container">
-      <h1>Order #{order._id}</h1>
-      <div className="order-details-grid">
-        <div className="order-main-details">
-          <div className="detail-section">
-            <h2>Shipping</h2>
-            <p><strong>Name: </strong> {order.user.name}</p>
-            <p><strong>Email: </strong> <a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
-            <p><strong>Phone: </strong> {order.shippingAddress.phone}</p>
-            <p>
-              <strong>Address: </strong>
-              {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
-              {order.shippingAddress.postalCode}, {order.shippingAddress.country}
-            </p>
-            {order.isDelivered ? (
-              <div className="status-box success">Delivered on {new Date(order.deliveredAt).toLocaleDateString()}</div>
-            ) : (
-              <div className="status-box error">Not Delivered</div>
+    <Container sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom>Order Details</Typography>
+      <Typography variant="body1" gutterBottom>Order ID: {order._id}</Typography>
+      <Grid container spacing={4} sx={{ mt: 2 }}>
+        <Grid item md={8} xs={12}>
+          <Paper sx={{ p: 2, mb: 2 }}>
+            <Typography variant="h6" gutterBottom>Shipping Information</Typography>
+            <Typography><strong>User:</strong> {order.user.name} ({order.user.email})</Typography>
+            <Typography><strong>Phone:</strong> {order.shippingAddress.phone}</Typography>
+            <Typography><strong>Address:</strong> {`${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`}</Typography>
+            {order.isDelivered ? <Alert severity="success" sx={{ mt: 1 }}>Delivered on {new Date(order.deliveredAt).toLocaleDateString('en-GB')}</Alert> : <Alert severity="warning" sx={{ mt: 1 }}>Not Delivered</Alert>}
+          </Paper>
+          <Paper sx={{ p: 2, mb: 2 }}>
+            <Typography variant="h6" gutterBottom>Payment Information</Typography>
+            <Typography><strong>Method:</strong> {order.paymentMethod}</Typography>
+            {order.isPaid ? <Alert severity="success" sx={{ mt: 1 }}>Paid on {new Date(order.paidAt).toLocaleDateString()}</Alert> : <Alert severity="error" sx={{ mt: 1 }}>Not Paid</Alert>}
+          </Paper>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>Order Items</Typography>
+            <List>
+              {order.orderItems.map(item => (
+                <ListItem key={item._id} divider>
+                  <ListItemAvatar><Avatar variant="square" src={`http://localhost:4000${item.image}`} /></ListItemAvatar>
+                  <ListItemText primary={<Link to={`/product/${item.product}`}>{item.name}</Link>} />
+                  <Typography>{item.qty} x ₹{item.price} = ₹{(item.qty * item.price).toFixed(2)}</Typography>
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </Grid>
+        <Grid item md={4} xs={12}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h5" gutterBottom>Order Summary</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}><Typography>Items:</Typography><Typography>₹{order.itemsPrice.toFixed(2)}</Typography></Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}><Typography>Shipping:</Typography><Typography>₹{order.shippingPrice.toFixed(2)}</Typography></Box>
+            {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}><Typography>Tax:</Typography><Typography>${order.taxPrice.toFixed(2)}</Typography></Box> */}
+            <Divider sx={{ mb: 2 }} />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}><Typography variant="h6">Total:</Typography><Typography variant="h6">₹{order.totalPrice.toFixed(2)}</Typography></Box>
+            {order.isPaid || !order.isDelivered && (
+              <Button fullWidth variant="contained" onClick={deliverHandler} disabled={deliverMutation.isLoading}>
+                {deliverMutation.isLoading ? 'Marking...' : 'Mark As Delivered'}
+              </Button>
             )}
-          </div>
-
-          <div className="detail-section">
-            <h2>Payment Method</h2>
-            <p><strong>Method: </strong> {order.paymentMethod}</p>
-            {order.isPaid ? (
-              <div className="status-box success">Paid on {new Date(order.paidAt).toLocaleDateString()}</div>
-            ) : (
-              <div className="status-box error">Not Paid</div>
-            )}
-          </div>
-
-          <div className="detail-section">
-            <h2>Order Items</h2>
-            {order.orderItems.map((item) => (
-              <div key={item._id} className="order-item">
-                <img src={item.image} alt={item.name} className="order-item-image" />
-                <Link to={`/product/${item.product}`} className="order-item-name">{item.name}</Link>
-                <div className="order-item-price">
-                  {item.qty} x ${item.price} = ${addDecimals(item.qty * item.price)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="order-summary-card">
-          <h2>Order Summary</h2>
-          <div className="summary-row"><span>Items:</span><span>${order.itemsPrice}</span></div>
-          <div className="summary-row"><span>Shipping:</span><span>${order.shippingPrice}</span></div>
-          <div className="summary-row"><span>Tax:</span><span>${order.taxPrice}</span></div>
-          <div className="summary-row total"><span>Total:</span><span>${order.totalPrice}</span></div>
-          {/* Payment button (e.g., PayPal) would go here if not paid */}
-        </div>
-      </div>
-    </div>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
-
 export default OrderDetailsPage;

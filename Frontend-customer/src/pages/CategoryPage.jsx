@@ -60,7 +60,7 @@ const CategoryPage = () => {
           </Breadcrumbs>
           <Typography
   variant="h4"
-  component="h1"
+  component="h2"
   gutterBottom
   sx={{
     textAlign: 'center',        // Text horizontally center

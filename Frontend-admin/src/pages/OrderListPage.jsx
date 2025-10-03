@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-// We reuse the CSS from the Product List page for a consistent look
-import './ProductListPage.css';
+import { FaCheckCircle, FaTimesCircle, FaTruck, FaInfoCircle } from 'react-icons/fa';
+import './OrderListPage.css';
 
 const OrderListPage = () => {
   const { userInfo } = useAuth();
@@ -11,15 +11,15 @@ const OrderListPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // We extract the fetch logic into its own function so we can call it again after an update
+  // Fetch orders from API
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      };
+      const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       const { data } = await axios.get('http://localhost:4000/api/orders', config);
-      setOrders(data);
+      // Sort orders by newest first
+      const sortedOrders = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setOrders(sortedOrders);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch orders');
     } finally {
@@ -27,22 +27,16 @@ const OrderListPage = () => {
     }
   };
 
-  // Fetch orders when the component mounts
   useEffect(() => {
-    if (userInfo) {
-      fetchOrders();
-    }
+    if (userInfo) fetchOrders();
   }, [userInfo]);
 
-  // Handler to mark an order as delivered
+  // Mark order as delivered
   const deliverHandler = async (id) => {
     if (window.confirm('Mark this order as delivered?')) {
       try {
-        const config = {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        };
+        const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
         await axios.put(`http://localhost:4000/api/orders/${id}/deliver`, {}, config);
-        // Refresh the orders list to show the updated status
         fetchOrders();
       } catch (err) {
         alert(err.response?.data?.message || 'Failed to update order');
@@ -50,19 +44,27 @@ const OrderListPage = () => {
     }
   };
 
-  if (loading) return <div>Loading orders...</div>;
+  if (loading)
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+        Loading orders...
+      </div>
+    );
+
   if (error) return <div className="error-message">{error}</div>;
 
   return (
-    <div className="product-list-container">
+    <div className="order-list-container">
       <div className="list-header">
         <h1>All Orders</h1>
       </div>
+
       <div className="table-wrapper">
-        <table className="admin-table">
+        <table className="orders-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>ORDER ID</th>
               <th>USER</th>
               <th>DATE</th>
               <th>TOTAL</th>
@@ -76,17 +78,40 @@ const OrderListPage = () => {
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.user ? order.user.name : 'DELETED USER'}</td>
-                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                <td>${order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? '✅' : '❌'}</td>
-                <td>{order.isDelivered ? '✅' : '❌'}</td>
+                <td>{new Date(order.createdAt).toLocaleDateString('en-GB')}</td>
+                <td>₹{order.totalPrice.toFixed(2)}</td>
+                <td>
+                  {order.isPaid ? (
+                    <span className="status paid">
+                      <FaCheckCircle /> Paid
+                    </span>
+                  ) : (
+                    <span className="status not-paid">
+                      <FaTimesCircle /> Not Paid
+                    </span>
+                  )}
+                </td>
+                <td>
+                  {order.isDelivered ? (
+                    <span className="status delivered">
+                      <FaTruck /> Delivered
+                    </span>
+                  ) : (
+                    <span className="status not-delivered">
+                      <FaTimesCircle /> Pending
+                    </span>
+                  )}
+                </td>
                 <td className="actions-cell">
                   <Link to={`/orders/${order._id}`} className="details-btn">
-                    Details
+                    <FaInfoCircle /> Details
                   </Link>
                   {!order.isDelivered && (
-                    <button onClick={() => deliverHandler(order._id)} className="edit-btn">
-                      Mark Delivered
+                    <button
+                      onClick={() => deliverHandler(order._id)}
+                      className="deliver-btn"
+                    >
+                      <FaTruck /> Mark Delivered
                     </button>
                   )}
                 </td>

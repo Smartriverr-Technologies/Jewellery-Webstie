@@ -15,6 +15,9 @@ import TestimonialManagePage from './pages/TestimonialManagePage';
 import HeroManagePage from './pages/HeroManagePage';
 import MainCarouselManagePage from './pages/MainCarouselManagePage';
 import CategoryManagePage from './pages/CategoryManagePage';
+import SettingsPage from './pages/SettingsPage';
+import GalleryPage from './pages/GalleryPage';
+import SocialVideoManagePage from './pages/SocialVideoManagePage';
 function App() {
   return (
     <Routes>
@@ -33,6 +36,9 @@ function App() {
            <Route path="testimonials" element={<TestimonialManagePage />} />
            <Route path="hero-management" element={<HeroManagePage />} />
            <Route path="categories" element={<CategoryManagePage />} />
+           <Route path="settings" element={<SettingsPage />} />
+           <Route path="gallery" element={<GalleryPage />} />
+            <Route path="social-videos" element={<SocialVideoManagePage />} />
           {/* Routes for orders and users will go here */}
         </Route>
       </Route>

@@ -33,4 +33,31 @@ const upload = multer({
   },
 });
 
-export { upload };
+
+const videoStorage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename(req, file, cb) {
+    cb(null, `video-${Date.now()}${path.extname(file.originalname)}`);
+  },
+});
+
+function checkVideoType(file, cb) {
+  const filetypes = /mp4|mov|avi|mkv/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = file.mimetype.startsWith('video');
+  if (extname && mimetype) {
+    return cb(null, true);
+  } else {
+    cb(new Error('Videos only!'), false);
+  }
+}
+
+const uploadVideo = multer({
+  storage: videoStorage,
+  fileFilter: function (req, file, cb) {
+    checkVideoType(file, cb);
+  },
+});
+export { upload , uploadVideo };

@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import 'dotenv/config'; // Handles .env variables
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -10,19 +10,19 @@ import path from 'path';
 import connectDB from './config/db123.js';
 import apiRoutes from './routes/index.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+
 import uploadRoutes from './routes/uploadRoutes.js';
 
 // --- Initialization ---
 const app = express();
 const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // --- Middlewares ---
 app.use(helmet());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// --- CORS Configuration to allow both frontends ---
+
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',
   process.env.ADMIN_FRONTEND_URL || 'http://localhost:5174'
@@ -38,12 +38,16 @@ app.use(cors({
   },
   credentials: true
 }));
-// --------------------------------------------------
 
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100
 }));
+
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+});
 
 // --- Main Server Logic ---
 (async () => {
@@ -52,7 +56,11 @@ app.use(rateLimit({
 
     // --- API Routes ---
     app.use('/api', apiRoutes);
-    app.use('/api/upload', uploadRoutes); 
+    
+    // Make 'uploads' folder static
+    app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+    app.use('/api/upload', uploadRoutes);
+
 
     // --- Serve Frontend in Production ---
     if (process.env.NODE_ENV === 'production') {
@@ -70,7 +78,7 @@ app.use(rateLimit({
 
     // --- Start Server ---
     const PORT = process.env.PORT || 4000;
-    app.listen(PORT, () => console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
   } catch (err) {
     console.error('Failed to start server:', err);

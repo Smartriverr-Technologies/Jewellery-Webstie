@@ -7,6 +7,7 @@ import LatestProducts from '../components/LatestProducts';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import ShortVideos from '../components/ShortVideos';
 import SocialFeed from '../components/SocialFeed';
+import GalleryPage from './GalleryPage';
 
 const HomePage = () => {
   return (
@@ -16,7 +17,7 @@ const HomePage = () => {
        <Categories />
        <LatestProducts />
        <MainCarousel />
-     
+      <GalleryPage />
 
       {/* --- Contained-Width Sections --- */}
       {/* Remove the sx prop from this Container */}
@@ -24,8 +25,10 @@ const HomePage = () => {
       
         
         {/* <ShortVideos /> */}
-        {/* <SocialFeed /> */}
+        
       </Container>
+      
+      <SocialFeed />
       <TestimonialCarousel />
     </>
   );

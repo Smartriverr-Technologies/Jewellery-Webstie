@@ -1,102 +1,95 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { motion } from 'framer-motion';
-import './ShippingPage.css';
+import { useAuth } from '../context/AuthContext';
+import { Box, Typography, TextField, Button, Paper, Container } from '@mui/material';
+import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingPage = () => {
-  const { saveShippingAddress } = useCart();
+  const { shippingAddress, saveShippingAddress } = useCart();
+  const { userInfo } = useAuth();
   const navigate = useNavigate();
 
-  // Inputs start empty
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [postalCode, setPostalCode] = useState('');
-  const [country, setCountry] = useState('');
-  const [phone, setPhone] = useState('');
+  // Redirect if user is not logged in
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/login?redirect=/shipping');
+    }
+  }, [navigate, userInfo]);
+
+  // Pre-fill state with saved address from context or empty strings
+  const [address, setAddress] = useState(shippingAddress.address || '');
+  const [city, setCity] = useState(shippingAddress.city || '');
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
+  const [country, setCountry] = useState(shippingAddress.country || '');
+  const [phone, setPhone] = useState(shippingAddress.phone || '');
 
   const submitHandler = (e) => {
     e.preventDefault();
     saveShippingAddress({ address, city, postalCode, country, phone });
-    navigate('/payment');
+    navigate('/payment'); // Navigate to the next step
   };
 
   return (
-    <div className="shipping-container">
-      <motion.form
-        onSubmit={submitHandler}
-        className="shipping-form"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-      >
-        <h1 className="form-title">Shipping Address</h1>
-
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <input
-            type="text"
-            id="address"
+    <Container maxWidth="sm" sx={{ my: 4 }}>
+      <CheckoutSteps step1 step2 />
+      <Paper elevation={3} sx={{ p: 4, mt: 3, borderRadius: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom align="center">
+          Shipping Address
+        </Typography>
+        <Box component="form" onSubmit={submitHandler}>
+          <TextField
+            label="Address"
+            fullWidth
+            margin="normal"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             required
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="city">City</label>
-          <input
-            type="text"
-            id="city"
+          <TextField
+            label="City"
+            fullWidth
+            margin="normal"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="postalCode">Postal Code</label>
-          <input
-            type="text"
-            id="postalCode"
+          <TextField
+            label="Postal Code"
+            fullWidth
+            margin="normal"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
             required
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="country">Country</label>
-          <input
-            type="text"
-            id="country"
+          <TextField
+            label="Country"
+            fullWidth
+            margin="normal"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             required
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="phone">Contact Number</label>
-          <input
+          <TextField
+            label="Contact Number"
             type="tel"
-            id="phone"
+            fullWidth
+            margin="normal"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
           />
-        </div>
-
-        <motion.button
-          type="submit"
-          className="continue-btn"
-          whileHover={{ scale: 1.05, boxShadow: '0px 8px 20px rgba(184,134,11,0.4)' }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Continue →
-        </motion.button>
-      </motion.form>
-    </div>
+          <Button 
+            type="submit" 
+            variant="contained" 
+            fullWidth 
+            sx={{ mt: 3, py: 1.5 }}
+          >
+            Continue to Payment
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

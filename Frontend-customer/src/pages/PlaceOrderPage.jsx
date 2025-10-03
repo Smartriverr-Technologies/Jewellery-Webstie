@@ -1,160 +1,402 @@
-// PlaceOrderPage.jsx
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
-import { motion } from 'framer-motion';
-import './PlaceOrderPage.css';
+import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useSnackbar } from "notistack";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  Container,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Divider,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
+import CheckoutSteps from "../components/CheckoutSteps";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@mui/material";
+
+
+
+const fetchSettings = async () => {
+  const { data } = await axios.get('http://localhost:4000/api/settings');
+  return data;
+};
+
+// --- API functions ---
+const placeOrderFn = async ({ order, token }) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const { data } = await axios.post(
+    "http://localhost:4000/api/orders",
+    order,
+    config
+  );
+  return data;
+};
+
+const createRazorpayOrderFn = async ({ orderId, token }) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const { data } = await axios.post(
+    `http://localhost:4000/api/orders/${orderId}/create-razorpay-order`,
+    {},
+    config
+  );
+  return data;
+};
+
+const verifyPaymentFn = async ({ orderId, paymentResult, token }) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const { data } = await axios.post(
+    `http://localhost:4000/api/orders/${orderId}/verify-payment`,
+    paymentResult,
+    config
+  );
+  return data;
+};
 
 const PlaceOrderPage = () => {
   const navigate = useNavigate();
-  const { cartItems, shippingAddress, clearCart } = useCart();
+  const queryClient = useQueryClient();
+  const { cartItems, shippingAddress, paymentMethod, clearCart } = useCart();
   const { userInfo } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { data: settings, isLoading: isLoadingSettings } = useQuery({ 
+    queryKey: ['settings'], 
+    queryFn: fetchSettings 
+  });
 
-  useEffect(() => {
-    if (!shippingAddress.address) {
-      navigate('/shipping');
-    }
-  }, [shippingAddress, cartItems, navigate]);
-
+  // --- Price Calculations ---
   const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
-
   const itemsPrice = addDecimals(
     cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   );
-  const shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 10);
-  const taxPrice = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
+  // const shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 10);
+   const shippingPrice = addDecimals(
+    settings ? (itemsPrice > settings.freeShippingThreshold ? 0 : settings.shippingCharge) : 0
+  );
+  // const taxPrice = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
   const totalPrice = (
     Number(itemsPrice) +
-    Number(shippingPrice) +
-    Number(taxPrice)
+    Number(shippingPrice)  
+    // Number(taxPrice)
   ).toFixed(2);
 
-  const placeOrderHandler = async () => {
-    setLoading(true);
-    setError('');
+  const placeOrderMutation = useMutation({
+    mutationFn: placeOrderFn,
+    onSuccess: (createdOrder) => {
+      if (createdOrder.paymentMethod === "Razorpay") {
+        payWithRazorpayHandler(createdOrder);
+      } else {
+        enqueueSnackbar("Order placed successfully!", { variant: "success" });
+        clearCart();
+        navigate(`/order/${createdOrder._id}`);
+      }
+    },
+    onError: (error) =>
+      enqueueSnackbar(
+        error.response?.data?.message || "Could not place order.",
+        { variant: "error" }
+      ),
+  });
+
+  const payWithRazorpayHandler = async (order) => {
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+      const razorpayOrder = await createRazorpayOrderFn({
+        orderId: order._id,
+        token: userInfo.token,
+      });
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        name: "Aura Jewels",
+        description: `Payment for Order #${order._id}`,
+        order_id: razorpayOrder.id,
+        handler: async function (response) {
+          try {
+            await verifyPaymentFn({
+              orderId: order._id,
+              paymentResult: response,
+              token: userInfo.token,
+            });
+            queryClient.invalidateQueries(["orderDetails", order._id]);
+            enqueueSnackbar("Payment successful!", { variant: "success" });
+            clearCart();
+            navigate(`/order/${order._id}`);
+          } catch (error) {
+            enqueueSnackbar("Payment verification failed.", {
+              variant: "error",
+            });
+          }
         },
+        prefill: {
+          name: userInfo.name,
+          email: userInfo.email,
+          contact: shippingAddress.phone,
+        },
+        theme: { color: "#FF9900" }, // Amazon yellow
       };
-
-      const { data: createdOrder } = await axios.post(
-        'http://localhost:4000/api/orders',
-        {
-          orderItems: cartItems,
-          shippingAddress,
-          paymentMethod: 'PayPal',
-          itemsPrice,
-          taxPrice,
-          shippingPrice,
-          totalPrice,
-        },
-        config
-      );
-
-      clearCart();
-      navigate(`/order/${createdOrder._id}`);
-    } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred while placing the order.');
-    } finally {
-      setLoading(false);
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      enqueueSnackbar("Could not initiate Razorpay payment.", {
+        variant: "error",
+      });
     }
   };
 
+  const placeOrderHandler = () => {
+    // placeOrderMutation.mutate({
+    //   order: {
+    //     orderItems: cartItems,
+    //     shippingAddress,
+    //     paymentMethod,
+    //     itemsPrice,
+    //     shippingPrice,
+    //     taxPrice,
+    //     totalPrice,
+    //   },
+    //   token: userInfo.token,
+    // });
+    placeOrderMutation.mutate({
+      order: {
+        orderItems: cartItems,
+        shippingAddress,
+        paymentMethod,
+      },
+      token: userInfo.token,
+    });
+  };
+
   return (
-    <motion.div 
-      className="place-order-container"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <h1 className="checkout-title">Review & Place Your Order</h1>
-      <div className="place-order-grid">
-        {/* Left Side */}
-        <div className="place-order-details">
-          <motion.div 
-            className="detail-section"
-            whileHover={{ scale: 1.02 }}
-          >
-            <h2> Shipping</h2>
-            <p>
-              <strong>Address: </strong>
-              {shippingAddress.address}, {shippingAddress.city}{' '}
+    <Container maxWidth="lg" sx={{ my: 4 }}>
+      <CheckoutSteps step1 step2 step3 step4 />
+
+      <Grid container spacing={3} sx={{ mt: 2 }}>
+        {/* Left Section */}
+        <Grid item md={8} xs={12}>
+          <Paper sx={{ p: 2, mb: 2 , }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.2rem', color: '#111' }} gutterBottom>
+              Shipping Address
+            </Typography>
+            <Typography>
+              {shippingAddress.address}, {shippingAddress.city},{" "}
               {shippingAddress.postalCode}, {shippingAddress.country}
-            </p>
-          </motion.div>
+            </Typography>
+            <Typography>Phone: {shippingAddress.phone}</Typography>
+          </Paper>
 
-          <motion.div 
-            className="detail-section"
-            whileHover={{ scale: 1.02 }}
-          >
-            <h2>Payment Method</h2>
-            <p><strong>Method: </strong> PayPal or Credit Card</p>
-          </motion.div>
+          <Paper sx={{ p: 2, mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.2rem', color: '#111' }} gutterBottom>
+              Payment Method
+            </Typography>
+            <Typography>{paymentMethod}</Typography>
+          </Paper>
 
-          <motion.div 
-            className="detail-section"
-            whileHover={{ scale: 1.02 }}
-          >
-            <h2> Order Items</h2>
-            {cartItems.map((item) => (
-              <motion.div 
-                key={item._id} 
-                className="order-item"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4 }}
+          
+       <Paper
+  sx={{
+    p: 3,
+    borderRadius: 2,
+    border: '1px solid #ddd',
+    boxShadow: 'none',
+    bgcolor: '#fff',
+  }}
+>
+  <Box display="flex" alignItems="center" mb={2}>
+    <Typography
+      variant="h6"
+      sx={{ fontWeight: 700, fontSize: '1.2rem', color: '#111' }}
+    >
+      Order Items
+    </Typography>
+  </Box>
+
+  <List disablePadding>
+    {cartItems.map((item) => (
+      <ListItem
+        key={item._id}
+        alignItems="flex-start"
+        divider
+        sx={{
+          py: 2,
+          px: 0,
+          display: 'flex',
+          alignItems: 'flex-start',
+        }}
+      >
+        {/* Product Image */}
+        <ListItemAvatar sx={{ minWidth: 90 }}>
+          <Avatar
+            variant="square"
+            src={`http://localhost:4000${item.images[0]?.url}`}
+            sx={{
+              width: 100,
+              height: 100,
+              borderRadius: 1,
+              border: '1px solid #ddd',
+              objectFit: 'contain',
+              bgcolor: '#fff',
+            }}
+          />
+        </ListItemAvatar>
+
+        {/* Product Info */}
+        <ListItemText
+          sx={{ flex: 1, ml: 2 }}
+          primary={
+            <Link
+              to={`/product/slug/${item.slug}`}
+              style={{
+                textDecoration: 'none',
+                fontWeight: 600,
+                fontSize: '1rem',
+                color: '#B8860B',
+              }}
+              onMouseEnter={(e) =>
+                (e.target.style.textDecoration = 'underline')
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.textDecoration = 'none')
+              }
+            >
+              {item.title}
+            </Link>
+          }
+          secondary={
+            <Box>
+              {/* Description */}
+              {item.description && (
+                <Typography
+                  variant="body2"
+                  sx={{ color: '#565959', fontSize: '0.85rem', mt: 0.5 }}
+                >
+                  {item.description.length > 40
+                    ? item.description.slice(0, 40) + '...'
+                    : item.description}
+                </Typography>
+              )}
+
+              {/* Qty & Price */}
+              <Typography
+                sx={{
+                  fontSize: '0.9rem',
+                  color: '#111',
+                  mt: 1,
+                }}
               >
-                <img 
-                  src={`http://localhost:4000${item.images[0]?.url}`} 
-                  alt={item.title} 
-                  className="order-item-image" 
-                />
-                <Link to={`/product/${item.slug}`} className="order-item-name">
-                  {item.title}
-                </Link>
-                <div className="order-item-price">
-                  {item.qty} x ${item.price} = ${addDecimals(item.qty * item.price)}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+                Qty: <strong>{item.qty}</strong> × ₹{item.price}
+              </Typography>
 
-        {/* Right Side - Summary */}
-        <motion.div 
-          className="order-summary-card"
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
+              {/* Subtotal */}
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '0.95rem',
+                  color: '#B8860B',
+                }}
+              >
+                Subtotal: ₹{item.qty * item.price}
+              </Typography>
+            </Box>
+          }
+        />
+
+        {/* Right-aligned Subtotal */}
+        <Typography
+          variant="body1"
+          fontWeight={700}
+          sx={{
+            color: 'black',
+            fontSize: '1rem',
+            minWidth: 120,
+            textAlign: 'right',
+            alignSelf: 'center',
+          }}
         >
-          <h2>Order Summary</h2>
-          <div className="summary-row"><span>Items:</span><span>${itemsPrice}</span></div>
-          <div className="summary-row"><span>Shipping:</span><span>${shippingPrice}</span></div>
-          <div className="summary-row"><span>Tax:</span><span>${taxPrice}</span></div>
-          <div className="summary-row total"><span>Total:</span><span>${totalPrice}</span></div>
+          ₹{item.qty * item.price}
+        </Typography>
+      </ListItem>
+    ))}
+  </List>
+</Paper>
 
-          {error && <div className="error-message">{error}</div>}
 
-          <button
-            type="button"
-            className="place-order-btn"
-            disabled={cartItems.length === 0 || loading}
-            onClick={placeOrderHandler}
+        </Grid>
+
+        {/* Right Section - Order Summary */}
+        <Grid item md={4} xs={12}>
+         
+          <Paper
+            elevation={3}
+            sx={{ p: 3, position: { md: "sticky" }, top: 100, border: "1px solid #ddd" }}
           >
-            {loading ? 'Placing Order...' : ' Place Order'}
-          </button>
-        </motion.div>
-      </div>
-    </motion.div>
+            <Typography variant="h6" gutterBottom>Order Summary</Typography>
+            <Divider sx={{ mb: 2 }} />
+
+            {isLoadingSettings ? <Skeleton height={100} /> : (
+                <>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                        <Typography>Items:</Typography>
+                        <Typography>₹{itemsPrice}</Typography>
+                    </Box>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                        <Typography>Shipping:</Typography>
+                        <Typography>₹{shippingPrice}</Typography>
+                    </Box>
+                     {itemsPrice < settings.freeShippingThreshold && shippingPrice > 0 && (
+                  <Typography variant="caption" color="#B8860B" sx={{ display: 'block', textAlign: 'right', fontStyle: 'italic' , fontWeight: 'bold' }}>
+                    Add ₹{addDecimals(settings.freeShippingThreshold - itemsPrice)} more for FREE shipping.
+                  </Typography>
+                )}
+                    <Divider sx={{ my: 2 }} />
+                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                        <Typography variant="h6">Order Total:</Typography>
+                        <Typography variant="h6" sx={{ color: "#B8860B" }}>₹{totalPrice}</Typography>
+                    </Box>
+                </>
+            )}
+            
+            {placeOrderMutation.isError && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {placeOrderMutation.error.response?.data?.message || "An error occurred"}
+              </Alert>
+            )}
+            
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              sx={{ bgcolor: "#B8860B", color: "white", fontWeight: 600, "&:hover": { bgcolor: "#A07409" }, mb: 1 }}
+              onClick={placeOrderHandler}
+              disabled={cartItems.length === 0 || placeOrderMutation.isLoading || isLoadingSettings}
+            >
+              {placeOrderMutation.isLoading ? <CircularProgress size={24} /> : "Place your order"}
+            </Button>
+            <Typography variant="caption" color="text.secondary">
+              By placing your order, you agree to our terms and conditions.
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
 export default PlaceOrderPage;
+

@@ -55,7 +55,7 @@ const CartPage = () => {
                     <Link to={`/product/${item.slug}`} className="cart-item-title">
                       {item.title}
                     </Link>
-                    <p className="cart-item-price">${item.price}</p>
+                    <p className="cart-item-price">₹{item.price}</p>
                     <p className="cart-item-qty">Qty: {item.qty}</p>
                   </div>
                   <motion.button
@@ -79,7 +79,7 @@ const CartPage = () => {
             transition={{ duration: 0.6 }}
           >
             <h2>Order Summary</h2>
-            <p className="subtotal">Subtotal: <strong>${subtotal}</strong></p>
+            <p className="subtotal">Subtotal: <strong>₹{subtotal}</strong></p>
             <p className="total-items">{cartItems.reduce((acc, item) => acc + item.qty, 0)} items</p>
 
             <motion.button

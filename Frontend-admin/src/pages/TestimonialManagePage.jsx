@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { Box, Container, Typography, TextField, Button, Paper, Grid, List, ListItem, ListItemText, IconButton, ListItemAvatar, Avatar, Rating } from '@mui/material';
+import { Box, Container, Typography, TextField, Button, Paper, Grid, List, ListItem, ListItemText, IconButton, ListItemAvatar, Avatar, Rating, CircularProgress, Alert, Chip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 const TestimonialManagePage = () => {
   const { userInfo } = useAuth();
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
-  // Form state for a new testimonial
+
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(5);
   const [imageUrl, setImageUrl] = useState('');
   const [uploading, setUploading] = useState(false);
 
-  // Function to fetch all testimonials
   const fetchTestimonials = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get('http://localhost:4000/api/testimonials');
-      setTestimonials(data);
+      // Sort newest first
+      const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setTestimonials(sortedData);
     } catch (err) {
       setError('Failed to fetch testimonials.');
     } finally {
@@ -33,54 +35,43 @@ const TestimonialManagePage = () => {
     fetchTestimonials();
   }, []);
 
-  // Handler for uploading the testimonial author's image
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     const formData = new FormData();
     formData.append('image', file);
     setUploading(true);
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
+      const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
       const { data } = await axios.post('http://localhost:4000/api/upload', formData, config);
       setImageUrl(data.image);
-    } catch (error) {
+    } catch {
       alert('Image upload failed.');
     } finally {
       setUploading(false);
     }
   };
 
-  // Handler for submitting the new testimonial form
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!name || !comment || !imageUrl) {
-        alert('Please fill all fields and upload an image.');
-        return;
-    }
+    if (!name || !comment || !imageUrl) return alert('Please fill all fields and upload an image.');
     try {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       await axios.post('http://localhost:4000/api/testimonials', { name, comment, imageUrl, rating }, config);
-      // Reset form and refetch testimonials
       setName(''); setComment(''); setRating(5); setImageUrl('');
       fetchTestimonials();
-    } catch (err) {
+    } catch {
       alert('Failed to create testimonial.');
     }
   };
 
-  // Handler for deleting a testimonial
   const deleteHandler = async (id) => {
     if (window.confirm('Are you sure you want to delete this testimonial?')) {
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
         await axios.delete(`http://localhost:4000/api/testimonials/${id}`, config);
-        fetchTestimonials(); // Refetch after deletion
-      } catch (err) {
+        fetchTestimonials();
+      } catch {
         alert('Failed to delete testimonial.');
       }
     }
@@ -90,43 +81,65 @@ const TestimonialManagePage = () => {
     <Container sx={{ py: 4 }}>
       <Typography variant="h4" gutterBottom>Manage Testimonials</Typography>
       <Grid container spacing={4}>
+        {/* Testimonials List */}
         <Grid item xs={12} md={8}>
           <Paper elevation={3} sx={{ p: 2 }}>
-            <Typography variant="h6">Current Testimonials</Typography>
-            {loading ? <p>Loading...</p> : error ? <p>{error}</p> : (
+            <Typography variant="h6" gutterBottom>Current Testimonials</Typography>
+            {loading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress /></Box>
+            ) : error ? (
+              <Alert severity="error">{error}</Alert>
+            ) : (
               <List>
                 {testimonials.map(item => (
-                  <ListItem key={item._id} secondaryAction={
-                    <IconButton edge="end" aria-label="delete" onClick={() => deleteHandler(item._id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  }>
+                  <ListItem key={item._id} divider sx={{ '&:hover': { backgroundColor: '#f1f5f9', borderRadius: 1 } }}
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete" onClick={() => deleteHandler(item._id)}>
+                        <DeleteIcon color="error" />
+                      </IconButton>
+                    }
+                  >
                     <ListItemAvatar>
-                      <Avatar variant="rounded" src={`http://localhost:4000${item.imageUrl}`} />
+                      <Avatar variant="rounded" src={`http://localhost:4000${item.imageUrl}`} sx={{ width: 80, height: 80, mr: 2 }} />
                     </ListItemAvatar>
-                    <ListItemText primary={item.name} secondary={<Rating value={item.rating} readOnly size="small" />} />
+                    <ListItemText
+                      primary={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          {item.name || <Chip label="No Name" size="small" color="warning" />}
+                        </Box>
+                      }
+                      secondary={
+                        <>
+                          <Typography variant="body2" sx={{ mb: 0.5 }}>{item.comment}</Typography>
+                          <Rating value={item.rating} readOnly size="small" />
+                        </>
+                      }
+                    />
                   </ListItem>
                 ))}
               </List>
             )}
           </Paper>
         </Grid>
+
+        {/* Add Testimonial Form */}
         <Grid item xs={12} md={4}>
           <Paper elevation={3} sx={{ p: 2 }}>
-            <Typography variant="h6">Add New Testimonial</Typography>
-            <Box component="form" onSubmit={submitHandler} sx={{ mt: 2 }}>
-              <Button variant="contained" component="label" fullWidth> Upload Image
+            <Typography variant="h6" gutterBottom>Add New Testimonial</Typography>
+            <Box component="form" onSubmit={submitHandler} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Button variant="contained" component="label" startIcon={<UploadFileIcon />} fullWidth disabled={uploading}>
+                Upload Image
                 <input type="file" hidden onChange={uploadFileHandler} />
               </Button>
-              {uploading && <p>Uploading...</p>}
-              {imageUrl && <Typography variant="caption" display="block" gutterBottom>Image selected: {imageUrl}</Typography>}
+              {uploading && <CircularProgress size={24} sx={{ mt: -3, ml: 2, color: 'primary.main' }} />}
+              {imageUrl && <Box component="img" src={`http://localhost:4000${imageUrl}`} alt="preview" sx={{ width: '100%', maxHeight: 150, objectFit: 'cover', borderRadius: 1 }} />}
 
-              <TextField label="Name" value={name} onChange={e => setName(e.target.value)} fullWidth required margin="normal" size="small" />
-              <TextField label="Comment" value={comment} onChange={e => setComment(e.target.value)} fullWidth required multiline rows={4} margin="normal" size="small" />
+              <TextField label="Name" value={name} onChange={e => setName(e.target.value)} fullWidth required size="small" />
+              <TextField label="Comment" value={comment} onChange={e => setComment(e.target.value)} fullWidth required multiline rows={4} size="small" />
+              <Typography variant="caption" color="text.secondary">Recommended: 3 lines of comment for optimal UI</Typography>
               <Typography component="legend">Rating</Typography>
-              <Rating name="simple-controlled" value={rating} onChange={(event, newValue) => { setRating(newValue); }} />
-              
-              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>Add Testimonial</Button>
+              <Rating value={rating} onChange={(e, newValue) => setRating(newValue)} />
+              <Button type="submit" variant="contained" color="primary" fullWidth disabled={!imageUrl}>Add Testimonial</Button>
             </Box>
           </Paper>
         </Grid>

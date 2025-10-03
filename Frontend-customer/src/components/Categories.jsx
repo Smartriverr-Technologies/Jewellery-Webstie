@@ -19,22 +19,45 @@ const Categories = () => {
   return (
     <Box sx={{ py: 2, textAlign: "center", background: "#fdfdfd" }}>
       {/* Section Heading */}
-      <Typography
+      {/* <Typography
         variant="h4"
         component="h2"
         gutterBottom
         sx={{
-          fontWeight: 600,
-          fontFamily: "Cormorant Garamond, serif", // Elegant premium font
-          letterSpacing: "0.5px",
-          color: "#222",
-          fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem" },
+          // fontWeight: 'bold',
+          // // fontFamily: "Cormorant Garamond, serif", // Elegant premium font
+          // //  letterSpacing: "0.5px",
+          // color: "#222",
+          // fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem" },
+          // background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+         fontWeight: 700,
+background: 'linear-gradient(45deg, #FFD700 20%, #FFB347 50%, #21CBF3 80%)',
+WebkitBackgroundClip: 'text',
+WebkitTextFillColor: 'transparent',
+mb: 2,
+          
+
         }}
       >
         Shop by Category
-      </Typography>
+      </Typography> */}
+      <Typography 
+                  variant="h4" 
+                  component="h2" 
+                  align="center" 
+                  gutterBottom
+                  sx={{ 
+                    fontWeight: 700,
+                    background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    mb: 5,
+                  }}
+                >
+                 Shop by Category
+                </Typography>
       {/* Gold Underline */}
-      <Box
+      {/* <Box
         sx={{
           width: 200,
           height: 4,
@@ -43,7 +66,7 @@ const Categories = () => {
           mx: "auto",
           mb: 6,
         }}
-      />
+      /> */}
 
       <Grid container spacing={6} justifyContent="center">
         {isLoading ? (
