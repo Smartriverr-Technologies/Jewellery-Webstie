@@ -69,14 +69,28 @@ app.use((req, res, next) => {
 
 
     // --- Serve Frontend in Production ---
+    // if (process.env.NODE_ENV === 'production') {
+    //   app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
+    //   app.get('/*anything', (req, res) =>
+    //     res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
+    //   );
+    // } else {
+    //   app.get('/', (req, res) => res.send('API is running successfully!'));
+    // }
     if (process.env.NODE_ENV === 'production') {
-      app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
-      app.get('/*anything', (req, res) =>
-        res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
-      );
-    } else {
-      app.get('/', (req, res) => res.send('API is running successfully!'));
-    }
+  app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
+
+  // Add a basic API health check route that works in production
+  app.get('/api/health', (req, res) => res.send('API is running'));
+
+  // The "catch-all" handler: for any request that doesn't match one above,
+  // send back the main index.html file.
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
+  );
+} else {
+  app.get('/', (req, res) => res.send('API is running successfully!'));
+}
 
     // --- Error Handling Middleware (must be last) ---
     app.use(notFound);
