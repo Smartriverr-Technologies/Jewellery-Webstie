@@ -23,11 +23,11 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 
-const path = require('path');
-const favicon = require('serve-favicon');
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// const path = require('path');
+// const favicon = require('serve-favicon');
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.get('/favicon.ico', (req, res) => res.status(204).end());
+// app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',
