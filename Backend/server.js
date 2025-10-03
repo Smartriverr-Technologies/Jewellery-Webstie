@@ -18,7 +18,7 @@ const __dirname = path.resolve();
 
 // --- Middlewares ---
 // Security headers
-app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false })); // Looser policy for development
+app.use(helmet({ contentSecurityPolicy: false })); // Looser policy for development
 app.use(express.json());
 
 // Logger - only run in development
@@ -51,12 +51,12 @@ app.use(cors({
 app.options('*', cors()); // Handle preflight requests
 
 // --- Rate Limiting ---
-app.use('/api/', rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, 
-  standardHeaders: true,
-  legacyHeaders: false,
-}));
+// app.use('/api/', rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 200, 
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// }));
 
 // --- Main Server Logic ---
 (async () => {
@@ -65,7 +65,7 @@ app.use('/api/', rateLimit({
 
     // --- API Routes ---
     app.use('/api', apiRoutes);
-    app.use('/api/upload', uploadRoutes);
+    // app.use('/api/upload', uploadRoutes);
     
     // Make 'uploads' folder static and public
     app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
@@ -73,7 +73,7 @@ app.use('/api/', rateLimit({
     // --- Production Build & Catch-all Route ---
     if (process.env.NODE_ENV === 'production') {
       app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
-      app.get('/*', (req, res) =>
+      app.get('*', (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
       );
     } else {
