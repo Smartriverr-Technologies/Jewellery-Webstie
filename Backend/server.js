@@ -73,7 +73,7 @@ app.options('*', cors()); // Handle preflight requests
     // --- Production Build & Catch-all Route ---
     if (process.env.NODE_ENV === 'production') {
       app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
-      app.get('*', (req, res) =>
+      app.get('/*path', (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
       );
     } else {
