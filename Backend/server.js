@@ -127,7 +127,7 @@ if (process.env.NODE_ENV !== 'production') {
   allowedOrigins.push('http://localhost:5173', 'http://localhost:5174');
 }
 app.use(cors({ origin: allowedOrigins, credentials: true }));
-app.options('*', cors());
+app.options(/.*/, cors());
 
 // Main Server Logic
 (async () => {
@@ -146,7 +146,7 @@ app.options('*', cors());
       app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
       
       // The corrected catch-all route that serves the frontend
-      app.get('*', (req, res) =>
+      app.get(/.*/, (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
       );
     } else {
