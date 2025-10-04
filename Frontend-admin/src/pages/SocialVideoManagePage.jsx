@@ -58,28 +58,57 @@ const SocialVideoManagePage = () => {
     },
   });
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.append('video', file);
-    setUploading(true);
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const { data } = await api.post('/api/upload/video', formData, config);
-      setVideoUrl(data.video);
-      alert('Video uploaded. Path has been set.');
-    } catch (error) {
-      alert('Video upload failed.');
-    } finally {
-      setUploading(false);
-    }
-  };
+  // const uploadFileHandler = async (e) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
+  //   const formData = new FormData();
+  //   formData.append('video', file);
+  //   setUploading(true);
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         Authorization: `Bearer ${userInfo.token}`,
+  //       },
+  //     };
+  //     const { data } = await api.post('/api/upload/video', formData, config);
+  //     setVideoUrl(data.video);
+  //     alert('Video uploaded. Path has been set.');
+  //   } catch (error) {
+  //     alert('Video upload failed.');
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
+const uploadFileHandler = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file); // <-- 1. Change 'video' to 'file'
+  setUploading(true);
+
+  try {
+    const config = { 
+      headers: { 
+        'Content-Type': 'multipart/form-data', 
+        Authorization: `Bearer ${userInfo.token}` 
+      } 
+    };
+    
+    // 2. Use the main upload endpoint
+    const { data } = await api.post('/api/upload', formData, config);
+    
+    setVideoUrl(data.url); // <-- 3. Use data.url to set the full Cloudinary URL
+    alert('Video uploaded successfully!');
+
+  } catch (error) {
+    alert('Video upload failed.');
+  } finally {
+    setUploading(false);
+  }
+};
+
 
   const submitHandler = (e) => {
     e.preventDefault();

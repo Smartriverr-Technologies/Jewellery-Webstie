@@ -72,7 +72,8 @@ const ProductCard = ({ product }) => {
           <CardMedia
   component="img"
   height="200"   // smaller height
-  image={`${import.meta.env.VITE_API_URL}${product.images[0]?.url}`}
+  // image={`${import.meta.env.VITE_API_URL}${product.images[0]?.url}`}
+   image={product.images[0]?.url || "/placeholder.png"}
   alt={product.title}
   sx={{ 
     objectFit: 'cover',

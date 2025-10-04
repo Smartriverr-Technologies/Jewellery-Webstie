@@ -20,7 +20,7 @@ const TestimonialManagePage = () => {
   const fetchTestimonials = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('/api/testimonials');
+      const { data } = await api.get('/api/testimonials');
       // Sort newest first
       const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setTestimonials(sortedData);
@@ -35,18 +35,47 @@ const TestimonialManagePage = () => {
     fetchTestimonials();
   }, []);
 
-  const uploadFileHandler = async (e) => {
+  // const uploadFileHandler = async (e) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
+  //   const formData = new FormData();
+  //   formData.append('image', file);
+  //   setUploading(true);
+  //   try {
+  //     const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
+  //     const { data } = await api.post('/api/upload', formData, config);
+  //     setImageUrl(data.image);
+  //   } catch {
+  //     alert('Image upload failed.');
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
+
+   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+  
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('file', file); // <-- 1. Change 'image' to 'file'
     setUploading(true);
+  
     try {
-      const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
+      const config = { 
+        headers: { 
+          'Content-Type': 'multipart/form-data', 
+          Authorization: `Bearer ${userInfo.token}` 
+        } 
+      };
+      
+      // The endpoint is now just '/api/upload'
       const { data } = await api.post('/api/upload', formData, config);
-      setImageUrl(data.image);
-    } catch {
-      alert('Image upload failed.');
+      
+      setImage(data.url); // <-- 2. Use data.url to set the full Cloudinary URL
+      alert('File uploaded successfully!');
+  
+    } catch (error) {
+      alert('File upload failed.');
     } finally {
       setUploading(false);
     }

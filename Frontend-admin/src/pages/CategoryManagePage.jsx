@@ -48,26 +48,55 @@ const CategoryManagePage = () => {
   });
   
   // --- YEH FUNCTION ADD KARNA ZAROORI HAI ---
+  // const uploadFileHandler = async (e) => {
+  //   const file = e.target.files[0];
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+  //   setUploading(true);
+  //   try {
+  //     const config = { 
+  //       headers: { 
+  //         'Content-Type': 'multipart/form-data', 
+  //         Authorization: `Bearer ${userInfo.token}` 
+  //       } 
+  //     };
+  //     const { data } = await api.post('/api/upload', formData, config);
+  //     setImage(data.url); // Set the image state with the returned path
+  //   } catch (error) {
+  //     alert('Image upload failed.');
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
+
   const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('image', file);
-    setUploading(true);
-    try {
-      const config = { 
-        headers: { 
-          'Content-Type': 'multipart/form-data', 
-          Authorization: `Bearer ${userInfo.token}` 
-        } 
-      };
-      const { data } = await api.post('/api/upload', formData, config);
-      setImage(data.image); // Set the image state with the returned path
-    } catch (error) {
-      alert('Image upload failed.');
-    } finally {
-      setUploading(false);
-    }
-  };
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file); // <-- 1. Change 'image' to 'file'
+  setUploading(true);
+
+  try {
+    const config = { 
+      headers: { 
+        'Content-Type': 'multipart/form-data', 
+        Authorization: `Bearer ${userInfo.token}` 
+      } 
+    };
+    
+    // The endpoint is now just '/api/upload'
+    const { data } = await api.post('/api/upload', formData, config);
+    
+    setImage(data.url); // <-- 2. Use data.url to set the full Cloudinary URL
+    alert('Image uploaded successfully!');
+
+  } catch (error) {
+    alert('Image upload failed.');
+  } finally {
+    setUploading(false);
+  }
+};
   
   const submitHandler = (e) => {
     e.preventDefault();

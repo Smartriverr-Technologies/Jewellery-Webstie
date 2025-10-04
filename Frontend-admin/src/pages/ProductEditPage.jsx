@@ -108,28 +108,59 @@ const ProductEditPage = () => {
     onError: (err) => alert(err.response?.data?.message || "Failed to update product", { variant: 'error' }),
   });
 
+  // const uploadFileHandler = async (e, imageNumber) => {
+  //   const file = e.target.files[0];
+  //   const formData = new FormData();
+  //   formData.append("File", file);
+  //   setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: true }));
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         Authorization: `Bearer ${userInfo.token}`,
+  //       },
+  //     };
+  //     const { data } = await api.post("/api/upload", formData, config);
+  //     const newImages = [...images];
+  //     newImages[imageNumber - 1] = { url: data.image, alt: title };
+  //     setImages(newImages);
+  //   } catch (error) {
+  //     alert("Image upload failed.");
+  //   } finally {
+  //     setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: false }));
+  //   }
+  // };
+
+
   const uploadFileHandler = async (e, imageNumber) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: true }));
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const { data } = await api.post("/api/upload", formData, config);
-      const newImages = [...images];
-      newImages[imageNumber - 1] = { url: data.image, alt: title };
-      setImages(newImages);
-    } catch (error) {
-      alert("Image upload failed.");
-    } finally {
-      setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: false }));
-    }
-  };
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file); // <-- 1. Change 'File' to 'file'
+  setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: true }));
+
+  try {
+    const config = { 
+      headers: { 
+        'Content-Type': 'multipart/form-data', 
+        Authorization: `Bearer ${userInfo.token}` 
+      } 
+    };
+    
+    const { data } = await api.post('/api/upload', formData, config);
+    
+    const newImages = [...images];
+    newImages[imageNumber - 1] = { url: data.url, alt: title }; // <-- 2. Use data.url
+    setImages(newImages);
+    alert('Image uploaded successfully!');
+
+  } catch (error) {
+    alert('Image upload failed.');
+  } finally {
+    setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: false }));
+  }
+};
 
   const submitHandler = (e) => {
     e.preventDefault();
