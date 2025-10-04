@@ -4,18 +4,18 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Container, Paper, Typography, Grid, Box, CircularProgress, Alert, Button, Divider, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@mui/material';
-
+import api from '../api/axiosConfig';
 // API Functions
 const fetchOrderDetails = async ({ queryKey, token }) => {
   const [_key, orderId] = queryKey;
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.get(`http://localhost:4000/api/orders/${orderId}`, config);
+  const { data } = await api.get(`/api/orders/${orderId}`, config);
   return data;
 };
 
 const markAsDelivered = async ({ orderId, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.put(`http://localhost:4000/api/orders/${orderId}/deliver`, {}, config);
+  const { data } = await api.put(`/api/orders/${orderId}/deliver`, {}, config);
   return data;
 };
 
@@ -70,7 +70,7 @@ const OrderDetailsPage = () => {
             <List>
               {order.orderItems.map(item => (
                 <ListItem key={item._id} divider>
-                  <ListItemAvatar><Avatar variant="square" src={`http://localhost:4000${item.image}`} /></ListItemAvatar>
+                  <ListItemAvatar><Avatar variant="square" src={`${import.meta.env.VITE_API_URL}${item.image}`} /></ListItemAvatar>
                   <ListItemText primary={<Link to={`/product/${item.product}`}>{item.name}</Link>} />
                   <Typography>{item.qty} x ₹{item.price} = ₹{(item.qty * item.price).toFixed(2)}</Typography>
                 </ListItem>

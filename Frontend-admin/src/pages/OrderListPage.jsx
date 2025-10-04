@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { FaCheckCircle, FaTimesCircle, FaTruck, FaInfoCircle } from 'react-icons/fa';
 import './OrderListPage.css';
-
+import api from '../api/axiosConfig';
 const OrderListPage = () => {
   const { userInfo } = useAuth();
   const [orders, setOrders] = useState([]);
@@ -16,7 +16,7 @@ const OrderListPage = () => {
     setLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:4000/api/orders', config);
+      const { data } = await api.get('/api/orders', config);
       // Sort orders by newest first
       const sortedOrders = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setOrders(sortedOrders);
@@ -36,7 +36,7 @@ const OrderListPage = () => {
     if (window.confirm('Mark this order as delivered?')) {
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        await axios.put(`http://localhost:4000/api/orders/${id}/deliver`, {}, config);
+        await api.put(`/api/orders/${id}/deliver`, {}, config);
         fetchOrders();
       } catch (err) {
         alert(err.response?.data?.message || 'Failed to update order');

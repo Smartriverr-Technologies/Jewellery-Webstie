@@ -23,17 +23,17 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
-
+import api from "../api/axiosConfig";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // --- API Functions ---
 const fetchProductById = async (productId) => {
-  const { data } = await axios.get(`http://localhost:4000/api/products/${productId}`);
+  const { data } = await api.get(`/api/products/${productId}`);
   return data;
 };
 
 const fetchCategories = async () => {
-  const { data } = await axios.get("http://localhost:4000/api/categories");
+  const { data } = await api.get("/api/categories");
   return data;
 };
 
@@ -41,8 +41,8 @@ const updateProduct = async ({ productId, productData, token }) => {
   const config = {
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
   };
-  const { data } = await axios.put(
-    `http://localhost:4000/api/products/${productId}`,
+  const { data } = await api.put(
+    `/api/products/${productId}`,
     productData,
     config
   );
@@ -120,7 +120,7 @@ const ProductEditPage = () => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.post("http://localhost:4000/api/upload", formData, config);
+      const { data } = await api.post("/api/upload", formData, config);
       const newImages = [...images];
       newImages[imageNumber - 1] = { url: data.image, alt: title };
       setImages(newImages);

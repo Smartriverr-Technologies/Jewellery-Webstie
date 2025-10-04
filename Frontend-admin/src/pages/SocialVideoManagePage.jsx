@@ -4,22 +4,22 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Box, Container, Typography, TextField, Button, Paper, Grid, IconButton, CircularProgress, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import api from '../api/axiosConfig';
 // --- API Functions for React Query ---
 const fetchSocialVideos = async () => {
-  const { data } = await axios.get('http://localhost:4000/api/social-videos');
+  const { data } = await api.get('/api/social-videos');
   return data;
 };
 
 const createSocialVideo = async ({ newVideo, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.post('http://localhost:4000/api/social-videos', newVideo, config);
+  const { data } = await api.post('/api/social-videos', newVideo, config);
   return data;
 };
 
 const deleteSocialVideo = async ({ videoId, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  await axios.delete(`http://localhost:4000/api/social-videos/${videoId}`, config);
+  await api.delete(`/api/social-videos/${videoId}`, config);
 };
 
 // --- The Component ---
@@ -71,7 +71,7 @@ const SocialVideoManagePage = () => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.post('http://localhost:4000/api/upload/video', formData, config);
+      const { data } = await api.post('/api/upload/video', formData, config);
       setVideoUrl(data.video);
       alert('Video uploaded. Path has been set.');
     } catch (error) {
@@ -140,7 +140,7 @@ const SocialVideoManagePage = () => {
                 {videos?.map(video => (
                   <Grid item xs={6} sm={4} key={video._id}>
                     <Paper sx={{ position: 'relative', borderRadius: 1, overflow: 'hidden' }}>
-                      <video src={`http://localhost:4000${video.videoUrl}`} width="100%" height="150" style={{ objectFit: 'cover', display: 'block' }} autoPlay loop muted />
+                      <video src={`${import.meta.env.VITE_API_URL}${video.videoUrl}`} width="100%" height="150" style={{ objectFit: 'cover', display: 'block' }} autoPlay loop muted />
                       <Typography sx={{ position: 'absolute', top: 5, left: 5, color: 'white', textShadow: '1px 1px 2px black', fontSize: '0.8rem' }}>{video.hashtag}</Typography>
                       <IconButton
                         sx={{ position: 'absolute', top: 5, right: 5, backgroundColor: 'rgba(255,255,255,0.7)' }}

@@ -20,7 +20,7 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
-
+import api from '../api/axiosConfig';
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -38,8 +38,8 @@ const ProductListPage = () => {
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
-        const { data } = await axios.get(
-          "http://localhost:4000/api/products/admin",
+        const { data } = await api.get(
+          "/api/products/admin",
           config
         );
         setProducts(data);
@@ -59,7 +59,7 @@ const ProductListPage = () => {
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
-        await axios.delete(`http://localhost:4000/api/products/${id}`, config);
+        await api.delete(`/api/products/${id}`, config);
         setProducts(products.filter((p) => p._id !== id));
       } catch (err) {
         alert(err.response?.data?.message || "Failed to delete product");
@@ -71,8 +71,8 @@ const ProductListPage = () => {
     if (window.confirm("Are you sure you want to create a new product?")) {
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        const { data } = await axios.post(
-          "http://localhost:4000/api/products",
+        const { data } = await api.post(
+          "/api/products",
           {},
           config
         );

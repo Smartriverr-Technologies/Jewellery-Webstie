@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Box, Container, Typography, TextField, Button, Paper, Grid, List, ListItem, ListItemText, IconButton, ListItemAvatar, Avatar, Rating, CircularProgress, Alert, Chip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-
+import api from '../api/axiosConfig';
 const TestimonialManagePage = () => {
   const { userInfo } = useAuth();
   const [testimonials, setTestimonials] = useState([]);
@@ -20,7 +20,7 @@ const TestimonialManagePage = () => {
   const fetchTestimonials = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('http://localhost:4000/api/testimonials');
+      const { data } = await axios.get('/api/testimonials');
       // Sort newest first
       const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setTestimonials(sortedData);
@@ -43,7 +43,7 @@ const TestimonialManagePage = () => {
     setUploading(true);
     try {
       const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.post('http://localhost:4000/api/upload', formData, config);
+      const { data } = await api.post('/api/upload', formData, config);
       setImageUrl(data.image);
     } catch {
       alert('Image upload failed.');
@@ -57,7 +57,7 @@ const TestimonialManagePage = () => {
     if (!name || !comment || !imageUrl) return alert('Please fill all fields and upload an image.');
     try {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.post('http://localhost:4000/api/testimonials', { name, comment, imageUrl, rating }, config);
+      await api.post('/api/testimonials', { name, comment, imageUrl, rating }, config);
       setName(''); setComment(''); setRating(5); setImageUrl('');
       fetchTestimonials();
     } catch {
@@ -69,7 +69,7 @@ const TestimonialManagePage = () => {
     if (window.confirm('Are you sure you want to delete this testimonial?')) {
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        await axios.delete(`http://localhost:4000/api/testimonials/${id}`, config);
+        await api.delete(`/api/testimonials/${id}`, config);
         fetchTestimonials();
       } catch {
         alert('Failed to delete testimonial.');
@@ -100,7 +100,7 @@ const TestimonialManagePage = () => {
                     }
                   >
                     <ListItemAvatar>
-                      <Avatar variant="rounded" src={`http://localhost:4000${item.imageUrl}`} sx={{ width: 80, height: 80, mr: 2 }} />
+                      <Avatar variant="rounded" src={`${import.meta.env.VITE_API_URL}${item.imageUrl}`} sx={{ width: 80, height: 80, mr: 2 }} />
                     </ListItemAvatar>
                     <ListItemText
                       primary={
@@ -132,7 +132,7 @@ const TestimonialManagePage = () => {
                 <input type="file" hidden onChange={uploadFileHandler} />
               </Button>
               {uploading && <CircularProgress size={24} sx={{ mt: -3, ml: 2, color: 'primary.main' }} />}
-              {imageUrl && <Box component="img" src={`http://localhost:4000${imageUrl}`} alt="preview" sx={{ width: '100%', maxHeight: 150, objectFit: 'cover', borderRadius: 1 }} />}
+              {imageUrl && <Box component="img" src={`${import.meta.env.VITE_API_URL}${imageUrl}`} alt="preview" sx={{ width: '100%', maxHeight: 150, objectFit: 'cover', borderRadius: 1 }} />}
 
               <TextField label="Name" value={name} onChange={e => setName(e.target.value)} fullWidth required size="small" />
               <TextField label="Comment" value={comment} onChange={e => setComment(e.target.value)} fullWidth required multiline rows={4} size="small" />

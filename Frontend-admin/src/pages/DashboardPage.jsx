@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Container, Grid, Typography, CircularProgress, Alert, Box } from '@mui/material';
 import StatCard from '../components/StatCard';
-
+import api from '../api/axiosConfig';
 // Icons
 import PeopleIcon from '@mui/icons-material/People';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
@@ -16,7 +16,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 // API
 const fetchDashboardStats = async (token) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.get('http://localhost:4000/api/dashboard/stats', config);
+  const { data } = await api.get('/api/dashboard/stats', config);
   return data;
 };
 

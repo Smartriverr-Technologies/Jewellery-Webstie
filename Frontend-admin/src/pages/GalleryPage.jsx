@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { Box, Typography, Button, Paper, CircularProgress, Alert, Grid, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-
+import api from '../api/axiosConfig';
 const GalleryPage = () => {
   const { userInfo } = useAuth();
   const queryClient = useQueryClient();
@@ -14,7 +14,7 @@ const GalleryPage = () => {
   const { data: images, isLoading, isError } = useQuery({
     queryKey: ['galleryImages'],
     queryFn: async () => {
-      const { data } = await axios.get('http://localhost:4000/api/gallery');
+      const { data } = await api.get('api/gallery');
       return data;
     },
   });
@@ -28,7 +28,7 @@ const GalleryPage = () => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      return await axios.post('http://localhost:4000/api/gallery', formData, config);
+      return await api.post('/api/gallery', formData, config);
     },
     onSuccess: () => queryClient.invalidateQueries(['galleryImages']),
   });
@@ -37,7 +37,7 @@ const GalleryPage = () => {
   const deleteMutation = useMutation({
     mutationFn: async (imageId) => {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      return await axios.delete(`http://localhost:4000/api/gallery/${imageId}`, config);
+      return await api.delete(`/api/gallery/${imageId}`, config);
     },
     onSuccess: () => queryClient.invalidateQueries(['galleryImages']),
   });
@@ -81,7 +81,7 @@ const GalleryPage = () => {
             <Paper sx={{ position: 'relative' }}>
               <Box
                 component="img"
-                src={`http://localhost:4000${image.imageUrl}`}
+                src={`${import.meta.env.VITE_API_URL}${image.imageUrl}`}
                 alt={image.altText}
                 sx={{ width: '100%', height: 200, objectFit: 'cover' }}
               />

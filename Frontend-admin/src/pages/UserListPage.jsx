@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 // We can reuse the ProductListPage styles
 import './ProductListPage.css';
-
+import api from '../api/axiosConfig';
 const UserListPage = () => {
   const { userInfo } = useAuth();
   const [users, setUsers] = useState([]);
@@ -16,7 +16,7 @@ const UserListPage = () => {
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
-        const { data } = await axios.get('http://localhost:4000/api/users', config);
+        const { data } = await api.get('/api/users', config);
         setUsers(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch users');
@@ -36,7 +36,7 @@ const UserListPage = () => {
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
-        await axios.delete(`http://localhost:4000/api/users/${id}`, config);
+        await api.delete(`/api/users/${id}`, config);
         // Remove the deleted user from the state to update the UI instantly
         setUsers(users.filter((u) => u._id !== id));
       } catch (err) {

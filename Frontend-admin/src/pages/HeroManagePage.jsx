@@ -4,26 +4,26 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Box, Container, Typography, TextField, Button, Paper, Grid, List, ListItem, ListItemText, IconButton, ListItemAvatar, Avatar, CircularProgress, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import api from '../api/axiosConfig';
 // --- Data Fetching & Mutation Functions ---
 
 // Fetches all hero slides
 const fetchHeroSlides = async () => {
-  const { data } = await axios.get('http://localhost:4000/api/hero-carousel');
+  const { data } = await api.get('/api/hero-carousel');
   return data;
 };
 
 // Creates a new hero slide
 const createHeroSlide = async ({ slide, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.post('http://localhost:4000/api/hero-carousel', slide, config);
+  const { data } = await api.post('/api/hero-carousel', slide, config);
   return data;
 };
 
 // Deletes a hero slide
 const deleteHeroSlide = async ({ slideId, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  await axios.delete(`http://localhost:4000/api/hero-carousel/${slideId}`, config);
+  await api.delete(`/api/hero-carousel/${slideId}`, config);
 };
 
 // --- The Component ---
@@ -70,7 +70,7 @@ const HeroManagePage = () => {
     setUploading(true);
     try {
       const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.post('http://localhost:4000/api/upload', formData, config);
+      const { data } = await api.post('/api/upload', formData, config);
       setImage(data.image);
     } catch (error) {
       alert('Image upload failed.');
@@ -107,7 +107,7 @@ const HeroManagePage = () => {
                     </IconButton>
                   }>
                     <ListItemAvatar>
-                      <Avatar variant="rounded" src={`http://localhost:4000${slide.image}`} sx={{ width: 100, height: 56, mr: 2 }} />
+                      <Avatar variant="rounded" src={`${import.meta.env.VITE_API_URL}${slide.image}`} sx={{ width: 100, height: 56, mr: 2 }} />
                     </ListItemAvatar>
                     <ListItemText primary={slide.headline || 'No Headline'} secondary={slide.caption || 'No Caption'} />
                   </ListItem>

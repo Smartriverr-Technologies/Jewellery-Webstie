@@ -5,21 +5,21 @@ import { useAuth } from '../context/AuthContext';
 import { Box, Container, Typography, TextField, Button, Paper, Grid, List, ListItem, ListItemText, IconButton, ListItemAvatar, Avatar, CircularProgress, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
+import api from '../api/axiosConfig';
 // API Functions
 const fetchCategories = async () => {
-  const { data } = await axios.get('http://localhost:4000/api/categories');
+  const { data } = await api.get('/api/categories');
   return data;
 };
 
 const createCategory = async ({ category, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  return await axios.post('http://localhost:4000/api/categories', category, config);
+  return await api.post('/api/categories', category, config);
 };
 
 const deleteCategory = async ({ categoryId, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  return await axios.delete(`http://localhost:4000/api/categories/${categoryId}`, config);
+  return await api.delete(`/api/categories/${categoryId}`, config);
 };
 
 const CategoryManagePage = () => {
@@ -60,7 +60,7 @@ const CategoryManagePage = () => {
           Authorization: `Bearer ${userInfo.token}` 
         } 
       };
-      const { data } = await axios.post('http://localhost:4000/api/upload', formData, config);
+      const { data } = await api.post('/api/upload', formData, config);
       setImage(data.image); // Set the image state with the returned path
     } catch (error) {
       alert('Image upload failed.');
@@ -90,7 +90,7 @@ const CategoryManagePage = () => {
                       <DeleteIcon color="error" />
                     </IconButton>
                   }>
-                    <ListItemAvatar><Avatar src={`http://localhost:4000${cat.image}`} /></ListItemAvatar>
+                    <ListItemAvatar><Avatar src={`${import.meta.env.VITE_API_URL}${cat.image}`} /></ListItemAvatar>
                     <ListItemText primary={cat.name} />
                   </ListItem>
                 ))}

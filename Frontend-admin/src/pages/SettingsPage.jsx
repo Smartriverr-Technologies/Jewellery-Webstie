@@ -4,15 +4,15 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from 'notistack'; // <-- 1. Import useSnackbar
 import { Container, Paper, Typography, TextField, Button, CircularProgress, Box } from '@mui/material';
-
+import api from '../api/axiosConfig';
 const fetchSettings = async () => {
-  const { data } = await axios.get('http://localhost:4000/api/settings');
+  const { data } = await api.get('/api/settings');
   return data;
 };
 
 const updateSettings = async ({ settings, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.put('http://localhost:4000/api/settings', settings, config);
+  const { data } = await api.put('/api/settings', settings, config);
   return data;
 };
 

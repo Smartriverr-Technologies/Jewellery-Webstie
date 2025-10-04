@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Box, Container, Typography, TextField, Button, Paper, Grid, List, ListItem, ListItemText, IconButton, ListItemAvatar, Avatar, Chip, CircularProgress, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import api from '../api/axiosConfig';
 const MainCarouselManagePage = () => {
   const { userInfo } = useAuth();
   const [slides, setSlides] = useState([]);
@@ -21,7 +21,7 @@ const MainCarouselManagePage = () => {
     setLoading(true);
     try {
       // Fetch only slides for the 'main' location
-      const { data } = await axios.get('http://localhost:4000/api/carousel?location=main');
+      const { data } = await api.get('/api/carousel?location=main');
       setSlides(data);
     } catch (err) {
       setError('Failed to fetch slides.');
@@ -41,7 +41,7 @@ const MainCarouselManagePage = () => {
     setUploading(true);
     try {
       const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.post('http://localhost:4000/api/upload', formData, config);
+      const { data } = await api.post('/api/upload', formData, config);
       setImage(data.image);
       alert('Image uploaded successfully.');
     } catch (error) {
@@ -62,7 +62,7 @@ const MainCarouselManagePage = () => {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       // Hardcode the location to 'main'
       const newSlide = { image, headline, caption, link, location: 'main' };
-      await axios.post('http://localhost:4000/api/carousel', newSlide, config);
+      await api.post('/api/carousel', newSlide, config);
       
       setImage(''); setHeadline(''); setCaption(''); setLink('');
       await fetchSlides();
@@ -78,7 +78,7 @@ const MainCarouselManagePage = () => {
     if (window.confirm('Are you sure?')) {
       try {
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        await axios.delete(`http://localhost:4000/api/carousel/${id}`, config);
+        await api.delete(`/api/carousel/${id}`, config);
         await fetchSlides();
       } catch (err) {
         alert('Failed to delete slide.');
@@ -102,7 +102,7 @@ const MainCarouselManagePage = () => {
                     </IconButton>
                   }>
                     <ListItemAvatar>
-                      <Avatar variant="rounded" src={`http://localhost:4000${slide.image}`} sx={{ width: 100, height: 56, mr: 2 }} />
+                      <Avatar variant="rounded" src={`${import.meta.env.VITE_API_URL}${slide.image}`} sx={{ width: 100, height: 56, mr: 2 }} />
                     </ListItemAvatar>
                     <ListItemText primary={slide.headline || 'No Headline'} secondary={slide.caption || 'No Caption'} />
                   </ListItem>
