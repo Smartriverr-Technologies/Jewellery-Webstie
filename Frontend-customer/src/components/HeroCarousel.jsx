@@ -50,7 +50,8 @@ const HeroCarousel = () => {
             <Box key={slide._id} component={Wrapper} to={slide.link || undefined} className="hero-slide-item">
               <Box
                 className="hero-slide-background"
-                sx={{ backgroundImage: `url(${import.meta.env.VITE_API_URL}${slide.image})` }}
+                // sx={{ backgroundImage: `url(${import.meta.env.VITE_API_URL}${slide.image})` }}
+                sx={{ backgroundImage: `url(${slide.image})` }}
               />
               <Box className="hero-slide-overlay" />
               <Box className="hero-slide-content">
