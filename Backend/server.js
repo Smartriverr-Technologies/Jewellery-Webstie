@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'development') {
 // --- CORS Configuration ---
 const allowedOrigins = [
   'https://jewellery-webstie.vercel.app', 
-  'https://your-live-admin-frontend.vercel.app',
+  'https://jewellery-webstie-uvku.vercel.app',
 ];
 
 if (process.env.NODE_ENV !== 'production') {
