@@ -98,6 +98,7 @@ import axios from 'axios';
 import { Container, Typography, ImageList, ImageListItem, CircularProgress, Alert, Box, Fade, Dialog, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
+import api from '../api/axiosConfig';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
   width: '99%',
@@ -145,7 +146,7 @@ const GalleryPage = () => {
   const { data: images, isLoading, isError } = useQuery({
     queryKey: ['galleryImages'],
     queryFn: async () => {
-      const { data } = await axios.get('http://localhost:4000/api/gallery');
+      const { data } = await api.get('/api/gallery');
       return data;
     },
   });
@@ -234,8 +235,8 @@ const GalleryPage = () => {
               >
                 <ImageWrapper onClick={() => handleImageClick(item)}>
                   <StyledImage
-                    srcSet={`http://localhost:4000${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`}
-                    src={`http://localhost:4000${item.imageUrl}?w=400&fit=crop&auto=format`}
+                    srcSet={`${import.meta.env.VITE_API_URL}${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${import.meta.env.VITE_API_URL}${item.imageUrl}?w=400&fit=crop&auto=format`}
                     alt={item.altText}
                     loading="lazy"
                   />
@@ -280,7 +281,7 @@ const GalleryPage = () => {
             }}
           >
             <img
-              src={`http://localhost:4000${selectedImage.imageUrl}`}
+              src={`${import.meta.env.VITE_API_URL}${selectedImage.imageUrl}`}
               alt={selectedImage.altText}
               style={{
                 maxWidth: '100%',

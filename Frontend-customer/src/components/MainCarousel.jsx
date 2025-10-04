@@ -52,7 +52,7 @@ const MainCarousel = () => {
           <Box key={slide._id} component={slide.link ? Link : 'div'} to={slide.link || undefined} className="slide-item">
             <Box
               className="slide-background"
-              sx={{ backgroundImage: `url(http://localhost:4000${slide.image})` }}
+              sx={{ backgroundImage: `url(${import.meta.env.VITE_API_URL}${slide.image})` }}
             />
             <Box className="slide-content">
               <Typography variant="h2" component="h2" color="white" gutterBottom sx={{ fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}>
