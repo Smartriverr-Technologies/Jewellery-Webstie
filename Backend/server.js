@@ -92,25 +92,26 @@
 // })();
 
 
+// 
+
 import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
-import rateLimit from 'express-rate-limit';
 import path from 'path';
 
-// --- Local Imports ---
-import connectDB from './config/db.js'; // Ensure this path is correct
+// Local Imports
+import connectDB from './config/db123.js';
 import apiRoutes from './routes/index.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
-// --- Initialization ---
+// Initialization
 const app = express();
 const __dirname = path.resolve();
 
-// --- Middlewares ---
+// Middlewares
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json());
 
@@ -119,43 +120,32 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const allowedOrigins = [
-  'https://your-live-customer-frontend.vercel.app', // Replace with your Vercel URL
-  'https://your-live-admin-frontend.vercel.app',   // Replace with your Admin Vercel URL
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_FRONTEND_URL
 ];
-
 if (process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push('http://localhost:5173');
-  allowedOrigins.push('http://localhost:5174');
+  allowedOrigins.push('http://localhost:5173', 'http://localhost:5174');
 }
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
-
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.options('*', cors());
 
-// --- Main Server Logic ---
+// Main Server Logic
 (async () => {
   try {
     await connectDB();
 
-    // --- API Routes ---
+    // API Routes
     app.use('/api', apiRoutes);
-    app.use('/api/upload', uploadRoutes); // <-- This line was commented out
+    app.use('/api/upload', uploadRoutes);
     
-    // Make 'uploads' folder public
+    // Make 'uploads' folder static
     app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-    // --- Production Build & Catch-all ---
+    // Production Build & Catch-all Route
     if (process.env.NODE_ENV === 'production') {
       app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
+      
+      // The corrected catch-all route that serves the frontend
       app.get('*', (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
       );
@@ -163,11 +153,11 @@ app.options('*', cors());
       app.get('/', (req, res) => res.send('API is running in development mode.'));
     }
 
-    // --- Error Handling Middleware ---
+    // Error Handling Middleware (must be last)
     app.use(notFound);
     app.use(errorHandler);
 
-    // --- Start Server ---
+    // Start Server
     const PORT = process.env.PORT || 4000;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
