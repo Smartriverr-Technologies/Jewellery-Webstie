@@ -18,7 +18,7 @@ const __dirname = path.resolve();
 
 // --- Middlewares ---
 // Security headers
-app.use(helmet({ contentSecurityPolicy: false })); // Looser policy for development
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json());
 
 // Logger - only run in development
@@ -28,8 +28,8 @@ if (process.env.NODE_ENV === 'development') {
 
 // --- CORS Configuration ---
 const allowedOrigins = [
-  'https://jewellery-webstie.vercel.app', // Replace with your Vercel URL
-  'https://your-live-admin-frontend.vercel.app',   // Replace with your Admin Vercel URL
+  'https://jewellery-webstie.vercel.app', 
+  'https://your-live-admin-frontend.vercel.app',
 ];
 
 if (process.env.NODE_ENV !== 'production') {
@@ -48,15 +48,8 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('/:path(*)', cors()); // Handle preflight requests
-
-// --- Rate Limiting ---
-// app.use('/api/', rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   max: 200, 
-//   standardHeaders: true,
-//   legacyHeaders: false,
-// }));
+// ✅ Fix: Preflight requests handler with regex
+app.options(/.*/, cors());
 
 // --- Main Server Logic ---
 (async () => {
@@ -66,14 +59,16 @@ app.options('/:path(*)', cors()); // Handle preflight requests
     // --- API Routes ---
     app.use('/api', apiRoutes);
     // app.use('/api/upload', uploadRoutes);
-    
+
     // Make 'uploads' folder static and public
     app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
     // --- Production Build & Catch-all Route ---
     if (process.env.NODE_ENV === 'production') {
       app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
-      app.get('/:path(*)', (req, res) =>
+
+      // ✅ Fix: Catch-all with regex
+      app.get(/.*/, (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
       );
     } else {
@@ -86,7 +81,9 @@ app.options('/:path(*)', cors()); // Handle preflight requests
 
     // --- Start Server ---
     const PORT = process.env.PORT || 4000;
-    app.listen(PORT, () => console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`));
+    app.listen(PORT, () =>
+      console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`)
+    );
 
   } catch (err) {
     console.error('Failed to start server:', err);
