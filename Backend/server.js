@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // --- CORS Configuration ---
 const allowedOrigins = [
-  'https://jewellery-webstie.vercel.app/', // Replace with your Vercel URL
+  'https://jewellery-webstie.vercel.app', // Replace with your Vercel URL
   'https://your-live-admin-frontend.vercel.app',   // Replace with your Admin Vercel URL
 ];
 
@@ -73,7 +73,7 @@ app.options('*', cors()); // Handle preflight requests
     // --- Production Build & Catch-all Route ---
     if (process.env.NODE_ENV === 'production') {
       app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
-      app.get('/*path', (req, res) =>
+      app.get('/*', (req, res) =>
         res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
       );
     } else {
