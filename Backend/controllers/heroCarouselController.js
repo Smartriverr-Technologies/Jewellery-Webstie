@@ -39,14 +39,16 @@
 
 // export { getHeroSlides, createHeroSlide, deleteHeroSlide };
 
+
 // import asyncHandler from 'express-async-handler';
 // import HeroSlide from '../models/heroSlideModel.js';
+// import { cloudinary } from '../middleware/uploadMiddleware.js';
 
 // // @desc    Get all hero slides
 // // @route   GET /api/hero-carousel
 // // @access  Public
 // const getHeroSlides = asyncHandler(async (req, res) => {
-//   const slides = await HeroSlide.find({});
+//   const slides = await HeroSlide.find({}).sort({ createdAt: -1 });
 //   res.json(slides);
 // });
 
@@ -54,7 +56,7 @@
 // // @route   POST /api/hero-carousel
 // // @access  Private/Admin
 // const createHeroSlide = asyncHandler(async (req, res) => {
-//   // multer-storage-cloudinary automatically puts uploaded file info in req.file
+//   // Check if file was uploaded
 //   if (!req.file || !req.file.path) {
 //     res.status(400);
 //     throw new Error('Image upload failed');
@@ -62,9 +64,10 @@
 
 //   const { headline, caption, link } = req.body;
 
-//   // Cloudinary ka URL yahan save hoga
+//   // Create slide with Cloudinary URL
 //   const slide = new HeroSlide({
-//     image: req.file.path,  // this is the Cloudinary URL
+//     image: req.file.path,  // Cloudinary URL
+//     cloudinaryId: req.file.filename, // Store cloudinary public_id for deletion
 //     headline,
 //     caption,
 //     link,
@@ -74,26 +77,37 @@
 //   res.status(201).json(createdSlide);
 // });
 
-// // @desc    Delete a hero slide
+// // @desc    Delete a hero slide (and remove from Cloudinary)
 // // @route   DELETE /api/hero-carousel/:id
 // // @access  Private/Admin
 // const deleteHeroSlide = asyncHandler(async (req, res) => {
 //   const slide = await HeroSlide.findById(req.params.id);
-//   if (slide) {
-//     await HeroSlide.deleteOne({ _id: slide._id });
-//     res.json({ message: 'Hero slide removed' });
-//   } else {
+  
+//   if (!slide) {
 //     res.status(404);
 //     throw new Error('Hero slide not found');
 //   }
+
+//   // Delete image from Cloudinary if cloudinaryId exists
+//   if (slide.cloudinaryId) {
+//     try {
+//       await cloudinary.uploader.destroy(slide.cloudinaryId);
+//     } catch (error) {
+//       console.error('Cloudinary deletion error:', error);
+//       // Continue with DB deletion even if Cloudinary fails
+//     }
+//   }
+
+//   await HeroSlide.deleteOne({ _id: slide._id });
+//   res.json({ message: 'Hero slide removed successfully' });
 // });
 
 // export { getHeroSlides, createHeroSlide, deleteHeroSlide };
 
-//claude code
 import asyncHandler from 'express-async-handler';
 import HeroSlide from '../models/heroSlideModel.js';
-import { cloudinary } from '../middleware/uploadMiddleware.js';
+// UPDATED: Import directly from the config for better separation of concerns
+import cloudinary from '../config/cloudinary.js'; 
 
 // @desc    Get all hero slides
 // @route   GET /api/hero-carousel
@@ -103,34 +117,37 @@ const getHeroSlides = asyncHandler(async (req, res) => {
   res.json(slides);
 });
 
-// @desc    Create a new hero slide (with Cloudinary upload)
+// @desc    Create a new hero slide
 // @route   POST /api/hero-carousel
 // @access  Private/Admin
+// --- THIS FUNCTION IS THE MAIN CHANGE ---
 const createHeroSlide = asyncHandler(async (req, res) => {
-  // Check if file was uploaded
-  if (!req.file || !req.file.path) {
+  // We no longer look for req.file. Instead, we get the data from the body.
+  const { headline, caption, link, image, cloudinaryId } = req.body;
+
+  // Add validation for the new required fields
+  if (!image || !cloudinaryId) {
     res.status(400);
-    throw new Error('Image upload failed');
+    throw new Error('Image URL and Cloudinary ID are required');
   }
 
-  const { headline, caption, link } = req.body;
-
-  // Create slide with Cloudinary URL
   const slide = new HeroSlide({
-    image: req.file.path,  // Cloudinary URL
-    cloudinaryId: req.file.filename, // Store cloudinary public_id for deletion
     headline,
     caption,
     link,
+    image, // The Cloudinary URL from req.body
+    cloudinaryId, // The Cloudinary public_id from req.body
   });
 
   const createdSlide = await slide.save();
   res.status(201).json(createdSlide);
 });
 
+
 // @desc    Delete a hero slide (and remove from Cloudinary)
 // @route   DELETE /api/hero-carousel/:id
 // @access  Private/Admin
+// --- NO LOGIC CHANGE NEEDED HERE, IT'S ALREADY PERFECT ---
 const deleteHeroSlide = asyncHandler(async (req, res) => {
   const slide = await HeroSlide.findById(req.params.id);
   
@@ -145,7 +162,7 @@ const deleteHeroSlide = asyncHandler(async (req, res) => {
       await cloudinary.uploader.destroy(slide.cloudinaryId);
     } catch (error) {
       console.error('Cloudinary deletion error:', error);
-      // Continue with DB deletion even if Cloudinary fails
+      // Optional: decide if you want to stop or continue if Cloudinary fails
     }
   }
 
