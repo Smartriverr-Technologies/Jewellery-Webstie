@@ -171,305 +171,6 @@
 // export default HeroManagePage;
 
 //claude code
-// import React, { useState } from 'react';
-// import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-// import { useAuth } from '../context/AuthContext';
-// import { 
-//   Box, Container, Typography, TextField, Button, Paper, Grid, 
-//   List, ListItem, ListItemText, IconButton, ListItemAvatar, 
-//   Avatar, CircularProgress, Alert 
-// } from '@mui/material';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-// import api from '../api/axiosConfig';
-
-// // Fetch all hero slides
-// const fetchHeroSlides = async () => {
-//   const { data } = await api.get('/api/hero-carousel');
-//   return data;
-// };
-
-// // Create a new hero slide with file upload
-// const createHeroSlide = async ({ formData, token }) => {
-//   const config = { 
-//     headers: { 
-//       'Content-Type': 'multipart/form-data',
-//       Authorization: `Bearer ${token}` 
-//     } 
-//   };
-//   const { data } = await api.post('/api/hero-carousel', formData, config);
-//   return data;
-// };
-
-// // Delete a hero slide
-// const deleteHeroSlide = async ({ slideId, token }) => {
-//   const config = { headers: { Authorization: `Bearer ${token}` } };
-//   await api.delete(`/api/hero-carousel/${slideId}`, config);
-// };
-
-// const HeroManagePage = () => {
-//   const { userInfo } = useAuth();
-//   const queryClient = useQueryClient();
-
-//   // Form state
-//   const [selectedFile, setSelectedFile] = useState(null);
-//   const [previewUrl, setPreviewUrl] = useState('');
-//   const [headline, setHeadline] = useState('');
-//   const [caption, setCaption] = useState('');
-//   const [link, setLink] = useState('');
-  
-//   // Fetch hero slides
-//   const { data: slides, isLoading, isError } = useQuery({ 
-//     queryKey: ['heroSlides'], 
-//     queryFn: fetchHeroSlides 
-//   });
-
-//   // Create mutation
-//   const createMutation = useMutation({
-//     mutationFn: createHeroSlide,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(['heroSlides']);
-//       // Reset form
-//       setSelectedFile(null);
-//       setPreviewUrl('');
-//       setHeadline('');
-//       setCaption('');
-//       setLink('');
-//       alert('New slide added successfully!');
-//     },
-//     onError: (error) => {
-//       alert(error.response?.data?.message || 'Failed to create slide.');
-//     },
-//   });
-
-//   // Delete mutation
-//   const deleteMutation = useMutation({
-//     mutationFn: deleteHeroSlide,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(['heroSlides']);
-//       alert('Slide deleted successfully!');
-//     },
-//     onError: () => alert('Failed to delete slide.'),
-//   });
-
-//   // Handle file selection
-//   const handleFileChange = (e) => {
-//     const file = e.target.files[0];
-//     if (!file) return;
-
-//     // Validate file type
-//     if (!file.type.startsWith('image/')) {
-//       alert('Please select an image file');
-//       return;
-//     }
-
-//     // Validate file size (5MB)
-//     if (file.size > 5 * 1024 * 1024) {
-//       alert('File size should be less than 5MB');
-//       return;
-//     }
-
-//     setSelectedFile(file);
-    
-//     // Create preview
-//     const reader = new FileReader();
-//     reader.onloadend = () => {
-//       setPreviewUrl(reader.result);
-//     };
-//     reader.readAsDataURL(file);
-//   };
-
-//   // Submit form
-//   const submitHandler = (e) => {
-//     e.preventDefault();
-    
-//     if (!selectedFile) {
-//       alert('Please select an image first.');
-//       return;
-//     }
-
-//     // Create FormData
-//     const formData = new FormData();
-//     formData.append('image', selectedFile);
-//     formData.append('headline', headline);
-//     formData.append('caption', caption);
-//     formData.append('link', link);
-
-//     createMutation.mutate({ formData, token: userInfo.token });
-//   };
-
-//   // Delete handler
-//   const deleteHandler = (slideId) => {
-//     if (window.confirm('Are you sure you want to delete this slide?')) {
-//       deleteMutation.mutate({ slideId, token: userInfo.token });
-//     }
-//   };
-
-//   return (
-//     <Container sx={{ py: 4 }}>
-//       <Typography variant="h4" gutterBottom fontWeight="bold">
-//         Manage Hero Carousel
-//       </Typography>
-      
-//       <Grid container spacing={4}>
-//         {/* Left side - Current Slides */}
-//         <Grid item xs={12} md={7}>
-//           <Paper elevation={3} sx={{ p: 3 }}>
-//             <Typography variant="h6" gutterBottom>
-//               Current Hero Slides
-//             </Typography>
-            
-//             {isLoading ? (
-//               <Box display="flex" justifyContent="center" p={4}>
-//                 <CircularProgress />
-//               </Box>
-//             ) : isError ? (
-//               <Alert severity="error">Could not load slides.</Alert>
-//             ) : slides?.length === 0 ? (
-//               <Alert severity="info">No slides yet. Add your first slide!</Alert>
-//             ) : (
-//               <List>
-//                 {slides?.map(slide => (
-//                   <ListItem 
-//                     key={slide._id} 
-//                     divider 
-//                     sx={{ 
-//                       '&:hover': { bgcolor: 'action.hover' },
-//                       transition: 'background-color 0.2s'
-//                     }}
-//                     secondaryAction={
-//                       <IconButton 
-//                         edge="end" 
-//                         aria-label="delete" 
-//                         onClick={() => deleteHandler(slide._id)}
-//                         disabled={deleteMutation.isLoading}
-//                       >
-//                         <DeleteIcon color="error" />
-//                       </IconButton>
-//                     }
-//                   >
-//                     <ListItemAvatar>
-//                       <Avatar 
-//                         variant="rounded" 
-//                         src={slide.image} 
-//                         sx={{ width: 120, height: 70, mr: 2 }}
-//                         alt={slide.headline || 'Hero slide'}
-//                       />
-//                     </ListItemAvatar>
-//                     <ListItemText 
-//                       primary={slide.headline || 'No Headline'} 
-//                       secondary={slide.caption || 'No Caption'} 
-//                     />
-//                   </ListItem>
-//                 ))}
-//               </List>
-//             )}
-//           </Paper>
-//         </Grid>
-
-//         {/* Right side - Add New Slide Form */}
-//         <Grid item xs={12} md={5}>
-//           <Paper elevation={3} sx={{ p: 3 }}>
-//             <Typography variant="h6" gutterBottom>
-//               Add New Hero Slide
-//             </Typography>
-            
-//             <Box component="form" onSubmit={submitHandler} sx={{ mt: 2 }}>
-//               {/* File Upload Button */}
-//               <Button 
-//                 variant="contained" 
-//                 component="label" 
-//                 fullWidth
-//                 startIcon={<CloudUploadIcon />}
-//                 disabled={createMutation.isLoading}
-//                 sx={{ mb: 2 }}
-//               >
-//                 {selectedFile ? 'Change Image' : 'Upload Image'}
-//                 <input 
-//                   type="file" 
-//                   hidden 
-//                   accept="image/*"
-//                   onChange={handleFileChange} 
-//                 />
-//               </Button>
-
-//               {/* Image Preview */}
-//               {previewUrl && (
-//                 <Box sx={{ mb: 2, textAlign: 'center' }}>
-//                   <img 
-//                     src={previewUrl} 
-//                     alt="Preview" 
-//                     style={{ 
-//                       maxWidth: '100%', 
-//                       maxHeight: '200px',
-//                       borderRadius: '8px',
-//                       boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-//                     }} 
-//                   />
-//                 </Box>
-//               )}
-
-//               {/* Form Fields */}
-//               <TextField 
-//                 label="Headline (optional)" 
-//                 value={headline} 
-//                 onChange={e => setHeadline(e.target.value)} 
-//                 fullWidth 
-//                 margin="normal" 
-//                 size="small"
-//                 placeholder="Enter headline text"
-//               />
-              
-//               <TextField 
-//                 label="Caption (optional)" 
-//                 value={caption} 
-//                 onChange={e => setCaption(e.target.value)} 
-//                 fullWidth 
-//                 margin="normal" 
-//                 size="small"
-//                 multiline
-//                 rows={2}
-//                 placeholder="Enter caption text"
-//               />
-              
-//               <TextField 
-//                 label="Link URL (optional)" 
-//                 value={link} 
-//                 onChange={e => setLink(e.target.value)} 
-//                 fullWidth 
-//                 margin="normal" 
-//                 size="small"
-//                 placeholder="https://example.com"
-//               />
-
-//               {/* Submit Button */}
-//               <Button 
-//                 type="submit" 
-//                 variant="contained" 
-//                 color="primary" 
-//                 disabled={createMutation.isLoading || !selectedFile} 
-//                 fullWidth 
-//                 sx={{ mt: 3 }}
-//               >
-//                 {createMutation.isLoading ? (
-//                   <>
-//                     <CircularProgress size={20} sx={{ mr: 1, color: 'white' }} />
-//                     Uploading...
-//                   </>
-//                 ) : (
-//                   'Add Slide'
-//                 )}
-//               </Button>
-//             </Box>
-//           </Paper>
-//         </Grid>
-//       </Grid>
-//     </Container>
-//   );
-// };
-
-// export default HeroManagePage;
-
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
@@ -482,51 +183,29 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import api from '../api/axiosConfig';
 
-// --- API FUNCTIONS ---
-
-// Fetch all hero slides (No change)
+// Fetch all hero slides
 const fetchHeroSlides = async () => {
   const { data } = await api.get('/api/hero-carousel');
   return data;
 };
 
-// NEW: Separate function for uploading the image file
-const uploadImage = async ({ file, token }) => {
-  const formData = new FormData();
-  formData.append('media', file); // 'media' must match your backend middleware key
-
-  const config = {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  // This posts to the generic upload route, not the hero-carousel route
-  const { data } = await api.post('/api/upload', formData, config);
-  return data; // Returns { secure_url, public_id }
-};
-
-
-// CHANGED: This function now sends JSON data, not FormData
-const createHeroSlide = async ({ slideData, token }) => {
+// Create a new hero slide with file upload
+const createHeroSlide = async ({ formData, token }) => {
   const config = { 
     headers: { 
-      // Content-Type is now application/json by default with axios
+      'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${token}` 
     } 
   };
-  const { data } = await api.post('/api/hero-carousel', slideData, config);
+  const { data } = await api.post('/api/hero-carousel', formData, config);
   return data;
 };
 
-// Delete a hero slide (No change)
+// Delete a hero slide
 const deleteHeroSlide = async ({ slideId, token }) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };
   await api.delete(`/api/hero-carousel/${slideId}`, config);
 };
-
-
-// --- COMPONENT ---
 
 const HeroManagePage = () => {
   const { userInfo } = useAuth();
@@ -538,47 +217,24 @@ const HeroManagePage = () => {
   const [headline, setHeadline] = useState('');
   const [caption, setCaption] = useState('');
   const [link, setLink] = useState('');
-  // NEW: State to hold the final Cloudinary URL and ID after upload
-  const [uploadedImageData, setUploadedImageData] = useState(null); 
   
-  // Fetch hero slides (No change)
+  // Fetch hero slides
   const { data: slides, isLoading, isError } = useQuery({ 
     queryKey: ['heroSlides'], 
     queryFn: fetchHeroSlides 
   });
 
-  // NEW: A separate mutation for the initial image upload
-  const uploadMutation = useMutation({
-    mutationFn: uploadImage,
-    onSuccess: (data) => {
-      // On successful upload, save the Cloudinary data
-      setUploadedImageData({
-        url: data.secure_url,
-        publicId: data.public_id,
-      });
-      // Also use the secure_url for the preview for consistency
-      setPreviewUrl(data.secure_url);
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || 'Image upload failed. Please try again.');
-      // Clear the failed file selection
-      setSelectedFile(null);
-      setPreviewUrl('');
-    },
-  });
-
-  // CHANGED: The create mutation now uses the updated createHeroSlide function
+  // Create mutation
   const createMutation = useMutation({
     mutationFn: createHeroSlide,
     onSuccess: () => {
       queryClient.invalidateQueries(['heroSlides']);
-      // Reset ALL form fields
+      // Reset form
       setSelectedFile(null);
       setPreviewUrl('');
       setHeadline('');
       setCaption('');
       setLink('');
-      setUploadedImageData(null); // NEW: Reset uploaded image data
       alert('New slide added successfully!');
     },
     onError: (error) => {
@@ -586,7 +242,7 @@ const HeroManagePage = () => {
     },
   });
 
-  // Delete mutation (No change)
+  // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: deleteHeroSlide,
     onSuccess: () => {
@@ -596,52 +252,53 @@ const HeroManagePage = () => {
     onError: () => alert('Failed to delete slide.'),
   });
 
-  // CHANGED: This handler now triggers the upload mutation immediately
+  // Handle file selection
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('Please select an image file');
       return;
     }
+
+    // Validate file size (5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert('File size should be less than 5MB');
       return;
     }
-    
-    setSelectedFile(file);
-    // Create a temporary local preview while the upload is in progress
-    const reader = new FileReader();
-    reader.onloadend = () => setPreviewUrl(reader.result);
-    reader.readAsDataURL(file);
 
-    // Trigger the upload immediately
-    uploadMutation.mutate({ file, token: userInfo.token });
+    setSelectedFile(file);
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
-  // CHANGED: This handler now sends JSON with the Cloudinary URL
+  // Submit form
   const submitHandler = (e) => {
     e.preventDefault();
     
-    // The condition is now based on whether the upload was successful
-    if (!uploadedImageData) {
-      alert('Please select and upload an image first.');
+    if (!selectedFile) {
+      alert('Please select an image first.');
       return;
     }
 
-    // This is now a simple JSON object, not FormData
-    const slideData = {
-      headline,
-      caption,
-      link,
-      image: uploadedImageData.url,        // The secure Cloudinary URL
-      cloudinaryId: uploadedImageData.publicId, // The ID for deletion
-    };
+    // Create FormData
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+    formData.append('headline', headline);
+    formData.append('caption', caption);
+    formData.append('link', link);
 
-    createMutation.mutate({ slideData, token: userInfo.token });
+    createMutation.mutate({ formData, token: userInfo.token });
   };
 
-  // Delete handler (No change)
+  // Delete handler
   const deleteHandler = (slideId) => {
     if (window.confirm('Are you sure you want to delete this slide?')) {
       deleteMutation.mutate({ slideId, token: userInfo.token });
@@ -655,9 +312,59 @@ const HeroManagePage = () => {
       </Typography>
       
       <Grid container spacing={4}>
-        {/* Left side - Current Slides (No changes in this section) */}
+        {/* Left side - Current Slides */}
         <Grid item xs={12} md={7}>
-          {/* ...your existing code for displaying slides... */}
+          <Paper elevation={3} sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              Current Hero Slides
+            </Typography>
+            
+            {isLoading ? (
+              <Box display="flex" justifyContent="center" p={4}>
+                <CircularProgress />
+              </Box>
+            ) : isError ? (
+              <Alert severity="error">Could not load slides.</Alert>
+            ) : slides?.length === 0 ? (
+              <Alert severity="info">No slides yet. Add your first slide!</Alert>
+            ) : (
+              <List>
+                {slides?.map(slide => (
+                  <ListItem 
+                    key={slide._id} 
+                    divider 
+                    sx={{ 
+                      '&:hover': { bgcolor: 'action.hover' },
+                      transition: 'background-color 0.2s'
+                    }}
+                    secondaryAction={
+                      <IconButton 
+                        edge="end" 
+                        aria-label="delete" 
+                        onClick={() => deleteHandler(slide._id)}
+                        disabled={deleteMutation.isLoading}
+                      >
+                        <DeleteIcon color="error" />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemAvatar>
+                      <Avatar 
+                        variant="rounded" 
+                        src={slide.image} 
+                        sx={{ width: 120, height: 70, mr: 2 }}
+                        alt={slide.headline || 'Hero slide'}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText 
+                      primary={slide.headline || 'No Headline'} 
+                      secondary={slide.caption || 'No Caption'} 
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </Paper>
         </Grid>
 
         {/* Right side - Add New Slide Form */}
@@ -674,42 +381,81 @@ const HeroManagePage = () => {
                 component="label" 
                 fullWidth
                 startIcon={<CloudUploadIcon />}
-                // UPDATED: Disable if either mutation is running
-                disabled={uploadMutation.isLoading || createMutation.isLoading}
+                disabled={createMutation.isLoading}
                 sx={{ mb: 2 }}
               >
-                {/* UPDATED: Better loading text */}
-                {uploadMutation.isLoading 
-                  ? 'Uploading...' 
-                  : selectedFile ? 'Change Image' : 'Upload Image'
-                }
-                <input type="file" hidden accept="image/*" onChange={handleFileChange} />
+                {selectedFile ? 'Change Image' : 'Upload Image'}
+                <input 
+                  type="file" 
+                  hidden 
+                  accept="image/*"
+                  onChange={handleFileChange} 
+                />
               </Button>
 
               {/* Image Preview */}
               {previewUrl && (
                 <Box sx={{ mb: 2, textAlign: 'center' }}>
-                  <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px' }} />
+                  <img 
+                    src={previewUrl} 
+                    alt="Preview" 
+                    style={{ 
+                      maxWidth: '100%', 
+                      maxHeight: '200px',
+                      borderRadius: '8px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }} 
+                  />
                 </Box>
               )}
 
-              {/* Form Fields (No changes in this section) */}
-              <TextField label="Headline (optional)" value={headline} onChange={e => setHeadline(e.target.value)} fullWidth margin="normal" size="small" />
-              <TextField label="Caption (optional)" value={caption} onChange={e => setCaption(e.target.value)} fullWidth margin="normal" size="small" multiline rows={2}/>
-              <TextField label="Link URL (optional)" value={link} onChange={e => setLink(e.target.value)} fullWidth margin="normal" size="small" />
+              {/* Form Fields */}
+              <TextField 
+                label="Headline (optional)" 
+                value={headline} 
+                onChange={e => setHeadline(e.target.value)} 
+                fullWidth 
+                margin="normal" 
+                size="small"
+                placeholder="Enter headline text"
+              />
+              
+              <TextField 
+                label="Caption (optional)" 
+                value={caption} 
+                onChange={e => setCaption(e.target.value)} 
+                fullWidth 
+                margin="normal" 
+                size="small"
+                multiline
+                rows={2}
+                placeholder="Enter caption text"
+              />
+              
+              <TextField 
+                label="Link URL (optional)" 
+                value={link} 
+                onChange={e => setLink(e.target.value)} 
+                fullWidth 
+                margin="normal" 
+                size="small"
+                placeholder="https://example.com"
+              />
 
               {/* Submit Button */}
               <Button 
                 type="submit" 
                 variant="contained" 
                 color="primary" 
-                // UPDATED: Main disable condition is now based on uploadedImageData
-                disabled={!uploadedImageData || createMutation.isLoading || uploadMutation.isLoading} 
+                disabled={createMutation.isLoading || !selectedFile} 
                 fullWidth 
                 sx={{ mt: 3 }}
               >
                 {createMutation.isLoading ? (
-                  <><CircularProgress size={20} sx={{ mr: 1 }} /> Adding Slide...</>
+                  <>
+                    <CircularProgress size={20} sx={{ mr: 1, color: 'white' }} />
+                    Uploading...
+                  </>
                 ) : (
                   'Add Slide'
                 )}
@@ -723,3 +469,7 @@ const HeroManagePage = () => {
 };
 
 export default HeroManagePage;
+
+
+
+  
