@@ -47,7 +47,8 @@ router
   .route('/')
   .get(getHeroSlides)
   // REMOVED: upload.single('image') is gone from this chain
-  .post(protect, admin, createHeroSlide);
+  // .post(protect, admin, createHeroSlide);
+  .post(protect, admin, upload.single('image'), createHeroSlide); 
 
 router.route('/:id').delete(protect, admin, deleteHeroSlide);
 
