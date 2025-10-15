@@ -38,7 +38,8 @@ import {
   deleteHeroSlide,
 } from '../controllers/heroCarouselController.js';
 import { protect } from '../middleware/authMiddleware.js'; // Assuming you have these
-import { admin } from '../middleware/adminMiddleware.js'; // Assuming you have these
+import { admin } from '../middleware/adminMiddleware.js';
+import { upload } from '../middleware/uploadMiddleware.js';// Assuming you have these
 
 // REMOVED: No longer need to import the upload middleware here
 // import { upload } from '../middleware/uploadMiddleware.js';
