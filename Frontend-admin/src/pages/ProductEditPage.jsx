@@ -506,7 +506,7 @@ const ProductEditPage = () => {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("file", file); // Must match backend field name: 'file'
+    formData.append("media", file); // Must match backend field name: 'file'
     setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: true }));
 
     try {
