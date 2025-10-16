@@ -123,18 +123,48 @@ const createProduct = asyncHandler(async (req, res) => {
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
+// const updateProduct = asyncHandler(async (req, res) => {
+//   const { title, price, description, images, category, variants, active, isLatest } = req.body;
+//   const product = await Product.findById(req.params.id);
+//   if (product) {
+//     product.title = title;
+//     product.price = price;
+//     product.description = description;
+//     product.images = images;
+//     product.category = category;
+//     product.variants = variants;
+//     product.active = active;
+//     product.isLatest = isLatest;
+//     const updatedProduct = await product.save();
+//     res.json(updatedProduct);
+//   } else {
+//     res.status(404);
+//     throw new Error('Product not found');
+//   }
+// });
+
 const updateProduct = asyncHandler(async (req, res) => {
   const { title, price, description, images, category, variants, active, isLatest } = req.body;
   const product = await Product.findById(req.params.id);
+
   if (product) {
-    product.title = title;
-    product.price = price;
-    product.description = description;
-    product.images = images;
-    product.category = category;
-    product.variants = variants;
-    product.active = active;
-    product.isLatest = isLatest;
+    product.title = title || product.title;
+    product.price = price || product.price;
+    product.description = description || product.description;
+    product.category = category || product.category;
+    product.variants = variants || product.variants;
+    product.active = active ?? product.active;
+    product.isLatest = isLatest ?? product.isLatest;
+
+    // ✅ Handle images properly
+    if (images && Array.isArray(images)) {
+      // Each image should be an object: { url: '...', alt: '...' }
+      product.images = images.map(img => ({
+        url: img.url || img, // Support plain string URLs or object format
+        alt: img.alt || product.title || 'Product image',
+      }));
+    }
+
     const updatedProduct = await product.save();
     res.json(updatedProduct);
   } else {
@@ -142,6 +172,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     throw new Error('Product not found');
   }
 });
+
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id

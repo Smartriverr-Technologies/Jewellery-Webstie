@@ -155,15 +155,26 @@ cloudinary.config({
 });
 
 // Configure CloudinaryStorage for images
+// const imageStorage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: 'AuraJewels/hero-carousel',
+//     allowed_formats: ['jpeg', 'png', 'jpg', 'gif', 'webp'],
+//     resource_type: 'image',
+//     transformation: [{ width: 1920, height: 1080, crop: 'limit', quality: 'auto' }]
+//   },
+// });
+
 const imageStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'AuraJewels/hero-carousel',
+  cloudinary,
+  params: (req, file) => ({
+    folder: req.body.folder || 'AuraJewels/general',
     allowed_formats: ['jpeg', 'png', 'jpg', 'gif', 'webp'],
     resource_type: 'image',
-    transformation: [{ width: 1920, height: 1080, crop: 'limit', quality: 'auto' }]
-  },
+    transformation: [{ width: 1920, height: 1080, crop: 'limit', quality: 'auto' }],
+  }),
 });
+
 
 // Configure CloudinaryStorage for videos (for future use)
 const videoStorage = new CloudinaryStorage({
