@@ -131,7 +131,9 @@ const MainCarouselManagePage = () => {
                     </IconButton>
                   }>
                     <ListItemAvatar>
-                      <Avatar variant="rounded" src={`${import.meta.env.VITE_API_URL}${slide.image}`} sx={{ width: 100, height: 56, mr: 2 }} />
+                      {/* <Avatar variant="rounded" src={`${import.meta.env.VITE_API_URL}${slide.image}`} sx={{ width: 100, height: 56, mr: 2 }} /> */}
+                      <Avatar variant="rounded" src={slide.image} sx={{ width: 100, height: 56, mr: 2 }} />
+
                     </ListItemAvatar>
                     <ListItemText primary={slide.headline || 'No Headline'} secondary={slide.caption || 'No Caption'} />
                   </ListItem>
