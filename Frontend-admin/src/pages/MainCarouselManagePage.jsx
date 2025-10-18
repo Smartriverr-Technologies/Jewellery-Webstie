@@ -57,7 +57,7 @@ const MainCarouselManagePage = () => {
   if (!file) return;
 
   const formData = new FormData();
-  formData.append('file', file); // <-- 1. Change 'image' to 'file'
+  formData.append('media', file); // <-- 1. Change 'image' to 'file'
   setUploading(true);
 
   try {
@@ -71,7 +71,7 @@ const MainCarouselManagePage = () => {
     // The endpoint is now just '/api/upload'
     const { data } = await api.post('/api/upload', formData, config);
     
-    setImage(data.url); // <-- 2. Use data.url to set the full Cloudinary URL
+      setImage(data.files[0].url);// <-- 2. Use data.url to set the full Cloudinary URL
     alert('File uploaded successfully!');
 
   } catch (error) {
