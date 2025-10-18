@@ -518,6 +518,9 @@
 //       };
 
 //       const { data } = await api.post("/api/upload", formData, config);
+//       const uploadedUrl = data.files?.[0]?.url;
+
+//      if (!uploadedUrl) throw new Error("No URL returned from server");
 
 //       // Update local images array
 //       const newImages = [...images];
@@ -535,11 +538,13 @@
 //   // --- Submit handler ---
 //   const submitHandler = (e) => {
 //     e.preventDefault();
+//      const validImages = images.filter((img) => img.url); 
+
 //     const productData = {
 //       title,
 //       price,
 //       description,
-//       images,
+//       images:validImages,
 //       category,
 //       variants: [{ price, stock }],
 //       active,
@@ -976,7 +981,108 @@ const ProductEditPage = () => {
       <Box component="form" onSubmit={submitHandler}>
         <Grid container spacing={3}>
           {/* Keep your UI same — content unchanged */}
+          {/* Basic Info */}
+          <Grid item xs={12} md={8}>
+            <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom fontWeight="600">
+                  Basic Information
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
 
+                <TextField
+                  fullWidth
+                  label="Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  label="Description"
+                  multiline
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Pricing & Stock */}
+          <Grid item xs={12} md={4}>
+            <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom fontWeight="600">
+                  Pricing & Stock
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+
+                <TextField
+                  fullWidth
+                  label="Price"
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  label="Stock Count"
+                  type="number"
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
+                  required
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Category & Settings */}
+          <Grid item xs={12} md={4}>
+            <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom fontWeight="600">
+                  Category & Settings
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+
+                {!isLoadingCategories && categories && (
+                  <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Category</InputLabel>
+                    <Select
+                      value={category}
+                      label="Category"
+                      onChange={(e) => setCategory(e.target.value)}
+                    >
+                      {categories.map((cat) => (
+                        <MenuItem key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                )}
+
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={active} onChange={(e) => setActive(e.target.checked)} />
+                  }
+                  label="Is Active"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={isLatest} onChange={(e) => setIsLatest(e.target.checked)} />
+                  }
+                  label="Is Latest"
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+          
           {/* Image Upload Section */}
           <Grid item xs={12} md={8}>
             <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
