@@ -900,7 +900,7 @@ const ProductEditPage = () => {
 
     const formData = new FormData();
     formData.append("media", file);
-    formData.append("folder", "AuraJewels/general");
+    
     setUploading((prev) => ({ ...prev, [`image${imageNumber}`]: true }));
 
     try {

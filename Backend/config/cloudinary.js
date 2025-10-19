@@ -1,6 +1,8 @@
 // File: Backend/config/cloudinary.js
 
-import cloudinary from 'cloudinary'; // This is the corrected import
+// import cloudinary from 'cloudinary';
+//  // This is the corrected import
+import { v2 as cloudinary } from "cloudinary";
 import dotenv from 'dotenv';
 
 dotenv.config();

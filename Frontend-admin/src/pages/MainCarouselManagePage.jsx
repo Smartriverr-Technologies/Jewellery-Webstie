@@ -57,7 +57,8 @@ const MainCarouselManagePage = () => {
   if (!file) return;
 
   const formData = new FormData();
-  formData.append('media', file); // <-- 1. Change 'image' to 'file'
+  formData.append('media', file);
+  formData.append("folder", "AuraJewels/general"); // <-- 1. Change 'image' to 'file'
   setUploading(true);
 
   try {
