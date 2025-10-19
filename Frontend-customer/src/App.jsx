@@ -86,6 +86,7 @@ import WishlistPage from './pages/WishlistPage';
 import SearchPage from './pages/SearchPage';
 import CategoryPage from './pages/CategoryPage';
 import GalleryPage from './pages/GalleryPage';
+import ShopPage from './pages/ShopPage';
 // import EmailVerifyPage from './pages/EmailVerifyPage';
 
 function App() {
