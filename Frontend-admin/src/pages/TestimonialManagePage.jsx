@@ -71,7 +71,9 @@ const TestimonialManagePage = () => {
       // The endpoint is now just '/api/upload'
       const { data } = await api.post('/api/upload', formData, config);
       
-      setImage(data.url); // <-- 2. Use data.url to set the full Cloudinary URL
+      // setImage(data.url);
+      setImageUrl(data.url)
+       // <-- 2. Use data.url to set the full Cloudinary URL
       alert('File uploaded successfully!');
   
     } catch (error) {
@@ -129,7 +131,7 @@ const TestimonialManagePage = () => {
                     }
                   >
                     <ListItemAvatar>
-                      <Avatar variant="rounded" src={`${import.meta.env.VITE_API_URL}${item.imageUrl}`} sx={{ width: 80, height: 80, mr: 2 }} />
+                      <Avatar variant="rounded" src={item.imageUrl} sx={{ width: 80, height: 80, mr: 2 }} />
                     </ListItemAvatar>
                     <ListItemText
                       primary={
@@ -161,7 +163,7 @@ const TestimonialManagePage = () => {
                 <input type="file" hidden onChange={uploadFileHandler} />
               </Button>
               {uploading && <CircularProgress size={24} sx={{ mt: -3, ml: 2, color: 'primary.main' }} />}
-              {imageUrl && <Box component="img" src={`${import.meta.env.VITE_API_URL}${imageUrl}`} alt="preview" sx={{ width: '100%', maxHeight: 150, objectFit: 'cover', borderRadius: 1 }} />}
+              {imageUrl && <Box component="img" src={imageUrl} alt="preview" sx={{ width: '100%', maxHeight: 150, objectFit: 'cover', borderRadius: 1 }} />}
 
               <TextField label="Name" value={name} onChange={e => setName(e.target.value)} fullWidth required size="small" />
               <TextField label="Comment" value={comment} onChange={e => setComment(e.target.value)} fullWidth required multiline rows={4} size="small" />
