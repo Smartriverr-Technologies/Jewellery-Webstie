@@ -140,7 +140,10 @@ const TestimonialCarousel = () => {
                   <CardMedia
                     component="img"
                     height="150"
-                    image={`${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
+                    // image={`${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
+                    image = {testimonial.imageUrl?.startsWith('http')
+  ? testimonial.imageUrl
+  : `${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
                     alt={testimonial.name}
                     sx={{
                       objectFit: "cover",
