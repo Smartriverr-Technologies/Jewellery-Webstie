@@ -57,7 +57,7 @@ const TestimonialManagePage = () => {
     if (!file) return;
   
     const formData = new FormData();
-    formData.append('file', file); // <-- 1. Change 'image' to 'file'
+    formData.append('media', file); // <-- 1. Change 'image' to 'file'
     setUploading(true);
   
     try {
@@ -72,8 +72,9 @@ const TestimonialManagePage = () => {
       const { data } = await api.post('/api/upload', formData, config);
       
       // setImage(data.url);
-      setImageUrl(data.url)
+      // setImageUrl(data.url)
        // <-- 2. Use data.url to set the full Cloudinary URL
+         setImageUrl(data.files[0].url);
       alert('File uploaded successfully!');
   
     } catch (error) {
