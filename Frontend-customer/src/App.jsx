@@ -105,6 +105,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/verify-email/:token" element={<EmailVerifyPage />} />
+           <Route path="/shop" element={<PageWrapper><ShopPage /></PageWrapper>} />
 
           {/* --- Protected Routes --- */}
           <Route path="" element={<ProtectedRoute />}>
