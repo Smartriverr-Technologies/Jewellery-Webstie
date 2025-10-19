@@ -124,7 +124,7 @@ mb: 2,
                       }}
                     >
                       <img
-                        src={`${import.meta.env.VITE_API_URL}${category.image}`}
+                        src={category.image}
                         alt={category.name}
                         style={{
                           width: "100%",
