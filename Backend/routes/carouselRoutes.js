@@ -24,8 +24,11 @@ import { upload } from '../middleware/uploadMiddleware.js'; // ✅ Import Cloudi
 router.route('/').get(getSlides);
 
 // Admin: upload new slide
-router.route('/')
-  .post(protect, admin, upload.single('image'), createSlide);
+// router.route('/')
+//   .post(protect, admin, upload.single('image'), createSlide);
+
+router.route('/').post(protect, admin, createSlide);
+
 
 // Delete slide
 router.route('/:id').delete(protect, admin, deleteSlide);

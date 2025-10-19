@@ -66,17 +66,37 @@ const getSlides = asyncHandler(async (req, res) => {
 // @desc    Create a new slide (with Cloudinary upload)
 // @route   POST /api/carousel
 // @access  Private/Admin
+// const createSlide = asyncHandler(async (req, res) => {
+//   if (!req.file || !req.file.path) {
+//     res.status(400);
+//     throw new Error('Image upload failed');
+//   }
+
+//   const { headline, caption, link, location } = req.body;
+
+//   const slide = new CarouselSlide({
+//     image: req.file.path, // Cloudinary URL
+//     cloudinaryId: req.file.filename, // Cloudinary public_id
+//     headline,
+//     caption,
+//     link,
+//     location: location || 'main',
+//   });
+
+//   const createdSlide = await slide.save();
+//   res.status(201).json(createdSlide);
+// });
+
 const createSlide = asyncHandler(async (req, res) => {
-  if (!req.file || !req.file.path) {
+  const { image, headline, caption, link, location } = req.body;
+
+  if (!image) {
     res.status(400);
-    throw new Error('Image upload failed');
+    throw new Error('Image upload failed - No image URL provided');
   }
 
-  const { headline, caption, link, location } = req.body;
-
   const slide = new CarouselSlide({
-    image: req.file.path, // Cloudinary URL
-    cloudinaryId: req.file.filename, // Cloudinary public_id
+    image, // directly store the Cloudinary image URL
     headline,
     caption,
     link,
@@ -86,6 +106,7 @@ const createSlide = asyncHandler(async (req, res) => {
   const createdSlide = await slide.save();
   res.status(201).json(createdSlide);
 });
+
 
 // @desc    Delete a slide (and its Cloudinary image)
 // @route   DELETE /api/carousel/:id
