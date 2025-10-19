@@ -53,7 +53,7 @@
 
 import asyncHandler from 'express-async-handler';
 import GalleryImage from '../models/galleryImageModel.js';
-import { v2 as cloudinary } from 'cloudinary';
+import { cloudinary } from '../middleware/uploadMiddleware.js';
 
 // @desc    Fetch all gallery images
 // @route   GET /api/gallery
