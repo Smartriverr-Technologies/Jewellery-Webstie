@@ -31,11 +31,11 @@ const galleryImageSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      default: 'Jewellery Collection',
+      // default: 'Jewellery Collection',
     },
     altText: {
       type: String,
-      default: 'Image of Aura Jewels jewellery collection',
+      // default: 'Image of Aura Jewels jewellery collection',
     },
     imageUrl: {
       type: String,
