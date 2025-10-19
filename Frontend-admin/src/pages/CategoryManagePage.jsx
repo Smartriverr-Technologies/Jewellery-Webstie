@@ -69,34 +69,65 @@ const CategoryManagePage = () => {
   //   }
   // };
 
-  const uploadFileHandler = async (e) => {
+//   const uploadFileHandler = async (e) => {
+//   const file = e.target.files[0];
+//   if (!file) return;
+
+//   const formData = new FormData();
+//   formData.append('file', file); // <-- 1. Change 'image' to 'file'
+//   setUploading(true);
+
+//   try {
+//     const config = { 
+//       headers: { 
+//         'Content-Type': 'multipart/form-data', 
+//         Authorization: `Bearer ${userInfo.token}` 
+//       } 
+//     };
+    
+//     // The endpoint is now just '/api/upload'
+//     const { data } = await api.post('/api/upload', formData, config);
+    
+//     setImage(data.url); // <-- 2. Use data.url to set the full Cloudinary URL
+//     alert('Image uploaded successfully!');
+
+//   } catch (error) {
+//     alert('Image upload failed.');
+//   } finally {
+//     setUploading(false);
+//   }
+// };
+
+const uploadFileHandler = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
   const formData = new FormData();
-  formData.append('file', file); // <-- 1. Change 'image' to 'file'
+  formData.append('media', file); // ✅ backend expects 'media', not 'file'
   setUploading(true);
 
   try {
     const config = { 
       headers: { 
-        'Content-Type': 'multipart/form-data', 
-        Authorization: `Bearer ${userInfo.token}` 
-      } 
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${userInfo.token}`
+      }
     };
-    
-    // The endpoint is now just '/api/upload'
-    const { data } = await api.post('/api/upload', formData, config);
-    
-    setImage(data.url); // <-- 2. Use data.url to set the full Cloudinary URL
-    alert('Image uploaded successfully!');
 
+    // ✅ Send to your image upload endpoint
+    const { data } = await api.post('/api/upload', formData, config);
+
+    // ✅ backend returns an array "files", we’ll use first one
+    setImage(data.files[0].url);
+    alert('Image uploaded successfully!');
   } catch (error) {
+    console.error('Upload error:', error.response?.data || error.message);
     alert('Image upload failed.');
   } finally {
     setUploading(false);
   }
 };
+
   
   const submitHandler = (e) => {
     e.preventDefault();
@@ -119,7 +150,7 @@ const CategoryManagePage = () => {
                       <DeleteIcon color="error" />
                     </IconButton>
                   }>
-                    <ListItemAvatar><Avatar src={`${import.meta.env.VITE_API_URL}${cat.image}`} /></ListItemAvatar>
+                    <ListItemAvatar><Avatar src={cat.image} /></ListItemAvatar>
                     <ListItemText primary={cat.name} />
                   </ListItem>
                 ))}
