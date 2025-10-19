@@ -110,7 +110,7 @@ import signupImage from '../assets/login.webp';
 // Styled Components
 const PageContainer = styled(Box)({
   display: 'flex',
-  minHeight: '90vh',
+  minHeight: '84vh',
   background: '#ffffff',
 });
 
