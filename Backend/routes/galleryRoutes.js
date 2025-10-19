@@ -11,7 +11,7 @@ import { upload } from '../middleware/uploadMiddleware.js';
 
 router.route('/')
   .get(getGalleryImages)
-  .post(protect, admin, upload.single('image'), uploadGalleryImage);
+  .post(protect, admin, upload.single('media'), uploadGalleryImage);
 
 router.route('/:id')
   .delete(protect, admin, deleteGalleryImage);

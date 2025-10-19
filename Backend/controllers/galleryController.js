@@ -1,9 +1,63 @@
+// import asyncHandler from 'express-async-handler';
+// import GalleryImage from '../models/galleryImageModel.js';
+// import fs from 'fs';
+// import path from 'path';
+// //test
+// // @desc    Fetch all gallery images
+// const getGalleryImages = asyncHandler(async (req, res) => {
+//   const images = await GalleryImage.find({}).sort({ createdAt: -1 });
+//   res.json(images);
+// });
+
+// // @desc    Upload a new gallery image
+// // @route   POST /api/gallery
+// // @access  Private/Admin
+// const uploadGalleryImage = asyncHandler(async (req, res) => {
+//   if (req.file) {
+//     const newImage = new GalleryImage({
+//       imageUrl: `/uploads/${req.file.filename}`,
+//     });
+//     const createdImage = await newImage.save();
+//     res.status(201).json(createdImage);
+//   } else {
+//     res.status(400);
+//     throw new Error('No image file provided or invalid file type');
+//   }
+// });
+
+// // @desc    Delete a gallery image
+// // @route   DELETE /api/gallery/:id
+// // @access  Private/Admin
+// const deleteGalleryImage = asyncHandler(async (req, res) => {
+//   const image = await GalleryImage.findById(req.params.id);
+
+//   if (image) {
+//     const __dirname = path.resolve();
+//     // Construct the full path to the image file
+//     const imagePath = path.join(__dirname, 'uploads', path.basename(image.imageUrl));
+    
+//     // Asynchronously delete the file from the server
+//     fs.unlink(imagePath, (err) => {
+//       if (err) console.error(`Failed to delete image file: ${imagePath}`, err);
+//     });
+
+//     await GalleryImage.deleteOne({ _id: image._id });
+//     res.json({ message: 'Image removed' });
+//   } else {
+//     res.status(404);
+//     throw new Error('Image not found');
+//   }
+// });
+
+// export { getGalleryImages, uploadGalleryImage, deleteGalleryImage };
+
 import asyncHandler from 'express-async-handler';
 import GalleryImage from '../models/galleryImageModel.js';
-import fs from 'fs';
-import path from 'path';
-//test
+import { v2 as cloudinary } from 'cloudinary';
+
 // @desc    Fetch all gallery images
+// @route   GET /api/gallery
+// @access  Public
 const getGalleryImages = asyncHandler(async (req, res) => {
   const images = await GalleryImage.find({}).sort({ createdAt: -1 });
   res.json(images);
@@ -13,16 +67,20 @@ const getGalleryImages = asyncHandler(async (req, res) => {
 // @route   POST /api/gallery
 // @access  Private/Admin
 const uploadGalleryImage = asyncHandler(async (req, res) => {
-  if (req.file) {
-    const newImage = new GalleryImage({
-      imageUrl: `/uploads/${req.file.filename}`,
-    });
-    const createdImage = await newImage.save();
-    res.status(201).json(createdImage);
-  } else {
+  if (!req.file) {
     res.status(400);
     throw new Error('No image file provided or invalid file type');
   }
+
+  const newImage = new GalleryImage({
+    imageUrl: req.file.path,       //  Cloudinary URL
+    publicId: req.file.filename,   //  Cloudinary public ID
+    title: 'Jewellery Collection',
+    altText: 'Image of Aura Jewels jewellery collection',
+  });
+
+  const createdImage = await newImage.save();
+  res.status(201).json(createdImage);
 });
 
 // @desc    Delete a gallery image
@@ -31,22 +89,22 @@ const uploadGalleryImage = asyncHandler(async (req, res) => {
 const deleteGalleryImage = asyncHandler(async (req, res) => {
   const image = await GalleryImage.findById(req.params.id);
 
-  if (image) {
-    const __dirname = path.resolve();
-    // Construct the full path to the image file
-    const imagePath = path.join(__dirname, 'uploads', path.basename(image.imageUrl));
-    
-    // Asynchronously delete the file from the server
-    fs.unlink(imagePath, (err) => {
-      if (err) console.error(`Failed to delete image file: ${imagePath}`, err);
-    });
-
-    await GalleryImage.deleteOne({ _id: image._id });
-    res.json({ message: 'Image removed' });
-  } else {
+  if (!image) {
     res.status(404);
     throw new Error('Image not found');
   }
+
+  //  Delete image from Cloudinary
+  if (image.publicId) {
+    try {
+      await cloudinary.uploader.destroy(image.publicId);
+    } catch (error) {
+      console.error('Cloudinary delete failed:', error.message);
+    }
+  }
+
+  await GalleryImage.deleteOne({ _id: image._id });
+  res.json({ message: 'Image removed successfully' });
 });
 
 export { getGalleryImages, uploadGalleryImage, deleteGalleryImage };
