@@ -260,7 +260,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
-
+import api from '../api/axiosConfig';
 const StyledContainer = styled(Container)(({ theme }) => ({
   width: '99%',
   maxWidth: '98% !important',
@@ -304,13 +304,12 @@ const FullScreenDialog = styled(Dialog)({
 const GalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // ✅ Use your live backend base URL from environment variable
-  const API_URL = import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onrender.com';
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const { data: images, isLoading, isError } = useQuery({
     queryKey: ['galleryImages'],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}/api/gallery`);
+      const { data } = await api.get(`/api/gallery`);
       return data;
     },
   });
@@ -394,9 +393,12 @@ const GalleryPage = () => {
               >
                 <ImageWrapper onClick={() => handleImageClick(item)}>
                   <StyledImage
-                    // ✅ Use Cloudinary URL directly if already stored
-                    src={item.imageUrl}
-                    srcSet={`${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`}
+                    src={item.imageUrl?.startsWith('http')
+                      ? item.imageUrl
+                      : `${API_URL}${item.imageUrl}`}
+                    srcSet={item.imageUrl?.startsWith('http')
+                      ? `${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
+                      : `${API_URL}${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`}
                     alt={item.altText}
                     loading="lazy"
                   />
@@ -441,7 +443,9 @@ const GalleryPage = () => {
             }}
           >
             <img
-              src={selectedImage.imageUrl}
+              src={selectedImage.imageUrl?.startsWith('http')
+                ? selectedImage.imageUrl
+                : `${API_URL}${selectedImage.imageUrl}`}
               alt={selectedImage.altText}
               style={{
                 maxWidth: '100%',
