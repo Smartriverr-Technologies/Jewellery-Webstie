@@ -854,14 +854,21 @@ const GalleryPage = () => {
                 }}
               >
                 <ImageWrapper onClick={() => handleImageClick(item)}>
-                  <StyledImage
+                  {/* <StyledImage
                     src={getImageUrl(item.imageUrl)}
                     alt={item.altText || 'Gallery Image'}
                     loading="lazy"
                     onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
                     }}
-                  />
+                  /> */}
+                   <StyledImage
+                    // ✅ Use Cloudinary URL directly if already stored
+                     src={gallery.imageUrl}
+                     srcSet={`${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`}
+                     alt={item.altText}
+                     loading="lazy"
+                   /> 
                 </ImageWrapper>
               </ImageListItem>
             ))}
