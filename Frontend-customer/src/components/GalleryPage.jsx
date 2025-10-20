@@ -615,12 +615,16 @@ const GalleryPage = () => {
       ? item.imageUrl
       : `${API_URL.replace(/\/$/, '')}/${item.imageUrl.replace(/^\//, '')}`
   }
-  srcSet={
-  item.imageUrl?.startsWith('http')
-    ? `${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
-    : `${API_URL}/${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
-}
-
+//   srcSet={
+//   item.imageUrl?.startsWith('http')
+//     ? `${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
+//     : `${API_URL}/${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
+// }
+srcSet={
+    item.imageUrl?.startsWith('http')
+      ? `${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
+      : `${API_URL.replace(/\/$/, '')}/${item.imageUrl.replace(/^\//, '')}?w=400&fit=crop&auto=format&dpr=2 2x`
+  }
   alt={item.altText || 'Gallery Image'}
   loading="lazy"
   onError={(e) => {
