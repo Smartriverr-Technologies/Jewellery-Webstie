@@ -25,11 +25,11 @@ const GalleryPage = () => {
     if (!url) return '';
 
     // If already a valid Cloudinary URL, return it directly
-    if (url.startsWith('https://res.cloudinary.com')) return url;
+    if (url.startsWith('http')) return url;
 
     // If backend accidentally prefixed it, remove that part
     if (url.includes('res.cloudinary.com')) {
-      return 'https://' + url.split('https//')[1];
+      return 'https://' + url.split(/https?:\/\//)[1];
     }
 
     // Otherwise, fallback to backend-based URL (for local images, optional)
