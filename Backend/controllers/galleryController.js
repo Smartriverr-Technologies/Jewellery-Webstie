@@ -110,69 +110,120 @@
 // export { getGalleryImages, uploadGalleryImage, deleteGalleryImage };
 
 
-import asyncHandler from 'express-async-handler';
-import GalleryImage from '../models/galleryImageModel.js';
+// import asyncHandler from 'express-async-handler';
+// import GalleryImage from '../models/galleryImageModel.js';
+// import { cloudinary } from '../middleware/uploadMiddleware.js';
+
+// // @desc    Fetch all gallery images
+// // @route   GET /api/gallery
+// // @access  Public
+// const getGalleryImages = asyncHandler(async (req, res) => {
+//   const images = await GalleryImage.find({}).sort({ createdAt: -1 });
+//   res.json(images);
+// });
+
+// // @desc    Upload a new gallery image
+// // @route   POST /api/gallery
+// // @access  Private/Admin
+// const uploadGalleryImage = asyncHandler(async (req, res) => {
+//   if (!req.file) {
+//     res.status(400);
+//     throw new Error('No image file provided or invalid file type');
+//   }
+
+//   // ✅ Ensure we’re getting proper fields from Cloudinary
+//   const imageUrl = req.file.path || req.file.secure_url;
+//   const publicId = req.file.filename || req.file.public_id;
+
+//   if (!imageUrl) {
+//     res.status(400);
+//     throw new Error('Image upload failed, Cloudinary URL missing');
+//   }
+
+//   const newImage = new GalleryImage({
+//     imageUrl,        // ✅ Full Cloudinary URL
+//     publicId,        // ✅ Safe fallback
+//     title: req.body.title || 'Jewellery Collection',
+//     altText: req.body.altText || 'Image of Aura Jewels jewellery collection',
+//   });
+
+//   const createdImage = await newImage.save();
+//   res.status(201).json(createdImage);
+// });
+
+// // @desc    Delete a gallery image
+// // @route   DELETE /api/gallery/:id
+// // @access  Private/Admin
+// const deleteGalleryImage = asyncHandler(async (req, res) => {
+//   const image = await GalleryImage.findById(req.params.id);
+
+//   if (!image) {
+//     res.status(404);
+//     throw new Error('Image not found');
+//   }
+
+//   // ✅ Delete image from Cloudinary
+//   if (image.publicId) {
+//     try {
+//       await cloudinary.uploader.destroy(image.publicId);
+//     } catch (error) {
+//       console.error('Cloudinary delete failed:', error.message);
+//     }
+//   }
+
+//   await GalleryImage.deleteOne({ _id: image._id });
+//   res.json({ message: 'Image removed successfully' });
+// });
+
+// export { getGalleryImages, uploadGalleryImage, deleteGalleryImage };
+
+import Gallery from '../models/galleryModel.js';
 import { cloudinary } from '../middleware/uploadMiddleware.js';
 
-// @desc    Fetch all gallery images
-// @route   GET /api/gallery
-// @access  Public
-const getGalleryImages = asyncHandler(async (req, res) => {
-  const images = await GalleryImage.find({}).sort({ createdAt: -1 });
-  res.json(images);
-});
-
-// @desc    Upload a new gallery image
-// @route   POST /api/gallery
-// @access  Private/Admin
-const uploadGalleryImage = asyncHandler(async (req, res) => {
-  if (!req.file) {
-    res.status(400);
-    throw new Error('No image file provided or invalid file type');
-  }
-
-  // ✅ Ensure we’re getting proper fields from Cloudinary
-  const imageUrl = req.file.path || req.file.secure_url;
-  const publicId = req.file.filename || req.file.public_id;
-
-  if (!imageUrl) {
-    res.status(400);
-    throw new Error('Image upload failed, Cloudinary URL missing');
-  }
-
-  const newImage = new GalleryImage({
-    imageUrl,        // ✅ Full Cloudinary URL
-    publicId,        // ✅ Safe fallback
-    title: req.body.title || 'Jewellery Collection',
-    altText: req.body.altText || 'Image of Aura Jewels jewellery collection',
-  });
-
-  const createdImage = await newImage.save();
-  res.status(201).json(createdImage);
-});
-
-// @desc    Delete a gallery image
-// @route   DELETE /api/gallery/:id
-// @access  Private/Admin
-const deleteGalleryImage = asyncHandler(async (req, res) => {
-  const image = await GalleryImage.findById(req.params.id);
-
-  if (!image) {
-    res.status(404);
-    throw new Error('Image not found');
-  }
-
-  // ✅ Delete image from Cloudinary
-  if (image.publicId) {
-    try {
-      await cloudinary.uploader.destroy(image.publicId);
-    } catch (error) {
-      console.error('Cloudinary delete failed:', error.message);
+// ✅ Upload image
+export const uploadGalleryImage = async (req, res) => {
+  try {
+    if (!req.file || !req.file.path) {
+      return res.status(400).json({ message: 'No image uploaded' });
     }
+
+    const image = await Gallery.create({
+      title: req.body.title || 'Untitled',
+      imageUrl: req.file.path, // Cloudinary URL automatically
+      public_id: req.file.filename,
+      altText: req.body.altText || '',
+    });
+
+    res.status(201).json(image);
+  } catch (error) {
+    console.error('Error uploading gallery image:', error);
+    res.status(500).json({ message: 'Error uploading image' });
   }
+};
 
-  await GalleryImage.deleteOne({ _id: image._id });
-  res.json({ message: 'Image removed successfully' });
-});
+// ✅ Get all images
+export const getGalleryImages = async (req, res) => {
+  try {
+    const images = await Gallery.find().sort({ createdAt: -1 });
+    res.json(images);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch images' });
+  }
+};
 
-export { getGalleryImages, uploadGalleryImage, deleteGalleryImage };
+// ✅ Delete an image
+export const deleteGalleryImage = async (req, res) => {
+  try {
+    const image = await Gallery.findById(req.params.id);
+    if (!image) return res.status(404).json({ message: 'Image not found' });
+
+    if (image.public_id) {
+      await cloudinary.uploader.destroy(image.public_id);
+    }
+
+    await image.deleteOne();
+    res.json({ message: 'Image deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete image' });
+  }
+};

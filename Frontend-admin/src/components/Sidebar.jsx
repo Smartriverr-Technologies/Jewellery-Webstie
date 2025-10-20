@@ -108,6 +108,12 @@ const Sidebar = () => {
                 {!isCollapsed && <span>Settings</span>}
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/gallery-images">
+                <FaCog className="icon" />
+                {!isCollapsed && <span>admin Gallery</span>}
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </div>

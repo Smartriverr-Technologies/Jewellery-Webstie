@@ -18,6 +18,7 @@ import CategoryManagePage from './pages/CategoryManagePage';
 import SettingsPage from './pages/SettingsPage';
 import GalleryPage from './pages/GalleryPage';
 import SocialVideoManagePage from './pages/SocialVideoManagePage';
+import AdminGallery from './pages/AdminGallery';
 function App() {
   return (
     <Routes>
@@ -38,6 +39,7 @@ function App() {
            <Route path="categories" element={<CategoryManagePage />} />
            <Route path="settings" element={<SettingsPage />} />
            <Route path="gallery" element={<GalleryPage />} />
+           <Route path="gallery-images" element={<AdminGallery />} />
             <Route path="social-videos" element={<SocialVideoManagePage />} />
           {/* Routes for orders and users will go here */}
         </Route>
