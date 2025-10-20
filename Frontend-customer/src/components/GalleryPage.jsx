@@ -928,10 +928,80 @@
 
 // export default GalleryPage;
 
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import { useQuery } from '@tanstack/react-query';
+// import { Container, Typography, ImageList, ImageListItem, Box, CircularProgress, Dialog, IconButton } from '@mui/material';
+// import CloseIcon from '@mui/icons-material/Close';
+
+// const API_URL = import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onrender.com';
+
+// const GalleryPage = () => {
+//   const [selected, setSelected] = useState(null);
+
+//   const { data: images, isLoading } = useQuery({
+//     queryKey: ['galleryImages'],
+//     queryFn: async () => {
+//       const { data } = await axios.get(`${API_URL}/api/gallery`);
+//       return data;
+//     },
+//   });
+
+//   return (
+//     <Container sx={{ py: 6 }}>
+//       <Typography variant="h3" align="center" mb={4}>Our Gallery</Typography>
+
+//       {isLoading ? (
+//         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+//           <CircularProgress />
+//         </Box>
+//       ) : (
+//         <ImageList variant="masonry" cols={3} gap={16}>
+//           {images?.map((img) => (
+//             <ImageListItem key={img._id} onClick={() => setSelected(img)}>
+//               <img
+//                 src={img.imageUrl}
+//                 alt={img.title}
+//                 loading="lazy"
+//                 style={{ borderRadius: '10px', cursor: 'pointer' }}
+//               />
+//             </ImageListItem>
+//           ))}
+//         </ImageList>
+//       )}
+
+//       <Dialog open={!!selected} onClose={() => setSelected(null)} maxWidth="lg">
+//         <IconButton
+//           onClick={() => setSelected(null)}
+//           sx={{ position: 'absolute', top: 10, right: 10, color: 'white' }}
+//         >
+//           <CloseIcon />
+//         </IconButton>
+//         {selected && (
+//           <Box sx={{ p: 4, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+//             <img src={selected.imageUrl} alt={selected.title} style={{ maxWidth: '90vw', maxHeight: '80vh' }} />
+//           </Box>
+//         )}
+//       </Dialog>
+//     </Container>
+//   );
+// };
+
+// export default GalleryPage;
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { Container, Typography, ImageList, ImageListItem, Box, CircularProgress, Dialog, IconButton } from '@mui/material';
+import {
+  Container,
+  Typography,
+  ImageList,
+  ImageListItem,
+  Box,
+  CircularProgress,
+  Dialog,
+  IconButton
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onrender.com';
@@ -939,6 +1009,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onr
 const GalleryPage = () => {
   const [selected, setSelected] = useState(null);
 
+  // ✅ Fetch gallery images
   const { data: images, isLoading } = useQuery({
     queryKey: ['galleryImages'],
     queryFn: async () => {
@@ -947,9 +1018,24 @@ const GalleryPage = () => {
     },
   });
 
+  // ✅ Utility to handle Cloudinary URL cleanly
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    // Sometimes backend mistakenly returns something like:
+    // "https://jewellery-webstie-3.onrender.comhttps://res.cloudinary.com/..."
+    // This will fix it automatically:
+    if (url.includes('cloudinary.com')) {
+      const start = url.indexOf('https://res.cloudinary.com');
+      return url.slice(start);
+    }
+    return url;
+  };
+
   return (
     <Container sx={{ py: 6 }}>
-      <Typography variant="h3" align="center" mb={4}>Our Gallery</Typography>
+      <Typography variant="h3" align="center" mb={4} fontWeight="bold">
+        Our Gallery
+      </Typography>
 
       {isLoading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
@@ -960,16 +1046,22 @@ const GalleryPage = () => {
           {images?.map((img) => (
             <ImageListItem key={img._id} onClick={() => setSelected(img)}>
               <img
-                src={img.imageUrl}
-                alt={img.title}
+                src={getImageUrl(img.imageUrl)} // ✅ Fixed here
+                alt={img.title || 'Gallery Image'}
                 loading="lazy"
-                style={{ borderRadius: '10px', cursor: 'pointer' }}
+                style={{
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  width: '100%',
+                  display: 'block',
+                }}
               />
             </ImageListItem>
           ))}
         </ImageList>
       )}
 
+      {/* ✅ Image Preview Dialog */}
       <Dialog open={!!selected} onClose={() => setSelected(null)} maxWidth="lg">
         <IconButton
           onClick={() => setSelected(null)}
@@ -978,8 +1070,19 @@ const GalleryPage = () => {
           <CloseIcon />
         </IconButton>
         {selected && (
-          <Box sx={{ p: 4, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <img src={selected.imageUrl} alt={selected.title} style={{ maxWidth: '90vw', maxHeight: '80vh' }} />
+          <Box
+            sx={{
+              p: 4,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <img
+              src={getImageUrl(selected.imageUrl)} // ✅ Fixed here too
+              alt={selected.title || 'Gallery Image'}
+              style={{ maxWidth: '90vw', maxHeight: '80vh', borderRadius: '10px' }}
+            />
           </Box>
         )}
       </Dialog>
