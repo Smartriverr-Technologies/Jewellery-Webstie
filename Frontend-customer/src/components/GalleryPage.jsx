@@ -620,11 +620,7 @@
 // //     ? `${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
 // //     : `${API_URL}/${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
 // // }
-// srcSet={
-//     item.imageUrl?.startsWith('http')
-//       ? `${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`
-//       : `${API_URL.replace(/\/$/, '')}/${item.imageUrl.replace(/^\//, '')}?w=400&fit=crop&auto=format&dpr=2 2x`
-//   }
+
 //   alt={item.altText || 'Gallery Image'}
 //   loading="lazy"
 //   onError={(e) => {
@@ -712,9 +708,9 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import {
-  Container, Typography, ImageList, ImageListItem,
-  CircularProgress, Alert, Box, Fade, Dialog, IconButton
+import { 
+  Container, Typography, ImageList, ImageListItem, 
+  CircularProgress, Alert, Box, Fade, Dialog, IconButton 
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
@@ -736,7 +732,9 @@ const ImageWrapper = styled(Box)({
   '&:hover': {
     transform: 'translateY(-8px)',
     boxShadow: '0 12px 24px rgba(0, 0, 0, 0.15)',
-    '& img': { transform: 'scale(1.05)' },
+    '& img': {
+      transform: 'scale(1.05)',
+    },
   },
 });
 
@@ -760,8 +758,7 @@ const FullScreenDialog = styled(Dialog)({
 const GalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // your backend base API (no trailing slash)
-  const API_URL = (import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onrender.com').replace(/\/$/, '');
+  const API_URL = import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onrender.com';
 
   const { data: images, isLoading, isError } = useQuery({
     queryKey: ['galleryImages'],
@@ -771,91 +768,150 @@ const GalleryPage = () => {
     },
   });
 
-  // Helper: return correct absolute URL for an image
-  const getImageSrc = (imageUrl) => {
-    if (!imageUrl) return '';
-    // If it's already an absolute URL (http/https), return as-is
-    if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
-    // Otherwise assume it's a relative path in the backend and build the full URL
-    return `${API_URL}/${imageUrl.replace(/^\/+/, '')}`;
-  };
-
   const handleImageClick = (image) => setSelectedImage(image);
   const handleClose = () => setSelectedImage(null);
+
+  // ✅ Function to handle both Cloudinary and local images
+  const getImageUrl = (url) => {
+    if (!url) return 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+    return url.startsWith('http')
+      ? url
+      : `${API_URL.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
+  };
 
   return (
     <StyledContainer>
       <Fade in timeout={800}>
         <Box>
-          <Typography variant="h3" component="h1" align="center" gutterBottom
-            sx={{ fontWeight: 700, background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', mb: 2 }}>
+          <Typography 
+            variant="h3" 
+            component="h1" 
+            align="center" 
+            gutterBottom
+            sx={{ 
+              fontWeight: 700,
+              background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              mb: 2,
+            }}
+          >
             Our Gallery
           </Typography>
-          <Typography variant="h6" align="center" color="text.secondary" sx={{ mb: 6, maxWidth: 700, mx: 'auto' }}>
+          <Typography 
+            variant="h6" 
+            align="center" 
+            color="text.secondary" 
+            sx={{ mb: 6, maxWidth: 700, mx: 'auto' }}
+          >
             Explore our exquisite collection and moments captured in stunning detail
           </Typography>
         </Box>
       </Fade>
-
+      
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
           <CircularProgress size={60} />
         </Box>
       )}
-
+      
       {isError && (
         <Alert severity="error" sx={{ borderRadius: 2 }}>
           Could not load the gallery at this time. Please try again later.
         </Alert>
       )}
-
+      
       {images && (
         <Fade in timeout={1000}>
-          <ImageList variant="masonry" cols={3} gap={16} sx={{
-            '@media (max-width: 900px)': { columnCount: 2 },
-            '@media (max-width: 600px)': { columnCount: 1 },
-          }}>
-            {images.map((item, index) => {
-              const absoluteSrc = getImageSrc(item.imageUrl);
-              const srcSet = `${absoluteSrc}?w=400&fit=crop&auto=format&dpr=2 2x`;
-
-              return (
-                <ImageListItem key={item._id} sx={{
+          <ImageList 
+            variant="masonry" 
+            cols={3} 
+            gap={16}
+            sx={{
+              '@media (max-width: 900px)': {
+                columnCount: 2,
+              },
+              '@media (max-width: 600px)': {
+                columnCount: 1,
+              },
+            }}
+          >
+            {images.map((item, index) => (
+              <ImageListItem 
+                key={item._id}
+                sx={{
                   animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`,
                   '@keyframes fadeInUp': {
-                    from: { opacity: 0, transform: 'translateY(30px)' },
-                    to: { opacity: 1, transform: 'translateY(0)' },
+                    from: {
+                      opacity: 0,
+                      transform: 'translateY(30px)',
+                    },
+                    to: {
+                      opacity: 1,
+                      transform: 'translateY(0)',
+                    },
                   },
-                }}>
-                  <ImageWrapper onClick={() => handleImageClick(item)}>
-                    <StyledImage
-                      src={absoluteSrc}
-                      srcSet={srcSet}
-                      alt={item.altText || 'Gallery Image'}
-                      loading="lazy"
-                      onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found'; }}
-                    />
-                  </ImageWrapper>
-                </ImageListItem>
-              );
-            })}
+                }}
+              >
+                <ImageWrapper onClick={() => handleImageClick(item)}>
+                  <StyledImage
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.altText || 'Gallery Image'}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+                    }}
+                  />
+                </ImageWrapper>
+              </ImageListItem>
+            ))}
           </ImageList>
         </Fade>
       )}
 
-      <FullScreenDialog open={!!selectedImage} onClose={handleClose} maxWidth="xl" fullWidth>
-        <IconButton onClick={handleClose} sx={{
-          position: 'absolute', top: 20, right: 20, color: 'white',
-          backgroundColor: 'rgba(255,255,255,0.1)', '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, zIndex: 1,
-        }}>
+      {/* Fullscreen Image Modal */}
+      <FullScreenDialog
+        open={!!selectedImage}
+        onClose={handleClose}
+        maxWidth="xl"
+        fullWidth
+      >
+        <IconButton
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            top: 20,
+            right: 20,
+            color: 'white',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            },
+            zIndex: 1,
+          }}
+        >
           <CloseIcon />
         </IconButton>
         {selectedImage && (
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', p: 4 }}>
-            <img src={getImageSrc(selectedImage.imageUrl)} alt={selectedImage.altText} style={{
-              maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: '8px',
-            }} />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              p: 4,
+            }}
+          >
+            <img
+              src={getImageUrl(selectedImage.imageUrl)}
+              alt={selectedImage.altText || 'Gallery Image'}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain',
+                borderRadius: '8px',
+              }}
+            />
           </Box>
         )}
       </FullScreenDialog>
@@ -864,4 +920,3 @@ const GalleryPage = () => {
 };
 
 export default GalleryPage;
-
