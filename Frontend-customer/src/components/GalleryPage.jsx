@@ -989,6 +989,109 @@
 
 // export default GalleryPage;
 
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import { useQuery } from '@tanstack/react-query';
+// import {
+//   Container,
+//   Typography,
+//   ImageList,
+//   ImageListItem,
+//   Box,
+//   CircularProgress,
+//   Dialog,
+//   IconButton
+// } from '@mui/material';
+// import CloseIcon from '@mui/icons-material/Close';
+
+// const API_URL = import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onrender.com';
+
+// const GalleryPage = () => {
+//   const [selected, setSelected] = useState(null);
+
+//   // ✅ Fetch gallery images
+//   const { data: images, isLoading } = useQuery({
+//     queryKey: ['galleryImages'],
+//     queryFn: async () => {
+//       const { data } = await axios.get(`${API_URL}/api/gallery`);
+//       return data;
+//     },
+//   });
+
+//   // ✅ Utility to handle Cloudinary URL cleanly
+//   const getImageUrl = (url) => {
+//     if (!url) return '';
+//     // Sometimes backend mistakenly returns something like:
+//     // "https://jewellery-webstie-3.onrender.comhttps://res.cloudinary.com/..."
+//     // This will fix it automatically:
+//     if (url.includes('cloudinary.com')) {
+//       const start = url.indexOf('https://res.cloudinary.com');
+//       return url.slice(start);
+//     }
+//     return url;
+//   };
+
+//   return (
+//     <Container sx={{ py: 6 }}>
+//       <Typography variant="h3" align="center" mb={4} fontWeight="bold">
+//         Our Gallery
+//       </Typography>
+
+//       {isLoading ? (
+//         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+//           <CircularProgress />
+//         </Box>
+//       ) : (
+//         <ImageList variant="masonry" cols={3} gap={16}>
+//           {images?.map((img) => (
+//             <ImageListItem key={img._id} onClick={() => setSelected(img)}>
+//               <img
+//                 src={getImageUrl(img.imageUrl)} // ✅ Fixed here
+//                 alt={img.title || 'Gallery Image'}
+//                 loading="lazy"
+//                 style={{
+//                   borderRadius: '10px',
+//                   cursor: 'pointer',
+//                   width: '100%',
+//                   display: 'block',
+//                 }}
+//               />
+//             </ImageListItem>
+//           ))}
+//         </ImageList>
+//       )}
+
+//       {/* ✅ Image Preview Dialog */}
+//       <Dialog open={!!selected} onClose={() => setSelected(null)} maxWidth="lg">
+//         <IconButton
+//           onClick={() => setSelected(null)}
+//           sx={{ position: 'absolute', top: 10, right: 10, color: 'white' }}
+//         >
+//           <CloseIcon />
+//         </IconButton>
+//         {selected && (
+//           <Box
+//             sx={{
+//               p: 4,
+//               display: 'flex',
+//               justifyContent: 'center',
+//               alignItems: 'center',
+//             }}
+//           >
+//             <img
+//               src={getImageUrl(selected.imageUrl)} // ✅ Fixed here too
+//               alt={selected.title || 'Gallery Image'}
+//               style={{ maxWidth: '90vw', maxHeight: '80vh', borderRadius: '10px' }}
+//             />
+//           </Box>
+//         )}
+//       </Dialog>
+//     </Container>
+//   );
+// };
+
+// export default GalleryPage;
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
@@ -1000,7 +1103,7 @@ import {
   Box,
   CircularProgress,
   Dialog,
-  IconButton
+  IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -1009,7 +1112,6 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://jewellery-webstie-3.onr
 const GalleryPage = () => {
   const [selected, setSelected] = useState(null);
 
-  // ✅ Fetch gallery images
   const { data: images, isLoading } = useQuery({
     queryKey: ['galleryImages'],
     queryFn: async () => {
@@ -1018,17 +1120,14 @@ const GalleryPage = () => {
     },
   });
 
-  // ✅ Utility to handle Cloudinary URL cleanly
-  const getImageUrl = (url) => {
+  // ✅ Helper to ensure only clean Cloudinary URLs are used
+  const getCleanUrl = (url = '') => {
     if (!url) return '';
-    // Sometimes backend mistakenly returns something like:
-    // "https://jewellery-webstie-3.onrender.comhttps://res.cloudinary.com/..."
-    // This will fix it automatically:
-    if (url.includes('cloudinary.com')) {
-      const start = url.indexOf('https://res.cloudinary.com');
-      return url.slice(start);
+    const cloudinaryIndex = url.indexOf('https://res.cloudinary.com');
+    if (cloudinaryIndex !== -1) {
+      return url.slice(cloudinaryIndex); // Removes backend prefix
     }
-    return url;
+    return url; // Return as-is if already clean
   };
 
   return (
@@ -1046,7 +1145,7 @@ const GalleryPage = () => {
           {images?.map((img) => (
             <ImageListItem key={img._id} onClick={() => setSelected(img)}>
               <img
-                src={getImageUrl(img.imageUrl)} // ✅ Fixed here
+                src={getCleanUrl(img.imageUrl)} // ✅ Fixed
                 alt={img.title || 'Gallery Image'}
                 loading="lazy"
                 style={{
@@ -1061,7 +1160,6 @@ const GalleryPage = () => {
         </ImageList>
       )}
 
-      {/* ✅ Image Preview Dialog */}
       <Dialog open={!!selected} onClose={() => setSelected(null)} maxWidth="lg">
         <IconButton
           onClick={() => setSelected(null)}
@@ -1069,6 +1167,7 @@ const GalleryPage = () => {
         >
           <CloseIcon />
         </IconButton>
+
         {selected && (
           <Box
             sx={{
@@ -1079,9 +1178,13 @@ const GalleryPage = () => {
             }}
           >
             <img
-              src={getImageUrl(selected.imageUrl)} // ✅ Fixed here too
+              src={getCleanUrl(selected.imageUrl)} // ✅ Fixed again
               alt={selected.title || 'Gallery Image'}
-              style={{ maxWidth: '90vw', maxHeight: '80vh', borderRadius: '10px' }}
+              style={{
+                maxWidth: '90vw',
+                maxHeight: '80vh',
+                borderRadius: '10px',
+              }}
             />
           </Box>
         )}
