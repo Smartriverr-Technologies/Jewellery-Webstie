@@ -8,12 +8,27 @@ const getSocialVideos = asyncHandler(async (req, res) => {
 });
 
 // @desc    Create a new social video
+// const createSocialVideo = asyncHandler(async (req, res) => {
+//   const { videoUrl, hashtag } = req.body;
+//   if (!videoUrl || !hashtag) {
+//     res.status(400);
+//     throw new Error('Video URL and hashtag are required');
+//   }
+//   const video = new SocialVideo({ videoUrl, hashtag });
+//   const createdVideo = await video.save();
+//   res.status(201).json(createdVideo);
+// });
+
 const createSocialVideo = asyncHandler(async (req, res) => {
-  const { videoUrl, hashtag } = req.body;
-  if (!videoUrl || !hashtag) {
+  const { hashtag } = req.body;
+
+  if (!req.file) {
     res.status(400);
-    throw new Error('Video URL and hashtag are required');
+    throw new Error('No video file uploaded');
   }
+
+  const videoUrl = req.file.path; // ✅ Cloudinary URL from multer-storage-cloudinary
+
   const video = new SocialVideo({ videoUrl, hashtag });
   const createdVideo = await video.save();
   res.status(201).json(createdVideo);
