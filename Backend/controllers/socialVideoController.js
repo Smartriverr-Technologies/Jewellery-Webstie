@@ -2,11 +2,15 @@ import asyncHandler from 'express-async-handler';
 import SocialVideo from '../models/socialVideoModel.js';
 
 // @desc    Get all social videos
-const getSocialVideos = asyncHandler(async (req, res) => {
-  const videos = await SocialVideo.find({}).sort({ sortOrder: 1 }).limit(6);
-  res.json(videos);
-});
+// const getSocialVideos = asyncHandler(async (req, res) => {
+//   const videos = await SocialVideo.find({}).sort({ sortOrder: 1 }).limit(6);
+//   res.json(videos);
+// });
 
+const getSocialVideos = async (req, res) => {
+  const videos = await SocialVideo.find().sort({ createdAt: -1 }); // latest first
+  res.json(videos);
+};
 // @desc    Create a new social video
 // const createSocialVideo = asyncHandler(async (req, res) => {
 //   const { videoUrl, hashtag } = req.body;
