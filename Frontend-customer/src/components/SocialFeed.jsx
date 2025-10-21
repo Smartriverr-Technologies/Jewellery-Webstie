@@ -71,7 +71,7 @@ const SocialFeed = () => {
                     background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 50%)',
                     opacity: 0, transition: 'opacity 0.3s ease'
                   }}/>
-                  <video
+                  {/* <video
                     src={`${import.meta.env.VITE_API_URL}${video.videoUrl}`}
                     width="100%"
                     height="100%"
@@ -80,7 +80,17 @@ const SocialFeed = () => {
                     muted
                     playsInline
                     style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
-                  />
+                  /> */}
+                  <video
+  src={video.videoUrl.startsWith('http') ? video.videoUrl : `${import.meta.env.VITE_API_URL}${video.videoUrl}`}
+  width="100%"
+  height="100%"
+  autoPlay
+  loop
+  muted
+  playsInline
+  style={{ objectFit: 'cover', transition: 'transform 0.3s ease' }}
+/>
                 </Paper>
               </motion.div>
             </Grid>
