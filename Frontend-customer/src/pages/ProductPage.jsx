@@ -58,8 +58,12 @@ const ProductPage = () => {
   const stockCount = product.variants[0]?.stock || 0;
 
   const imagesForGallery = product.images.map(img => ({
-    original: `${import.meta.env.VITE_API_URL}${img.url}`,
-    thumbnail: `${import.meta.env.VITE_API_URL}${img.url}`,
+    original: img.url.startsWith('http')
+      ? img.url
+      : `${import.meta.env.VITE_API_URL}${img.url}`,
+    thumbnail: img.url.startsWith('http')
+      ? img.url
+      : `${import.meta.env.VITE_API_URL}${img.url}`,
     originalAlt: product.title,
     thumbnailAlt: product.title,
   }));
