@@ -107,7 +107,7 @@ import { admin } from '../middleware/adminMiddleware.js';
 const router = express.Router();
 
 // Image Upload (single or multiple)
-router.post('/', protect, admin, upload.array('media', 5), (req, res) => {
+router.post('/', protect, admin, upload.array('media', 20), (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: 'No files uploaded' });
