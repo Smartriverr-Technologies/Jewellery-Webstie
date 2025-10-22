@@ -218,13 +218,15 @@ app.options(/.*/, cors());
     if (process.env.NODE_ENV === 'production') {
       // --- Admin Frontend ---
       app.use('/admin', express.static(path.join(__dirname, 'frontend-admin', 'dist')));
-      app.get('/admin/*', (req, res) => {
+      // Catch-all for admin routes
+      app.use('/admin', (req, res) => {
         res.sendFile(path.join(__dirname, 'frontend-admin', 'dist', 'index.html'));
       });
 
       // --- Customer Frontend ---
       app.use(express.static(path.join(__dirname, 'frontend-customer', 'dist')));
-      app.get('*', (req, res) => {
+      // Catch-all for customer routes
+      app.use((req, res) => {
         res.sendFile(path.join(__dirname, 'frontend-customer', 'dist', 'index.html'));
       });
 
