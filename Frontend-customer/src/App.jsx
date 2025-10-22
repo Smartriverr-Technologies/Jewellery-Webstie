@@ -87,6 +87,9 @@ import SearchPage from './pages/SearchPage';
 import CategoryPage from './pages/CategoryPage';
 import GalleryPage from './pages/GalleryPage';
 import ShopPage from './pages/ShopPage';
+import Aboutus from './pages/Aboutus';
+import Contactus from './pages/Contactus';
+// import ShippingDelivery from './pages/ShippingDelivery';
 // import EmailVerifyPage from './pages/EmailVerifyPage';
 
 function App() {
@@ -107,6 +110,10 @@ function App() {
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/verify-email/:token" element={<EmailVerifyPage />} />
            <Route path="/shop" element={<ShopPage />} />
+           <Route path="/about-us" element={<Aboutus/>}/>
+            <Route path="/contact-us" element={<Contactus/>}/>
+            {/* <Route path="/shipping-delivery" element={<ShippingDelivery/>}/> */}
+
 
           {/* --- Protected Routes --- */}
           <Route path="" element={<ProtectedRoute />}>

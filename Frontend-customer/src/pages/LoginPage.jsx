@@ -362,11 +362,11 @@ const LoginPage = () => {
   return (
     <PageContainer>
       <LeftPanel>
-        <LogoText>Aura Jewels</LogoText>
+        {/* <LogoText>Aura Jewels</LogoText>
         <BrandDescription>
           Discover timeless elegance with our curated collection of fine jewellery. 
           Where craftsmanship meets luxury.
-        </BrandDescription>
+        </BrandDescription> */}
       </LeftPanel>
 
       <RightPanel>

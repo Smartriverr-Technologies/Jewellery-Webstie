@@ -396,10 +396,10 @@ const RegisterPage = () => {
   return (
     <PageContainer>
       <LeftPanel>
-        <LogoText>Aura Jewels</LogoText>
+        {/* <LogoText>Aura Jewels</LogoText>
         <BrandDescription>
           Join our community of jewellery enthusiasts and experience luxury like never before.
-        </BrandDescription>
+        </BrandDescription> */}
       </LeftPanel>
 
       <RightPanel>

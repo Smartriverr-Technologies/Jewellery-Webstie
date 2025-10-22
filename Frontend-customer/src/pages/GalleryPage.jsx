@@ -235,8 +235,6 @@ const GalleryPage = () => {
               >
                 <ImageWrapper onClick={() => handleImageClick(item)}>
                   <StyledImage
-                    srcSet={`${import.meta.env.VITE_API_URL}${item.imageUrl}?w=400&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${import.meta.env.VITE_API_URL}${item.imageUrl}?w=400&fit=crop&auto=format`}
                     src={item.imageUrl.startsWith('http')
                       ? `${item.imageUrl}?w=400&fit=crop&auto=format`
                       : `${import.meta.env.VITE_API_URL}${item.imageUrl}?w=400&fit=crop&auto=format`}
@@ -287,7 +285,6 @@ const GalleryPage = () => {
             }}
           >
             <img
-              src={`${import.meta.env.VITE_API_URL}${selectedImage.imageUrl}`}
               src={selectedImage.imageUrl.startsWith('http')
                 ? selectedImage.imageUrl
                 : `${import.meta.env.VITE_API_URL}${selectedImage.imageUrl}`}

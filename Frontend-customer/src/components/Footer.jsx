@@ -195,7 +195,7 @@ const FooterWrapper = styled(Box)(({ theme }) => ({
   color: '#ffffff',
   paddingTop: theme.spacing(8),
   paddingBottom: theme.spacing(3),
-  marginTop: theme.spacing(2),
+  // marginTop: theme.spacing(1),
   position: 'relative',
   '&::before': {
     content: '""',
@@ -298,15 +298,15 @@ const Footer = () => {
             <SectionTitle variant="h6">Quick Links</SectionTitle>
             <FooterLink href="/">Home</FooterLink>
             <FooterLink href="/gallery">Gallery</FooterLink>
-            <FooterLink href="/products">Collections</FooterLink>
-            <FooterLink href="/about">About Us</FooterLink>
-            <FooterLink href="/contact">Contact</FooterLink>
+            <FooterLink href="/shop">Collections</FooterLink>
+            <FooterLink href="/about-us">About Us</FooterLink>
+            <FooterLink href="/contact-us">Contact</FooterLink>
           </Grid>
 
           {/* Customer Service */}
           <Grid item xs={12} sm={6} md={3}>
             <SectionTitle variant="h6">Customer Care</SectionTitle>
-            <FooterLink href="/shipping">Shipping & Delivery</FooterLink>
+            <FooterLink href="/shipping-delivery">Shipping & Delivery</FooterLink>
             <FooterLink href="/returns">Returns & Exchange</FooterLink>
             <FooterLink href="/size-guide">Size Guide</FooterLink>
             <FooterLink href="/care">Jewellery Care</FooterLink>
