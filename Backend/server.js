@@ -217,16 +217,29 @@ app.options(/.*/, cors());
     // Production Build & Catch-all Route
     if (process.env.NODE_ENV === 'production') {
       // Admin Frontend
-      app.use('/admin', express.static(path.join(__dirname, '/frontend-admin/dist')));
-      app.get('/admin/*', (req, res) =>
-        res.sendFile(path.resolve(__dirname, 'frontend-admin', 'dist', 'index.html'))
-      );
+      // app.use('/admin', express.static(path.join(__dirname, '/frontend-admin/dist')));
+      // app.get('/admin/*', (req, res) =>
+      //   res.sendFile(path.resolve(__dirname, 'frontend-admin', 'dist', 'index.html'))
+      // );
 
-      // Customer Frontend
-      app.use('/', express.static(path.join(__dirname, '/frontend-customer/dist')));
-      app.get('/*', (req, res) =>
-        res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
-      );
+      // // Customer Frontend
+      // app.use('/', express.static(path.join(__dirname, '/frontend-customer/dist')));
+      // app.get('/*', (req, res) =>
+      //   res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
+      // );
+
+      // Admin Frontend
+app.use('/admin', express.static(path.join(__dirname, '/frontend-admin/dist')));
+app.get('/admin/(.*)', (req, res) =>
+  res.sendFile(path.resolve(__dirname, 'frontend-admin', 'dist', 'index.html'))
+);
+
+// Customer Frontend
+app.use('/', express.static(path.join(__dirname, '/frontend-customer/dist')));
+app.get('/(.*)', (req, res) =>
+  res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
+);
+
     } else {
       app.get('/', (req, res) => res.send('API is running in development mode.'));
     }
