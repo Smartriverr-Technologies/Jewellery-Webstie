@@ -65,9 +65,9 @@ const LoginPage = () => {
           {loading ? 'Signing In...' : 'Sign In'}
         </button>
 
-        <p className="auth-switch">
+        {/* <p className="auth-switch">
           New Customer? <Link to="/register">Register</Link>
-        </p>
+        </p> */}
       </form>
     </div>
   );
