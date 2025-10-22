@@ -244,7 +244,7 @@ const PlaceOrderPage = () => {
         <ListItemAvatar sx={{ minWidth: 90 }}>
           <Avatar
             variant="square"
-            src={`${import.meta.env.VITE_API_URL}${item.images[0]?.url}`}
+            src={item.images[0]?.url}
             sx={{
               width: 100,
               height: 100,
