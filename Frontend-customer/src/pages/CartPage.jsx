@@ -46,11 +46,17 @@ const CartPage = () => {
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <img
+                  {/* <img
                     src={`${import.meta.env.VITE_API_URL}${item.images[0]?.url}`}
                     alt={item.title}
                     className="cart-item-image"
-                  />
+                  /> */}
+                  <img
+  src={item.images[0]?.url}
+  alt={item.title}
+  className="cart-item-image"
+/>
+
                   <div className="cart-item-details">
                     <Link to={`/product/${item.slug}`} className="cart-item-title">
                       {item.title}
