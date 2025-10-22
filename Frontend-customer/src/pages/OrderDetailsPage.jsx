@@ -265,8 +265,12 @@ const OrderDetailsPage = () => {
                   <ListItemAvatar>
                     <Avatar
                       variant="rounded"
-                      // src={`${import.meta.env.VITE_API_URL}${item.image}`}
-                      src={item.images[0]?.url}
+                      src={
+            item.image?.startsWith('http')
+              ? item.image
+              : `${import.meta.env.VITE_API_URL || 'http://localhost:4000'}${item.image}`
+          }
+                      
                       sx={{ width: 64, height: 64, mr: 2, borderRadius: 2 }}
                     />
                   </ListItemAvatar>
