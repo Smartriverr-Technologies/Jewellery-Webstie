@@ -94,6 +94,79 @@
 
 // 
 
+// import 'dotenv/config';
+// import express from 'express';
+// import helmet from 'helmet';
+// import cors from 'cors';
+// import morgan from 'morgan';
+// import path from 'path';
+
+// // Local Imports
+// import connectDB from './config/db123.js';
+// import apiRoutes from './routes/index.js';
+// import uploadRoutes from './routes/uploadRoutes.js';
+// import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+
+// // Initialization
+// const app = express();
+// const __dirname = path.resolve();
+
+// // Middlewares
+// app.use(helmet({ contentSecurityPolicy: false }));
+// app.use(express.json());
+
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('dev'));
+// }
+
+// const allowedOrigins = [
+//   process.env.FRONTEND_URL,
+//   process.env.ADMIN_FRONTEND_URL
+// ];
+// if (process.env.NODE_ENV !== 'production') {
+//   allowedOrigins.push('http://localhost:5173', 'http://localhost:5174');
+// }
+// app.use(cors({ origin: allowedOrigins, credentials: true }));
+// app.options(/.*/, cors());
+
+// // Main Server Logic
+// (async () => {
+//   try {
+//     await connectDB();
+
+//     // API Routes
+//     app.use('/api', apiRoutes);
+//     app.use('/api/upload', uploadRoutes);
+    
+//     // Make 'uploads' folder static
+//     app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
+//     // Production Build & Catch-all Route
+//     if (process.env.NODE_ENV === 'production') {
+//       app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
+      
+//       // The corrected catch-all route that serves the frontend
+//       app.get(/.*/, (req, res) =>
+//         res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
+//       );
+//     } else {
+//       app.get('/', (req, res) => res.send('API is running in development mode.'));
+//     }
+
+//     // Error Handling Middleware (must be last)
+//     app.use(notFound);
+//     app.use(errorHandler);
+
+//     // Start Server
+//     const PORT = process.env.PORT || 4000;
+//     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+//   } catch (err) {
+//     console.error('Failed to start server:', err);
+//     process.exit(1);
+//   }
+// })();
+
 import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
@@ -119,6 +192,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// CORS setup
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.ADMIN_FRONTEND_URL
@@ -137,19 +211,25 @@ app.options(/.*/, cors());
     // API Routes
     app.use('/api', apiRoutes);
     app.use('/api/upload', uploadRoutes);
-    
-    // Make 'uploads' folder static
+
+    // Serve uploads folder
     app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-    // Production Build & Catch-all Route
     if (process.env.NODE_ENV === 'production') {
-      app.use(express.static(path.join(__dirname, '/frontend-customer/dist')));
-      
-      // The corrected catch-all route that serves the frontend
-      app.get(/.*/, (req, res) =>
-        res.sendFile(path.resolve(__dirname, 'frontend-customer', 'dist', 'index.html'))
-      );
+      // --- Admin Frontend ---
+      app.use('/admin', express.static(path.join(__dirname, 'frontend-admin', 'dist')));
+      app.get('/admin/*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'frontend-admin', 'dist', 'index.html'));
+      });
+
+      // --- Customer Frontend ---
+      app.use(express.static(path.join(__dirname, 'frontend-customer', 'dist')));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'frontend-customer', 'dist', 'index.html'));
+      });
+
     } else {
+      // Development mode
       app.get('/', (req, res) => res.send('API is running in development mode.'));
     }
 

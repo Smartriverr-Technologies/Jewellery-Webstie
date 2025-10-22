@@ -64,7 +64,7 @@
 
 
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import EmailVerifyPage from './pages/EmailVerifyPage';
 // Layout Components
 import Header from './components/Header';
@@ -97,6 +97,7 @@ function App() {
     <>
       <Header />
       <main className="main-container">
+       
         <Routes>
           {/* --- Public Routes --- */}
           <Route path="/" element={<HomePage />} />
@@ -125,6 +126,7 @@ function App() {
             <Route path="/wishlist" element={<WishlistPage />} />
           </Route>
         </Routes>
+        
       </main>
       <Footer />
     </>
