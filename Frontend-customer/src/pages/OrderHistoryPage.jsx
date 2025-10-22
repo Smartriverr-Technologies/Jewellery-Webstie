@@ -72,7 +72,7 @@ const OrderHistoryPage = () => {
                   >
                     <TableCell>{order._id}</TableCell>
                     <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell>${order.totalPrice}</TableCell>
+                    <TableCell>₹{order.totalPrice}</TableCell>
                     <TableCell>
                       <Tooltip title={order.isPaid ? `Paid on ${new Date(order.paidAt).toLocaleDateString()}` : 'Not Paid'}>
                         <span style={{ color: order.isPaid ? '#28a745' : '#dc3545', fontWeight: 600 }}>
