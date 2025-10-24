@@ -90,7 +90,7 @@ import ShopPage from './pages/ShopPage';
 import Aboutus from './pages/Aboutus';
 import Contactus from './pages/Contactus';
 import FloatingContact from './components/FloatingContact';
-// import ShippingDelivery from './pages/ShippingDelivery';
+import ShippingAndDelivery from './pages/ShippingAndDelivery';
 // import EmailVerifyPage from './pages/EmailVerifyPage';
 
 function App() {
@@ -114,7 +114,7 @@ function App() {
            <Route path="/shop" element={<ShopPage />} />
            <Route path="/about-us" element={<Aboutus/>}/>
             <Route path="/contact-us" element={<Contactus/>}/>
-            {/* <Route path="/shipping-delivery" element={<ShippingDelivery/>}/> */}
+            <Route path="/shipping-delivery" element={<ShippingAndDelivery/>}/>
 
 
           {/* --- Protected Routes --- */}
