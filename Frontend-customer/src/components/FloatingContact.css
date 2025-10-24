@@ -1,0 +1,77 @@
+.floating-container {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 9999;
+}
+
+.floating-button {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: #d4af37; /* gold-like color */
+  color: white;
+  font-size: 22px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.floating-button:hover {
+  transform: rotate(90deg);
+  background-color: #b8902e;
+}
+
+.contact-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+.contact-btn {
+  background: white;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.contact-btn:hover {
+  transform: scale(1.1);
+}
+
+.contact-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+.whatsapp img {
+  filter: drop-shadow(0 0 3px #25d366);
+}
+
+.call img {
+  filter: drop-shadow(0 0 3px #007bff);
+}
+
+.instagram img {
+  filter: drop-shadow(0 0 3px #e4405f);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
