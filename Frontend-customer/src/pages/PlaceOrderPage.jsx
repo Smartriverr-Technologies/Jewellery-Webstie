@@ -391,6 +391,56 @@ const PlaceOrderPage = () => {
             <Typography variant="caption" color="text.secondary">
               By placing your order, you agree to our terms and conditions.
             </Typography>
+            {/* Delivery & Exchange Info Box */}
+<Box
+  sx={{
+    mt: 3,
+    p: 2.5,
+    borderRadius: 2,
+    border: "1px solid #e0d7c6",
+    background: "linear-gradient(145deg, #fffdf8, #fffaf0)",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+    textAlign: "left",
+  }}
+>
+  <Typography
+    variant="h6"
+    sx={{
+      color: "#B8860B",
+      fontWeight: 700,
+      fontSize: "1.1rem",
+      mb: 1,
+    }}
+  >
+    Shipping & Exchange Policy
+  </Typography>
+
+  <Typography
+    variant="body2"
+    sx={{
+      color: "#444",
+      lineHeight: 1.7,
+      mb: 1,
+    }}
+  >
+    Your jewellery will be carefully crafted and shipped within{" "}
+    <strong>5–7 business days</strong> after placing the order. We ensure
+    every piece reaches you with elegance and safety.
+  </Typography>
+
+  <Typography
+    variant="body2"
+    sx={{
+      color: "#444",
+      lineHeight: 1.7,
+    }}
+  >
+    Please note: <strong>No refunds</strong> are available. However, we offer
+    smooth and hassle-free <strong>exchange options</strong> in case of size
+    or manufacturing defects.
+  </Typography>
+</Box>
+
           </Paper>
         </Grid>
       </Grid>
