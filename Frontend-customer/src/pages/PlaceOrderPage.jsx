@@ -397,8 +397,8 @@ const PlaceOrderPage = () => {
           </Paper>
           <Box
   sx={{
-    mt: 3,
-    p: 2.5,
+    mt: 1,
+    p: 1,
     borderRadius: 2,
     border: "1px solid #e0d7c6",
     background: "linear-gradient(145deg, #fffdf8, #fffaf0)",
