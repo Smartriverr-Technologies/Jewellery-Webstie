@@ -267,9 +267,16 @@ const OrderDetailsPage = () => {
   href={`${import.meta.env.VITE_CUSTOMER_SITE_URL}/product/slug/${item.slug}`}
   target="_blank"
   rel="noopener noreferrer"
+   style={{
+                          textDecoration: 'none',
+                          color: '#333',
+                          fontWeight: 600,
+                        }}
 >
   {item.name}
+
 </a>
+
                     }
                     secondary={`${item.qty} x ₹${item.price}`}
                   />
