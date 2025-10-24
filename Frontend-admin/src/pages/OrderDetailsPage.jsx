@@ -263,17 +263,13 @@ const OrderDetailsPage = () => {
 
                   <ListItemText
                     primary={
-                      <Link
-                        // ✅ Fixed product link (slug-based, not id-based)
-                        to={`/product/slug/${item.slug}`}
-                        style={{
-                          textDecoration: 'none',
-                          color: '#333',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {item.name}
-                      </Link>
+                      <a
+  href={`${import.meta.env.VITE_CUSTOMER_SITE_URL}/product/slug/${item.slug}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  {item.name}
+</a>
                     }
                     secondary={`${item.qty} x ₹${item.price}`}
                   />
