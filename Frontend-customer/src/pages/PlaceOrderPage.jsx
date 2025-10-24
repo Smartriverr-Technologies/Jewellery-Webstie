@@ -392,7 +392,10 @@ const PlaceOrderPage = () => {
               By placing your order, you agree to our terms and conditions.
             </Typography>
             {/* Delivery & Exchange Info Box */}
-<Box
+
+
+          </Paper>
+          <Box
   sx={{
     mt: 3,
     p: 2.5,
@@ -440,8 +443,6 @@ const PlaceOrderPage = () => {
     or manufacturing defects.
   </Typography>
 </Box>
-
-          </Paper>
         </Grid>
       </Grid>
     </Container>
