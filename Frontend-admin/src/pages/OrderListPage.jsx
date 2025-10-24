@@ -43,6 +43,17 @@ const OrderListPage = () => {
       }
     }
   };
+  const markPaidHandler = async (id) => {
+  if (window.confirm('Mark this order as paid?')) {
+    try {
+      const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
+      await api.put(`/api/orders/${id}/pay`, {}, config);
+      fetchOrders(); // Refresh after marking paid
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update order');
+    }
+  }
+};
 
   if (loading)
     return (
@@ -113,7 +124,17 @@ const OrderListPage = () => {
                     >
                       <FaTruck /> Mark Delivered
                     </button>
+                    
+                    
                   )}
+                  {!order.isPaid && (
+  <button
+    onClick={() => markPaidHandler(order._id)}
+    className="paid-btn"
+  >
+    💰 Mark Paid
+  </button>
+)}
                 </td>
               </tr>
             ))}

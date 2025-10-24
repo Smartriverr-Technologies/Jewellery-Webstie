@@ -146,3 +146,16 @@
   margin: 20px 0;
   font-weight: 500;
 }
+.paid-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+.paid-btn:hover {
+  background-color: #43a047;
+}

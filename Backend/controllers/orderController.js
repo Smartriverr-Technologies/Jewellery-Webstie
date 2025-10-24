@@ -280,6 +280,25 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   }
 });
 
+const updateOrderToPaid = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: `admin-${Date.now()}`,
+      status: 'marked-paid',
+      update_time: new Date().toISOString(),
+      email_address: order.user?.email || 'admin-marked',
+    };
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
 // @desc    Create Razorpay order
 // @route   POST /api/orders/:id/create-razorpay-order
 // @access  Private
@@ -336,4 +355,6 @@ export {
   updateOrderToDelivered,
   createRazorpayOrder,
   verifyRazorpayPayment,
+  updateOrderToPaid,
+
 };
