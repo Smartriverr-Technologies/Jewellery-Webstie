@@ -266,384 +266,384 @@
 // export default Header;
 
 
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-  Badge,
-  Menu,
-  MenuItem,
-  TextField,
-  Container,
-  InputAdornment,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Divider,
-  useMediaQuery,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import SearchIcon from "@mui/icons-material/Search";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
+// import React, { useState, useEffect } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import { useCart } from "../context/CartContext";
+// import { useAuth } from "../context/AuthContext";
+// import {
+//   AppBar,
+//   Box,
+//   Toolbar,
+//   Typography,
+//   Button,
+//   IconButton,
+//   Badge,
+//   Menu,
+//   MenuItem,
+//   TextField,
+//   Container,
+//   InputAdornment,
+//   Drawer,
+//   List,
+//   ListItem,
+//   ListItemButton,
+//   ListItemText,
+//   Divider,
+//   useMediaQuery,
+// } from "@mui/material";
+// import { useTheme } from "@mui/material/styles";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+// import AccountCircle from "@mui/icons-material/AccountCircle";
+// import SearchIcon from "@mui/icons-material/Search";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import CloseIcon from "@mui/icons-material/Close";
 
-const navLinks = [
-  "rings",
-  "chains",
-  "kada",
-  "bracelets",
-  "earrings",
-  "mangalsutras",
-  "choker-necklace",
-];
+// const navLinks = [
+//   "rings",
+//   "chains",
+//   "kada",
+//   "bracelets",
+//   "earrings",
+//   "mangalsutras",
+//   "choker-necklace",
+// ];
 
-const Header = () => {
-  const navigate = useNavigate();
-  const { cartItems } = useCart();
-  const { userInfo, logout } = useAuth();
+// const Header = () => {
+//   const navigate = useNavigate();
+//   const { cartItems } = useCart();
+//   const { userInfo, logout } = useAuth();
 
-  const [keyword, setKeyword] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [isShrunk, setIsShrunk] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+//   const [keyword, setKeyword] = useState("");
+//   const [anchorEl, setAnchorEl] = useState(null);
+//   const [isShrunk, setIsShrunk] = useState(false);
+//   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+//   const theme = useTheme();
+//   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const cartItemCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
+//   const cartItemCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
-  const handleMenu = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+//   const handleMenu = (event) => setAnchorEl(event.currentTarget);
+//   const handleClose = () => setAnchorEl(null);
 
-  const logoutHandler = () => {
-    logout();
-    handleClose();
-    navigate("/login");
-  };
+//   const logoutHandler = () => {
+//     logout();
+//     handleClose();
+//     navigate("/login");
+//   };
 
-  const searchHandler = (e) => {
-    e.preventDefault();
-    if (keyword.trim()) {
-      navigate(`/search/${keyword}`);
-      setKeyword("");
-    } else {
-      navigate("/");
-    }
-  };
+//   const searchHandler = (e) => {
+//     e.preventDefault();
+//     if (keyword.trim()) {
+//       navigate(`/search/${keyword}`);
+//       setKeyword("");
+//     } else {
+//       navigate("/");
+//     }
+//   };
 
-  const toggleDrawer = (open) => () => setDrawerOpen(open);
+//   const toggleDrawer = (open) => () => setDrawerOpen(open);
 
-  // Shrink on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 80) setIsShrunk(true);
-      else setIsShrunk(false);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+//   // Shrink on scroll
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       if (window.scrollY > 80) setIsShrunk(true);
+//       else setIsShrunk(false);
+//     };
+//     window.addEventListener("scroll", handleScroll);
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
 
-  return (
-    <>
-      <AppBar
-        position="fixed"
-        elevation={0}
-        sx={{
-          background: "rgba(255,255,255,0.9)",
-          backdropFilter: "blur(8px)",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
-          transition: "all 0.3s ease",
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar
-            disableGutters
-            sx={{
-              py: isShrunk ? 0.5 : 1.5,
-              justifyContent: "space-between",
-              transition: "all 0.3s ease",
-            }}
-          >
-            {/* Logo */}
-            <Typography
-              variant="h6"
-              component={Link}
-              to="/"
-              sx={{
-                textDecoration: "none",
-                color: "primary.main",
-                fontWeight: 700,
-                letterSpacing: 1,
-                fontSize: isShrunk ? "1.2rem" : "1.6rem",
-                transition: "all 0.3s ease",
-                "&:hover": { color: "secondary.main" },
-              }}
-            >
-              Aura Jewels
-            </Typography>
+//   return (
+//     <>
+//       <AppBar
+//         position="fixed"
+//         elevation={0}
+//         sx={{
+//           background: "rgba(255,255,255,0.9)",
+//           backdropFilter: "blur(8px)",
+//           borderBottom: "1px solid rgba(0,0,0,0.08)",
+//           transition: "all 0.3s ease",
+//         }}
+//       >
+//         <Container maxWidth="xl">
+//           <Toolbar
+//             disableGutters
+//             sx={{
+//               py: isShrunk ? 0.5 : 1.5,
+//               justifyContent: "space-between",
+//               transition: "all 0.3s ease",
+//             }}
+//           >
+//             {/* Logo */}
+//             <Typography
+//               variant="h6"
+//               component={Link}
+//               to="/"
+//               sx={{
+//                 textDecoration: "none",
+//                 color: "primary.main",
+//                 fontWeight: 700,
+//                 letterSpacing: 1,
+//                 fontSize: isShrunk ? "1.2rem" : "1.6rem",
+//                 transition: "all 0.3s ease",
+//                 "&:hover": { color: "secondary.main" },
+//               }}
+//             >
+//               Aura Jewels
+//             </Typography>
 
-            {/* Desktop Search */}
-            {!isMobile && (
-              <Box
-                component="form"
-                onSubmit={searchHandler}
-                sx={{ flexGrow: 1, mx: 4, maxWidth: 500 }}
-              >
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  placeholder="Search products..."
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  InputProps={{
-                    sx: {
-                      borderRadius: "50px",
-                      backgroundColor: "#fff",
-                      boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
-                      fontSize: isShrunk ? "0.85rem" : "1rem",
-                      height: isShrunk ? 36 : 44,
-                      transition: "all 0.3s ease",
-                    },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon color="action" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Box>
-            )}
+//             {/* Desktop Search */}
+//             {!isMobile && (
+//               <Box
+//                 component="form"
+//                 onSubmit={searchHandler}
+//                 sx={{ flexGrow: 1, mx: 4, maxWidth: 500 }}
+//               >
+//                 <TextField
+//                   variant="outlined"
+//                   size="small"
+//                   fullWidth
+//                   placeholder="Search products..."
+//                   value={keyword}
+//                   onChange={(e) => setKeyword(e.target.value)}
+//                   InputProps={{
+//                     sx: {
+//                       borderRadius: "50px",
+//                       backgroundColor: "#fff",
+//                       boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+//                       fontSize: isShrunk ? "0.85rem" : "1rem",
+//                       height: isShrunk ? 36 : 44,
+//                       transition: "all 0.3s ease",
+//                     },
+//                     startAdornment: (
+//                       <InputAdornment position="start">
+//                         <SearchIcon color="action" />
+//                       </InputAdornment>
+//                     ),
+//                   }}
+//                 />
+//               </Box>
+//             )}
 
-            {/* Right Actions */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              {/* Search Icon for mobile */}
-              {isMobile && (
-                <IconButton
-                  onClick={() => navigate("/search")}
-                  sx={{
-                    color: "text.primary",
-                    "&:hover": { transform: "scale(1.1)" },
-                  }}
-                >
-                  <SearchIcon />
-                </IconButton>
-              )}
+//             {/* Right Actions */}
+//             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+//               {/* Search Icon for mobile */}
+//               {isMobile && (
+//                 <IconButton
+//                   onClick={() => navigate("/search")}
+//                   sx={{
+//                     color: "text.primary",
+//                     "&:hover": { transform: "scale(1.1)" },
+//                   }}
+//                 >
+//                   <SearchIcon />
+//                 </IconButton>
+//               )}
 
-              {/* Cart */}
-              <IconButton
-                component={Link}
-                to="/cart"
-                size="large"
-                sx={{
-                  color: "text.primary",
-                  transition: "transform 0.2s ease",
-                  "&:hover": { transform: "scale(1.1)" },
-                }}
-              >
-                <Badge badgeContent={cartItemCount} color="primary">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
+//               {/* Cart */}
+//               <IconButton
+//                 component={Link}
+//                 to="/cart"
+//                 size="large"
+//                 sx={{
+//                   color: "text.primary",
+//                   transition: "transform 0.2s ease",
+//                   "&:hover": { transform: "scale(1.1)" },
+//                 }}
+//               >
+//                 <Badge badgeContent={cartItemCount} color="primary">
+//                   <ShoppingCartIcon />
+//                 </Badge>
+//               </IconButton>
 
-              {/* User */}
-              {!isMobile && userInfo ? (
-                <>
-                  <Button
-                    onClick={handleMenu}
-                    startIcon={<AccountCircle />}
-                    sx={{
-                      fontWeight: 600,
-                      textTransform: "none",
-                      borderRadius: "30px",
-                      px: 2,
-                      color: "text.primary",
-                    }}
-                  >
-                    {userInfo.name}
-                  </Button>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem
-                      component={Link}
-                      to="/profile"
-                      onClick={handleClose}
-                    >
-                      My Orders
-                    </MenuItem>
-                    <MenuItem
-                      component={Link}
-                      to="/wishlist"
-                      onClick={handleClose}
-                    >
-                      My Wishlist
-                    </MenuItem>
-                    <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-                  </Menu>
-                </>
-              ) : (
-                !isMobile && (
-                  <Button
-                    component={Link}
-                    to="/login"
-                    sx={{
-                      fontWeight: 600,
-                      textTransform: "none",
-                      borderRadius: "30px",
-                      px: 2,
-                      color: "text.primary",
-                    }}
-                  >
-                    Sign In
-                  </Button>
-                )
-              )}
+//               {/* User */}
+//               {!isMobile && userInfo ? (
+//                 <>
+//                   <Button
+//                     onClick={handleMenu}
+//                     startIcon={<AccountCircle />}
+//                     sx={{
+//                       fontWeight: 600,
+//                       textTransform: "none",
+//                       borderRadius: "30px",
+//                       px: 2,
+//                       color: "text.primary",
+//                     }}
+//                   >
+//                     {userInfo.name}
+//                   </Button>
+//                   <Menu
+//                     anchorEl={anchorEl}
+//                     open={Boolean(anchorEl)}
+//                     onClose={handleClose}
+//                   >
+//                     <MenuItem
+//                       component={Link}
+//                       to="/profile"
+//                       onClick={handleClose}
+//                     >
+//                       My Orders
+//                     </MenuItem>
+//                     <MenuItem
+//                       component={Link}
+//                       to="/wishlist"
+//                       onClick={handleClose}
+//                     >
+//                       My Wishlist
+//                     </MenuItem>
+//                     <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+//                   </Menu>
+//                 </>
+//               ) : (
+//                 !isMobile && (
+//                   <Button
+//                     component={Link}
+//                     to="/login"
+//                     sx={{
+//                       fontWeight: 600,
+//                       textTransform: "none",
+//                       borderRadius: "30px",
+//                       px: 2,
+//                       color: "text.primary",
+//                     }}
+//                   >
+//                     Sign In
+//                   </Button>
+//                 )
+//               )}
 
-              {/* Mobile Menu Button */}
-              {isMobile && (
-                <IconButton onClick={toggleDrawer(true)}>
-                  <MenuIcon />
-                </IconButton>
-              )}
-            </Box>
-          </Toolbar>
-        </Container>
+//               {/* Mobile Menu Button */}
+//               {isMobile && (
+//                 <IconButton onClick={toggleDrawer(true)}>
+//                   <MenuIcon />
+//                 </IconButton>
+//               )}
+//             </Box>
+//           </Toolbar>
+//         </Container>
 
-        {/* Desktop Navigation */}
-        {!isMobile && (
-          <Box
-            sx={{
-              width: "100%",
-              bgcolor: "rgba(255,255,255,0.95)",
-              borderTop: "1px solid rgba(0,0,0,0.05)",
-            }}
-          >
-            <Container maxWidth="lg">
-              <Toolbar
-                component="nav"
-                variant="dense"
-                sx={{
-                  justifyContent: "center",
-                  gap: 4,
-                  minHeight: isShrunk ? 38 : 48,
-                  transition: "all 0.3s ease",
-                }}
-              >
-                {navLinks.map((link) => (
-                  <Button
-                    key={link}
-                    component={Link}
-                    to={`/category/${link}`}
-                    sx={{
-                      color: "text.primary",
-                      fontWeight: 600,
-                      position: "relative",
-                      textTransform: "uppercase",
-                      fontSize: isShrunk ? "0.75rem" : "0.85rem",
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        width: 0,
-                        height: "2px",
-                        left: 0,
-                        bottom: -2,
-                        bgcolor: "primary.main",
-                        transition: "width 0.3s ease",
-                      },
-                      "&:hover::after": { width: "100%" },
-                    }}
-                  >
-                    {link}
-                  </Button>
-                ))}
-              </Toolbar>
-            </Container>
-          </Box>
-        )}
-      </AppBar>
+//         {/* Desktop Navigation */}
+//         {!isMobile && (
+//           <Box
+//             sx={{
+//               width: "100%",
+//               bgcolor: "rgba(255,255,255,0.95)",
+//               borderTop: "1px solid rgba(0,0,0,0.05)",
+//             }}
+//           >
+//             <Container maxWidth="lg">
+//               <Toolbar
+//                 component="nav"
+//                 variant="dense"
+//                 sx={{
+//                   justifyContent: "center",
+//                   gap: 4,
+//                   minHeight: isShrunk ? 38 : 48,
+//                   transition: "all 0.3s ease",
+//                 }}
+//               >
+//                 {navLinks.map((link) => (
+//                   <Button
+//                     key={link}
+//                     component={Link}
+//                     to={`/category/${link}`}
+//                     sx={{
+//                       color: "text.primary",
+//                       fontWeight: 600,
+//                       position: "relative",
+//                       textTransform: "uppercase",
+//                       fontSize: isShrunk ? "0.75rem" : "0.85rem",
+//                       "&::after": {
+//                         content: '""',
+//                         position: "absolute",
+//                         width: 0,
+//                         height: "2px",
+//                         left: 0,
+//                         bottom: -2,
+//                         bgcolor: "primary.main",
+//                         transition: "width 0.3s ease",
+//                       },
+//                       "&:hover::after": { width: "100%" },
+//                     }}
+//                   >
+//                     {link}
+//                   </Button>
+//                 ))}
+//               </Toolbar>
+//             </Container>
+//           </Box>
+//         )}
+//       </AppBar>
 
-      {/* Mobile Drawer Menu */}
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box
-          sx={{
-            width: 260,
-            p: 2,
-            backgroundColor: "#fff",
-            height: "100%",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 2,
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Menu
-            </Typography>
-            <IconButton onClick={toggleDrawer(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
+//       {/* Mobile Drawer Menu */}
+//       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+//         <Box
+//           sx={{
+//             width: 260,
+//             p: 2,
+//             backgroundColor: "#fff",
+//             height: "100%",
+//           }}
+//         >
+//           <Box
+//             sx={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//               mb: 2,
+//             }}
+//           >
+//             <Typography variant="h6" sx={{ fontWeight: 700 }}>
+//               Menu
+//             </Typography>
+//             <IconButton onClick={toggleDrawer(false)}>
+//               <CloseIcon />
+//             </IconButton>
+//           </Box>
 
-          <Divider sx={{ mb: 2 }} />
+//           <Divider sx={{ mb: 2 }} />
 
-          <List>
-            {navLinks.map((link) => (
-              <ListItem key={link} disablePadding>
-                <ListItemButton
-                  component={Link}
-                  to={`/category/${link}`}
-                  onClick={toggleDrawer(false)}
-                >
-                  <ListItemText primary={link.toUpperCase()} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+//           <List>
+//             {navLinks.map((link) => (
+//               <ListItem key={link} disablePadding>
+//                 <ListItemButton
+//                   component={Link}
+//                   to={`/category/${link}`}
+//                   onClick={toggleDrawer(false)}
+//                 >
+//                   <ListItemText primary={link.toUpperCase()} />
+//                 </ListItemButton>
+//               </ListItem>
+//             ))}
+//           </List>
 
-          <Divider sx={{ my: 2 }} />
+//           <Divider sx={{ my: 2 }} />
 
-          {userInfo ? (
-            <>
-              <ListItemButton component={Link} to="/profile">
-                <ListItemText primary="My Orders" />
-              </ListItemButton>
-              <ListItemButton component={Link} to="/wishlist">
-                <ListItemText primary="My Wishlist" />
-              </ListItemButton>
-              <ListItemButton onClick={logoutHandler}>
-                <ListItemText primary="Logout" />
-              </ListItemButton>
-            </>
-          ) : (
-            <ListItemButton component={Link} to="/login">
-              <ListItemText primary="Sign In" />
-            </ListItemButton>
-          )}
-        </Box>
-      </Drawer>
-    </>
-  );
-};
+//           {userInfo ? (
+//             <>
+//               <ListItemButton component={Link} to="/profile">
+//                 <ListItemText primary="My Orders" />
+//               </ListItemButton>
+//               <ListItemButton component={Link} to="/wishlist">
+//                 <ListItemText primary="My Wishlist" />
+//               </ListItemButton>
+//               <ListItemButton onClick={logoutHandler}>
+//                 <ListItemText primary="Logout" />
+//               </ListItemButton>
+//             </>
+//           ) : (
+//             <ListItemButton component={Link} to="/login">
+//               <ListItemText primary="Sign In" />
+//             </ListItemButton>
+//           )}
+//         </Box>
+//       </Drawer>
+//     </>
+//   );
+// };
 
-export default Header;
+// export default Header;
 
 // import React, { useState, useEffect } from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
@@ -1114,3 +1114,421 @@ export default Header;
 // };
 
 // export default Header;
+
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Badge,
+  Menu,
+  MenuItem,
+  TextField,
+  Container,
+  InputAdornment,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  useMediaQuery,
+  Fade,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+
+const navLinks = [
+  "rings",
+  "chains",
+  "kada",
+  "bracelets",
+  "earrings",
+  "mangalsutras",
+  "choker-necklace",
+];
+
+const Header = () => {
+  const navigate = useNavigate();
+  const { cartItems } = useCart();
+  const { userInfo, logout } = useAuth();
+
+  const [keyword, setKeyword] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isShrunk, setIsShrunk] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
+
+  const handleMenu = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
+  const logoutHandler = () => {
+    logout();
+    handleClose();
+    navigate("/login");
+  };
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    if (keyword.trim()) {
+      navigate(`/search/${keyword}`);
+      setKeyword("");
+    } else {
+      navigate("/");
+    }
+    setMobileSearchOpen(false); // Close search bar after searching
+  };
+
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
+
+  // Shrink navbar on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80) setIsShrunk(true);
+      else setIsShrunk(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <>
+      <AppBar
+        position="fixed"
+        elevation={0}
+        sx={{
+          background: "rgba(255,255,255,0.9)",
+          backdropFilter: "blur(8px)",
+          borderBottom: "1px solid rgba(0,0,0,0.08)",
+          transition: "all 0.3s ease",
+          zIndex: 1201,
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar
+            disableGutters
+            sx={{
+              py: isShrunk ? 0.5 : 1.5,
+              justifyContent: "space-between",
+              transition: "all 0.3s ease",
+              position: "relative",
+            }}
+          >
+            {/* Logo */}
+            <Typography
+              variant="h6"
+              component={Link}
+              to="/"
+              sx={{
+                textDecoration: "none",
+                color: "primary.main",
+                fontWeight: 700,
+                letterSpacing: 1,
+                fontSize: isShrunk ? "1.2rem" : "1.6rem",
+                transition: "all 0.3s ease",
+                "&:hover": { color: "secondary.main" },
+              }}
+            >
+              Aura Jewels
+            </Typography>
+
+            {/* Desktop Search */}
+            {!isMobile && (
+              <Box
+                component="form"
+                onSubmit={searchHandler}
+                sx={{ flexGrow: 1, mx: 4, maxWidth: 500 }}
+              >
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  placeholder="Search products..."
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  InputProps={{
+                    sx: {
+                      borderRadius: "50px",
+                      backgroundColor: "#fff",
+                      boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+                      fontSize: isShrunk ? "0.85rem" : "1rem",
+                      height: isShrunk ? 36 : 44,
+                      transition: "all 0.3s ease",
+                    },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+            )}
+
+            {/* Right Actions */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {/* Search Icon for mobile */}
+              {isMobile && (
+                <IconButton
+                  onClick={() => setMobileSearchOpen((prev) => !prev)}
+                  sx={{
+                    color: "text.primary",
+                    "&:hover": { transform: "scale(1.1)" },
+                  }}
+                >
+                  <SearchIcon />
+                </IconButton>
+              )}
+
+              {/* Cart */}
+              <IconButton
+                component={Link}
+                to="/cart"
+                size="large"
+                sx={{
+                  color: "text.primary",
+                  transition: "transform 0.2s ease",
+                  "&:hover": { transform: "scale(1.1)" },
+                }}
+              >
+                <Badge badgeContent={cartItemCount} color="primary">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+
+              {/* User */}
+              {!isMobile && userInfo ? (
+                <>
+                  <Button
+                    onClick={handleMenu}
+                    startIcon={<AccountCircle />}
+                    sx={{
+                      fontWeight: 600,
+                      textTransform: "none",
+                      borderRadius: "30px",
+                      px: 2,
+                      color: "text.primary",
+                    }}
+                  >
+                    {userInfo.name}
+                  </Button>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem component={Link} to="/profile" onClick={handleClose}>
+                      My Orders
+                    </MenuItem>
+                    <MenuItem component={Link} to="/wishlist" onClick={handleClose}>
+                      My Wishlist
+                    </MenuItem>
+                    <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                !isMobile && (
+                  <Button
+                    component={Link}
+                    to="/login"
+                    sx={{
+                      fontWeight: 600,
+                      textTransform: "none",
+                      borderRadius: "30px",
+                      px: 2,
+                      color: "text.primary",
+                    }}
+                  >
+                    Sign In
+                  </Button>
+                )
+              )}
+
+              {/* Mobile Menu Button */}
+              {isMobile && (
+                <IconButton onClick={toggleDrawer(true)}>
+                  <MenuIcon />
+                </IconButton>
+              )}
+            </Box>
+          </Toolbar>
+
+          {/* Animated Mobile Search */}
+          {isMobile && (
+            <Fade in={mobileSearchOpen} timeout={300}>
+              <Box
+                component="form"
+                onSubmit={searchHandler}
+                sx={{
+                  p: 1.5,
+                  display: "flex",
+                  justifyContent: "center",
+                  bgcolor: "#fff",
+                  borderTop: "1px solid rgba(0,0,0,0.05)",
+                }}
+              >
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  placeholder="Search products..."
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  InputProps={{
+                    sx: {
+                      borderRadius: "30px",
+                      backgroundColor: "#fff",
+                      boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+                    },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+            </Fade>
+          )}
+        </Container>
+
+        {/* Desktop Navigation */}
+        {!isMobile && (
+          <Box
+            sx={{
+              width: "100%",
+              bgcolor: "rgba(255,255,255,0.95)",
+              borderTop: "1px solid rgba(0,0,0,0.05)",
+            }}
+          >
+            <Container maxWidth="lg">
+              <Toolbar
+                component="nav"
+                variant="dense"
+                sx={{
+                  justifyContent: "center",
+                  gap: 4,
+                  minHeight: isShrunk ? 38 : 48,
+                  transition: "all 0.3s ease",
+                }}
+              >
+                {navLinks.map((link) => (
+                  <Button
+                    key={link}
+                    component={Link}
+                    to={`/category/${link}`}
+                    sx={{
+                      color: "text.primary",
+                      fontWeight: 600,
+                      position: "relative",
+                      textTransform: "uppercase",
+                      fontSize: isShrunk ? "0.75rem" : "0.85rem",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        width: 0,
+                        height: "2px",
+                        left: 0,
+                        bottom: -2,
+                        bgcolor: "primary.main",
+                        transition: "width 0.3s ease",
+                      },
+                      "&:hover::after": { width: "100%" },
+                    }}
+                  >
+                    {link}
+                  </Button>
+                ))}
+              </Toolbar>
+            </Container>
+          </Box>
+        )}
+      </AppBar>
+
+      {/* Mobile Drawer Menu */}
+      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Box
+          sx={{
+            width: 260,
+            p: 2,
+            backgroundColor: "#fff",
+            height: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Menu
+            </Typography>
+            <IconButton onClick={toggleDrawer(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          <Divider sx={{ mb: 2 }} />
+
+          <List>
+            {navLinks.map((link) => (
+              <ListItem key={link} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to={`/category/${link}`}
+                  onClick={toggleDrawer(false)}
+                >
+                  <ListItemText primary={link.toUpperCase()} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+
+          <Divider sx={{ my: 2 }} />
+
+          {userInfo ? (
+            <>
+              <ListItemButton component={Link} to="/profile" onClick={toggleDrawer(false)}>
+                <ListItemText primary="My Orders" />
+              </ListItemButton>
+              <ListItemButton component={Link} to="/wishlist" onClick={toggleDrawer(false)}>
+                <ListItemText primary="My Wishlist" />
+              </ListItemButton>
+              <ListItemButton onClick={() => { logoutHandler(); setDrawerOpen(false); }}>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </>
+          ) : (
+            <ListItemButton
+              component={Link}
+              to="/login"
+              onClick={toggleDrawer(false)} // closes sidebar on Sign In click
+            >
+              <ListItemText primary="Sign In" />
+            </ListItemButton>
+          )}
+        </Box>
+      </Drawer>
+    </>
+  );
+};
+
+export default Header;
