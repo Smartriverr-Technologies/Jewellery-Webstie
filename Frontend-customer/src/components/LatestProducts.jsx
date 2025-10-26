@@ -295,4 +295,3 @@ const LatestProducts = () => {
 };
 
 export default LatestProducts;
-
