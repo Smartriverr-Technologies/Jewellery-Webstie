@@ -400,7 +400,7 @@ export default function MobileHeroCarousel() {
   {
     id: 1,
     image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg',
-    badge: 'NEW ARRIVAL',
+    badge: 'NEW ARRIVAL 2',
     title: 'Stunning Every Ear',
     subtitle: 'Explore our exquisite earring collection',
     buttonText: 'SHOP NOW',
@@ -453,7 +453,7 @@ export default function MobileHeroCarousel() {
       <style>{`
         .mobile-hero-carousel { display: block; position: relative; width: 100%; height: 500px; overflow: hidden; background: #f8f8f8; }
         .carousel-container { display: flex; transition: transform 0.5s ease-in-out; height: 100%; }
-        .carousel-slide { min-width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; }
+        .carousel-slide { min-width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; , flex-shrink: 0;  }
         .slide-image-container { position: relative; width: 100%; height: 60%; overflow: hidden; }
         .slide-image { width: 100%; height: 100%; object-fit: cover; }
         .image-overlay { position: absolute; top:0; left:0; right:0; bottom:0; background: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2)); z-index:1; }
