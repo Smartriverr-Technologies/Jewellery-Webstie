@@ -1115,6 +1115,7 @@
 
 // export default Header;
 
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
@@ -1139,7 +1140,7 @@ import {
   ListItemText,
   Divider,
   useMediaQuery,
-  Fade,
+  Grow,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -1191,7 +1192,7 @@ const Header = () => {
     } else {
       navigate("/");
     }
-    setMobileSearchOpen(false); // Close search bar after searching
+    setMobileSearchOpen(false);
   };
 
   const toggleDrawer = (open) => () => setDrawerOpen(open);
@@ -1199,8 +1200,7 @@ const Header = () => {
   // Shrink navbar on scroll
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 80) setIsShrunk(true);
-      else setIsShrunk(false);
+      setIsShrunk(window.scrollY > 80);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -1216,7 +1216,7 @@ const Header = () => {
           backdropFilter: "blur(8px)",
           borderBottom: "1px solid rgba(0,0,0,0.08)",
           transition: "all 0.3s ease",
-          zIndex: 1201,
+          zIndex: 1200,
         }}
       >
         <Container maxWidth="xl">
@@ -1282,16 +1282,17 @@ const Header = () => {
 
             {/* Right Actions */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              {/* Search Icon for mobile */}
+              {/* Mobile Search Toggle */}
               {isMobile && (
                 <IconButton
                   onClick={() => setMobileSearchOpen((prev) => !prev)}
                   sx={{
                     color: "text.primary",
                     "&:hover": { transform: "scale(1.1)" },
+                    zIndex: 140, // Higher than drawer
                   }}
                 >
-                  <SearchIcon />
+                  {mobileSearchOpen ? <CloseIcon /> : <SearchIcon />}
                 </IconButton>
               )}
 
@@ -1311,7 +1312,7 @@ const Header = () => {
                 </Badge>
               </IconButton>
 
-              {/* User */}
+              {/* User Menu */}
               {!isMobile && userInfo ? (
                 <>
                   <Button
@@ -1359,27 +1360,33 @@ const Header = () => {
                 )
               )}
 
-              {/* Mobile Menu Button */}
+              {/* Mobile Menu */}
               {isMobile && (
-                <IconButton onClick={toggleDrawer(true)}>
+                <IconButton
+                  onClick={toggleDrawer(true)}
+                  sx={{ color: "text.primary", zIndex: 14000 }}
+                >
                   <MenuIcon />
                 </IconButton>
               )}
             </Box>
           </Toolbar>
 
-          {/* Animated Mobile Search */}
+          {/* Mobile Search Animated */}
           {isMobile && (
-            <Fade in={mobileSearchOpen} timeout={300}>
+            <Grow in={mobileSearchOpen}>
               <Box
                 component="form"
                 onSubmit={searchHandler}
                 sx={{
-                  p: 1.5,
-                  display: "flex",
-                  justifyContent: "center",
-                  bgcolor: "#fff",
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  width: "100%",
+                  backgroundColor: "#fff",
                   borderTop: "1px solid rgba(0,0,0,0.05)",
+                  p: 1.5,
+                  zIndex: 1200, // Below header, above content
                 }}
               >
                 <TextField
@@ -1403,7 +1410,7 @@ const Header = () => {
                   }}
                 />
               </Box>
-            </Fade>
+            </Grow>
           )}
         </Container>
 
@@ -1435,7 +1442,6 @@ const Header = () => {
                     sx={{
                       color: "text.primary",
                       fontWeight: 600,
-                      position: "relative",
                       textTransform: "uppercase",
                       fontSize: isShrunk ? "0.75rem" : "0.85rem",
                       "&::after": {
@@ -1460,22 +1466,37 @@ const Header = () => {
         )}
       </AppBar>
 
-      {/* Mobile Drawer Menu */}
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box
-          sx={{
-            width: 260,
-            p: 2,
+      {/* ✅ Fixed Mobile Drawer Menu */}
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 280,
             backgroundColor: "#fff",
-            height: "100%",
-          }}
-        >
+            zIndex: 2000,
+            position: "fixed",
+      boxShadow: " -2px 0 20px rgba(0,0,0,0.2)", // Always above everything
+          },
+        }}
+      >
+        <Box sx={{ p: 2, height: "100%", position: "relative" }}>
+          {/* Drawer Header */}
           <Box
             sx={{
+              // display: "flex",
+              // justifyContent: "space-between",
+              // alignItems: "center",
+              // mb: 2,
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 2,
+        justifyContent: "space-between",
+        alignItems: "center",
+        mb: 2,
+        position: "sticky",
+        top: 0,
+        backgroundColor: "#fff",
+        zIndex: 2100,
             }}
           >
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
@@ -1512,18 +1533,70 @@ const Header = () => {
               <ListItemButton component={Link} to="/wishlist" onClick={toggleDrawer(false)}>
                 <ListItemText primary="My Wishlist" />
               </ListItemButton>
-              <ListItemButton onClick={() => { logoutHandler(); setDrawerOpen(false); }}>
+              {/* <ListItemButton
+                onClick={() => {
+                  logoutHandler();
+                  setDrawerOpen(false);
+                }}
+              >
                 <ListItemText primary="Logout" />
-              </ListItemButton>
+              </ListItemButton> */}
+               <Box sx={{ mt: 3, textAlign: "center" }}>
+      <Button
+        onClick={() => {
+          logoutHandler();
+          setDrawerOpen(false);
+        }}
+        variant="contained"
+        fullWidth
+        sx={{
+          background: "linear-gradient(90deg, #b8860b, #daa520)",
+          color: "#fff",
+          fontWeight: 600,
+          textTransform: "none",
+          borderRadius: "10px",
+          py: 1,
+          boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+          "&:hover": {
+            background: "linear-gradient(90deg, #daa520, #ffd700)",
+          },
+        }}
+      >
+        Logout
+      </Button>
+    </Box>
             </>
           ) : (
-            <ListItemButton
-              component={Link}
-              to="/login"
-              onClick={toggleDrawer(false)} // closes sidebar on Sign In click
-            >
-              <ListItemText primary="Sign In" />
-            </ListItemButton>
+            // <ListItemButton
+            //   component={Link}
+            //   to="/login"
+            //   onClick={toggleDrawer(false)}
+            // >
+            //   <ListItemText primary="Sign In" />
+            // </ListItemButton>
+            <Box sx={{ mt: 3, textAlign: "center" }}>
+    <Button
+      component={Link}
+      to="/login"
+      onClick={toggleDrawer(false)}
+      variant="contained"
+      fullWidth
+      sx={{
+        background: "linear-gradient(90deg, #b8860b, #daa520)",
+        color: "#fff",
+        fontWeight: 600,
+        textTransform: "none",
+        borderRadius: "10px",
+        py: 1,
+        boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+        "&:hover": {
+          background: "linear-gradient(90deg, #daa520, #ffd700)",
+        },
+      }}
+    >
+      Sign In
+    </Button>
+  </Box>
           )}
         </Box>
       </Drawer>
