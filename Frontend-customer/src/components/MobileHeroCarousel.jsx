@@ -95,12 +95,13 @@ export default function MobileHeroCarousel() {
         }
 
         .carousel-slide {
-          min-width: 100%;
-          height: 100%;
           position: relative;
+          min-width: 100%;
+          width: 100%;
+          height: 100%;
+          flex-shrink: 0;
           display: flex;
           flex-direction: column;
-          flex-shrink: 0;
         }
 
         .slide-image-container {
