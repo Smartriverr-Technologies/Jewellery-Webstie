@@ -1,7 +1,12 @@
+.product-card-container {
+  transition: transform 0.3s ease;
+}
+
+/* --- Image hover effect --- */
 .product-image-container {
   position: relative;
   height: 250px;
-  background-color: #f5f5f5; /* Placeholder color */
+  background-color: #f5f5f5;
 }
 
 .product-image {
@@ -20,4 +25,34 @@
 
 .product-card-container:hover .product-image.secondary {
   opacity: 1;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  .product-card-container {
+    transform: scale(1);
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .MuiCard-root {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .MuiCardContent-root {
+    padding: 6px 8px !important;
+  }
+
+  .MuiTypography-subtitle1 {
+    font-size: 0.85rem !important;
+  }
+
+  .MuiTypography-body2 {
+    font-size: 0.9rem !important;
+  }
+
+  img {
+    height: 160px !important;
+  }
 }
