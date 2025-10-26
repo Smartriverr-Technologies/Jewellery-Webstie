@@ -1,87 +1,325 @@
-import React, { useState, useEffect } from "react";
-import Slider from "react-slick";
-import "./MobileHeroCarousel.css";
-import api from "../api/axiosConfig"; // your API setup file
-import { CircularProgress, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
 
-const MobileHeroCarousel = () => {
-  const [slides, setSlides] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function MobileHeroCarousel() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const carouselRef = useRef(null);
+
+  const slides = [
+    {
+      id: 1,
+      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80',
+      badge: 'NEW ARRIVAL',
+      title: 'Stunning Every Ear',
+      subtitle: 'Explore our exquisite earring collection',
+      buttonText: 'SHOP NOW',
+      bgColor: '#5a7a8c'
+    },
+    {
+      id: 2,
+      image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80',
+      badge: 'BESTSELLER',
+      title: 'Luxury Necklaces',
+      subtitle: 'Timeless pieces for every occasion',
+      buttonText: 'SHOP NOW',
+      bgColor: '#8b7355'
+    },
+    {
+      id: 3,
+      image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80',
+      badge: 'TRENDING',
+      title: 'Elegant Rings',
+      subtitle: 'Discover your perfect match',
+      buttonText: 'SHOP NOW',
+      bgColor: '#6b5b7a'
+    }
+  ];
 
   useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        const { data } = await api.get("/api/hero-carousel");
-        setSlides(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch hero slides:", error);
-        setLoading(false);
-      }
-    };
-    fetchSlides();
-  }, []);
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4000);
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 800,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    arrows: false,
-    pauseOnHover: false,
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
   };
 
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="70vh"
-      >
-        <CircularProgress size={40} />
-      </Box>
-    );
-  }
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
 
-  if (slides.length === 0) return null;
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }
+    if (isRightSwipe) {
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    }
+
+    setTouchStart(0);
+    setTouchEnd(0);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
 
   return (
     <div className="mobile-hero-carousel">
-      <Slider {...settings}>
-        {slides.map((slide) => (
-          <div key={slide._id} className="mobile-slide">
-            <img
-              src={slide.image}
-              alt={slide.headline || "Banner"}
-              className="mobile-hero-image"
-            />
+      <style>{`
+        .mobile-hero-carousel {
+          display: block;
+          position: relative;
+          width: 100%;
+          height: 500px;
+          overflow: hidden;
+          background: #f8f8f8;
+        }
 
-            <div className="mobile-overlay">
-              {slide.headline && (
-                <h2 className="mobile-headline">{slide.headline}</h2>
-              )}
-              {slide.caption && (
-                <p className="mobile-caption">{slide.caption}</p>
-              )}
-              {slide.link && (
-                <Link
-                  to={slide.link}
-                  className="mobile-shop-btn"
-                >
-                  Shop Now
-                </Link>
-              )}
+        .carousel-container {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-slide {
+          position: relative;
+          min-width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+
+        .slide-image-container {
+          position: relative;
+          width: 100%;
+          height: 60%;
+          overflow: hidden;
+        }
+
+        .slide-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+
+        .image-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+        }
+
+        .badge {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          background: rgba(212, 175, 55, 0.95);
+          color: white;
+          padding: 6px 16px;
+          border-radius: 20px;
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          z-index: 2;
+          animation: fadeInDown 0.6s ease;
+        }
+
+        .slide-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 30px 25px;
+          text-align: center;
+          animation: fadeInUp 0.8s ease;
+        }
+
+        .slide-title {
+          font-family: 'Georgia', serif;
+          font-size: 2rem;
+          font-weight: 400;
+          color: #1a1a2e;
+          margin: 0 0 10px 0;
+          letter-spacing: 1px;
+        }
+
+        .slide-subtitle {
+          font-family: 'Georgia', serif;
+          font-size: 1rem;
+          color: #666;
+          margin: 0 0 25px 0;
+          line-height: 1.5;
+        }
+
+        .shop-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px 40px;
+          background: #1a1a2e;
+          color: white;
+          border: 2px solid #1a1a2e;
+          border-radius: 30px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          letter-spacing: 1.5px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-family: 'Georgia', serif;
+        }
+
+        .shop-button:hover {
+          background: transparent;
+          color: #1a1a2e;
+        }
+
+        .carousel-dots {
+          position: absolute;
+          bottom: 100px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 10px;
+          z-index: 10;
+        }
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.5);
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .dot.active {
+          width: 24px;
+          border-radius: 4px;
+          background: #d4af37;
+        }
+
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Hide on desktop */
+        @media (min-width: 769px) {
+          .mobile-hero-carousel {
+            display: none;
+          }
+        }
+
+        /* Optimize for different mobile sizes */
+        @media (max-width: 480px) {
+          .mobile-hero-carousel {
+            height: 450px;
+          }
+
+          .slide-title {
+            font-size: 1.6rem;
+          }
+
+          .slide-subtitle {
+            font-size: 0.9rem;
+          }
+
+          .badge {
+            top: 15px;
+            left: 15px;
+            font-size: 0.65rem;
+            padding: 5px 14px;
+          }
+        }
+
+        @media (max-width: 375px) {
+          .mobile-hero-carousel {
+            height: 420px;
+          }
+
+          .slide-title {
+            font-size: 1.4rem;
+          }
+
+          .shop-button {
+            padding: 12px 35px;
+            font-size: 0.85rem;
+          }
+        }
+      `}</style>
+
+      <div
+        ref={carouselRef}
+        className="carousel-container"
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {slides.map((slide, index) => (
+          <div key={slide.id} className="carousel-slide">
+            <div className="slide-image-container">
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="slide-image"
+              />
+              <div className="image-overlay"></div>
+              <div className="badge">{slide.badge}</div>
+            </div>
+            <div className="slide-content" style={{ background: `linear-gradient(180deg, ${slide.bgColor}15 0%, #ffffff 100%)` }}>
+              <h2 className="slide-title">{slide.title}</h2>
+              <p className="slide-subtitle">{slide.subtitle}</p>
+              <button className="shop-button">{slide.buttonText}</button>
             </div>
           </div>
         ))}
-      </Slider>
+      </div>
+
+      <div className="carousel-dots">
+        {slides.map((_, index) => (
+          <div
+            key={index}
+            className={`dot ${index === currentSlide ? 'active' : ''}`}
+            onClick={() => goToSlide(index)}
+          ></div>
+        ))}
+      </div>
     </div>
   );
-};
-
-export default MobileHeroCarousel;
+}
