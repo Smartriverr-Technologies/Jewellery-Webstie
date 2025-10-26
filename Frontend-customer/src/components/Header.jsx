@@ -1415,7 +1415,7 @@ const Header = () => {
         </Container>
 
         {/* Desktop Navigation */}
-        {!isMobile && (
+        {/* {!isMobile && (
           <Box
             sx={{
               width: "100%",
@@ -1463,7 +1463,61 @@ const Header = () => {
               </Toolbar>
             </Container>
           </Box>
-        )}
+        )} */}
+
+        {/* ✅ Desktop Navigation (Only visible on large screens) */}
+{!isMobile && (
+  <Box
+  sx={{
+    display: { xs: "none", md: "block" }, // hide on small screens
+    width: "100%",
+    bgcolor: "rgba(255,255,255,0.95)",
+    borderTop: "1px solid rgba(0,0,0,0.05)",
+  }}
+>
+   <Container maxWidth="lg">
+    <Toolbar
+      component="nav"
+      variant="dense"
+      sx={{
+        justifyContent: "center",
+        gap: 4,
+        minHeight: isShrunk ? 38 : 48,
+        transition: "all 0.3s ease",
+      }}
+    >
+      {navLinks.map((link) => (
+        <Button
+          key={link}
+          component={Link}
+          to={`/category/${link}`}
+          sx={{
+            position: "relative",
+            color: "text.primary",
+            fontWeight: 600,
+            textTransform: "uppercase",
+            fontSize: isShrunk ? "0.75rem" : "0.85rem",
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              width: 0,
+              height: "2px",
+              left: 0,
+              bottom: -2,
+              bgcolor: "primary.main",
+              transition: "width 0.3s ease",
+            },
+            "&:hover::after": { width: "100%" },
+          }}
+        >
+          {link}
+        </Button>
+      ))}
+    </Toolbar>
+  </Container>
+  </Box>
+)}
+
       </AppBar>
 
       {/* ✅ Fixed Mobile Drawer Menu */}

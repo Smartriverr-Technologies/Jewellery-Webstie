@@ -97,11 +97,11 @@ const MobileHeroCarousel = () => {
         </div>
 
         {/* Badge */}
-        {slide.badge && (
+        {/* {slide.badge && (
           <div className="carousel-badge">
             <span className="badge-text">{slide.badge}</span>
           </div>
-        )}
+        )} */}
 
         {/* Content overlay */}
         <div className="carousel-content">
@@ -125,7 +125,7 @@ const MobileHeroCarousel = () => {
         </button>
 
         {/* Carousel indicators */}
-        <div className="carousel-indicators">
+        {/* <div className="carousel-indicators">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -134,7 +134,7 @@ const MobileHeroCarousel = () => {
               aria-label={`Go to slide ${index + 1}`}
             ></button>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   )
