@@ -409,20 +409,20 @@ export default function MobileHeroCarousel() {
   {
     id: 2,
     image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg',
-    badge: 'BESTSELLER',
-    title: 'Luxury Necklaces',
-    subtitle: 'Timeless pieces for every occasion',
+    badge: 'NEW ARRIVAL 2',
+    title: 'Stunning Every Ear',
+    subtitle: 'Explore our exquisite earring collection',
     buttonText: 'SHOP NOW',
-    bgColor: '#8b7355'
+    bgColor: '#5a7a8c'
   },
   {
     id: 3,
-    image: 'https://i.ibb.co/7QpKsCX/ring.jpg',
-    badge: 'TRENDING',
-    title: 'Elegant Rings',
-    subtitle: 'Discover your perfect match',
+   image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg',
+    badge: 'NEW ARRIVAL 2',
+    title: 'Stunning Every Ear',
+    subtitle: 'Explore our exquisite earring collection',
     buttonText: 'SHOP NOW',
-    bgColor: '#6b5b7a'
+    bgColor: '#5a7a8c'
   }
 ];
 
