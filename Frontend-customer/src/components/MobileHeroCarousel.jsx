@@ -484,7 +484,7 @@ export default function MobileHeroCarousel() {
               <div className="image-overlay"></div>
               <div className="badge">{slide.badge}</div>
             </div>
-            <div className="slide-content" style={{ background: `linear-gradient(180deg, ${slide.bgColor}15 0%, #fff 100%)` }}>
+            <div className="slide-content" >
               <h2 className="slide-title">{slide.title}</h2>
               <p className="slide-subtitle">{slide.subtitle}</p>
               <button className="shop-button">{slide.buttonText}</button>
