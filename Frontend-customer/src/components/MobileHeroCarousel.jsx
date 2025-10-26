@@ -9,7 +9,7 @@ export default function MobileHeroCarousel() {
   const slides = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80',
+      image: 'https://ibb.co/YBc6143q',
     //   <a href="https://ibb.co/YBc6143q"><img src="https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg" alt="1600x900pixel-1" border="0"></a>
       badge: 'NEW ARRIVAL',
       title: 'Stunning Every Ear',
@@ -28,7 +28,7 @@ export default function MobileHeroCarousel() {
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80',
+      image: 'https://ibb.co/YBc6143q',
       badge: 'TRENDING',
       title: 'Elegant Rings',
       subtitle: 'Discover your perfect match',
