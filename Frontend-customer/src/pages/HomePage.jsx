@@ -16,7 +16,7 @@ const HomePage = () => {
     <>
       {/* --- Full-Width Sections --- */}
  {isMobile ? (
-        <Box sx={{ mt: -8 }}>
+        <Box sx={{ mt: -7 }}>
           <MobileHeroCarousel />
         </Box>
       ) : (
