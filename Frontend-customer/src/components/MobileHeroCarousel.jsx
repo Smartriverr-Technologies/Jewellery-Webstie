@@ -77,7 +77,7 @@ const MobileHeroCarousel = () => {
   const slide = slides[currentSlide]
 
   return (
-    <div className="hero-carousel-container">
+    <div className="Mobilehero-carousel-container">
       {/* Mobile-only carousel */}
       <div className="carousel-wrapper">
         {/* Slides */}
