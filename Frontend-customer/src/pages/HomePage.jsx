@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@mui/material';
+import { Container , useMediaQuery } from '@mui/material';
 import HeroCarousel from '../components/HeroCarousel';
 import MainCarousel from '../components/MainCarousel';
 import Categories from '../components/Categories';
@@ -11,11 +11,11 @@ import SocialFeed from '../components/SocialFeed';
 import MobileHeroCarousel from '../components/MobileHeroCarousel';
 
 const HomePage = () => {
+  const isMobile = useMediaQuery('(max-width:768px)');
   return (
     <>
       {/* --- Full-Width Sections --- */}
-      {/* <HeroCarousel /> */}
-      <MobileHeroCarousel />
+      {isMobile ? <MobileHeroCarousel /> : <HeroCarousel />}
        <Categories />
        <LatestProducts />
        <MainCarousel />

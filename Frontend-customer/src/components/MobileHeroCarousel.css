@@ -1,0 +1,209 @@
+/* Mobile-only Hero Carousel Styles */
+
+.hero-carousel-container {
+  display: none;
+}
+
+/* Show only on mobile devices */
+@media (max-width: 768px) {
+  .hero-carousel-container {
+    display: block;
+    width: 100%;
+  }
+}
+
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  /* Reduced height from 100vh/600px to 280px for banner-like appearance */
+  height: 280px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.carousel-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Changed background-size to cover to show complete image */
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background: linear-gradient(to top, rgba(13, 110, 107, 0.8), rgba(13, 110, 107, 0.3), transparent); */
+}
+
+/* Badge */
+.carousel-badge {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background-color: #dc2626;
+  color: white;
+  padding: 12px 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+
+.badge-text {
+  font-size: 11px;
+  font-weight: 600;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+/* Content overlay */
+.carousel-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  /* Reduced padding-bottom from 96px to 20px for compact banner layout */
+  padding-bottom: 20px;
+  padding-left: 24px;
+  padding-right: 24px;
+  z-index: 10;
+}
+
+.carousel-text {
+  text-align: center;
+  /* Reduced margin-bottom from 32px to 12px */
+  margin-bottom: 12px;
+}
+
+.carousel-title {
+  color: white;
+  /* Reduced font-size from 36px to 28px */
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.carousel-subtitle {
+  color: white;
+  /* Reduced font-size from 28px to 20px */
+  font-size: 20px;
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+
+/* CTA Button */
+.carousel-button {
+  color: white;
+  background-color: #B8860B;
+  /* Reduced padding from 12px 32px to 8px 24px */
+  padding: 8px 24px;
+  border: none;
+  border-radius: 2px;
+  /* Reduced font-size from 14px to 12px */
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  /* Reduced margin-bottom from 32px to 8px */
+  margin-bottom: 8px;
+}
+
+.carousel-button:hover {
+  background-color: #f3f4f6;
+}
+
+/* Navigation arrows */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.carousel-arrow-left {
+  left: 16px;
+}
+
+.carousel-arrow-right {
+  right: 16px;
+}
+
+/* Carousel indicators */
+.carousel-indicators {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background-color: white;
+  width: 32px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.indicator:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+}

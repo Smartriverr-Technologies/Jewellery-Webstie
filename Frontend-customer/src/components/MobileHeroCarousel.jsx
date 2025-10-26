@@ -1,326 +1,143 @@
-import React, { useState, useEffect, useRef } from 'react';
+"use client"
 
-export default function MobileHeroCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-  const carouselRef = useRef(null);
+import { useState, useEffect } from "react"
+import "./MobileHeroCarousel.css"
 
+const MobileHeroCarousel = () => {
   const slides = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80',
-      badge: 'NEW ARRIVAL',
-      title: 'Stunning Every Ear',
-      subtitle: 'Explore our exquisite earring collection',
-      buttonText: 'SHOP NOW',
-      bgColor: '#5a7a8c'
+      image:
+        "https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg",
+      title: "Stunning",
+      subtitle: "every Ear",
+      buttonText: "SHOP NOW",
+      badge: "Featured",
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80',
-      badge: 'BESTSELLER',
-      title: 'Luxury Necklaces',
-      subtitle: 'Timeless pieces for every occasion',
-      buttonText: 'SHOP NOW',
-      bgColor: '#8b7355'
+      image:
+        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/elegant-diamond-necklace-jewelry-UPCi8C1v1hFESaQfQWZqW8SOiycbmW.jpg",
+      title: "Timeless",
+      subtitle: "Elegance",
+      buttonText: "EXPLORE",
+      badge: "New",
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80',
-      badge: 'TRENDING',
-      title: 'Elegant Rings',
-      subtitle: 'Discover your perfect match',
-      buttonText: 'SHOP NOW',
-      bgColor: '#6b5b7a'
-    }
-  ];
+      image:
+        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/luxury-silver-bracelet-jewelry-bya5LMqLT112tP8hDfjXa6aHoeviA0.jpg",
+      title: "Radiant",
+      subtitle: "Beauty",
+      buttonText: "DISCOVER",
+      badge: "Exclusive",
+    },
+    {
+      id: 4,
+      image:
+        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/premium-gold-rings-collection-1Of9QVMod32j9w0CLXumGQflgrucfQ.jpg",
+      title: "Precious",
+      subtitle: "Moments",
+      buttonText: "VIEW MORE",
+    },
+  ]
 
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlay, setIsAutoPlay] = useState(true)
+
+  // Auto-play carousel
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000);
+    if (!isAutoPlay) return
 
-    return () => clearInterval(timer);
-  }, [slides.length]);
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 5000)
 
-  const handleTouchStart = (e) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }
-    if (isRightSwipe) {
-      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    }
-
-    setTouchStart(0);
-    setTouchEnd(0);
-  };
+    return () => clearInterval(interval)
+  }, [isAutoPlay, slides.length])
 
   const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
+    setCurrentSlide(index)
+    setIsAutoPlay(false)
+    setTimeout(() => setIsAutoPlay(true), 10000)
+  }
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+    setIsAutoPlay(false)
+    setTimeout(() => setIsAutoPlay(true), 10000)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+    setIsAutoPlay(false)
+    setTimeout(() => setIsAutoPlay(true), 10000)
+  }
+
+  const slide = slides[currentSlide]
 
   return (
-    <div className="mobile-hero-carousel">
-      <style>{`
-        .mobile-hero-carousel {
-          display: block;
-          position: relative;
-          width: 100%;
-          height: 500px;
-          overflow: hidden;
-          background: #f8f8f8;
-        }
-
-        .carousel-container {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .carousel-slide {
-          position: relative;
-          min-width: 100%;
-          width: 100%;
-          height: 100%;
-          flex-shrink: 0;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .slide-image-container {
-          position: relative;
-          width: 100%;
-          height: 60%;
-          overflow: hidden;
-        }
-
-        .slide-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-        }
-
-        .image-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
-        }
-
-        .badge {
-          position: absolute;
-          top: 20px;
-          left: 20px;
-          background: rgba(212, 175, 55, 0.95);
-          color: white;
-          padding: 6px 16px;
-          border-radius: 20px;
-          font-size: 0.7rem;
-          font-weight: 700;
-          letter-spacing: 1.5px;
-          z-index: 2;
-          animation: fadeInDown 0.6s ease;
-        }
-
-        .slide-content {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 30px 25px;
-          text-align: center;
-          animation: fadeInUp 0.8s ease;
-        }
-
-        .slide-title {
-          font-family: 'Georgia', serif;
-          font-size: 2rem;
-          font-weight: 400;
-          color: #1a1a2e;
-          margin: 0 0 10px 0;
-          letter-spacing: 1px;
-        }
-
-        .slide-subtitle {
-          font-family: 'Georgia', serif;
-          font-size: 1rem;
-          color: #666;
-          margin: 0 0 25px 0;
-          line-height: 1.5;
-        }
-
-        .shop-button {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 14px 40px;
-          background: #1a1a2e;
-          color: white;
-          border: 2px solid #1a1a2e;
-          border-radius: 30px;
-          font-size: 0.9rem;
-          font-weight: 600;
-          letter-spacing: 1.5px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          font-family: 'Georgia', serif;
-        }
-
-        .shop-button:hover {
-          background: transparent;
-          color: #1a1a2e;
-        }
-
-        .carousel-dots {
-          position: absolute;
-          bottom: 100px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 10px;
-          z-index: 10;
-        }
-
-        .dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.5);
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .dot.active {
-          width: 24px;
-          border-radius: 4px;
-          background: #d4af37;
-        }
-
-        @keyframes fadeInDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        /* Hide on desktop */
-        @media (min-width: 769px) {
-          .mobile-hero-carousel {
-            display: none;
-          }
-        }
-
-        /* Optimize for different mobile sizes */
-        @media (max-width: 480px) {
-          .mobile-hero-carousel {
-            height: 450px;
-          }
-
-          .slide-title {
-            font-size: 1.6rem;
-          }
-
-          .slide-subtitle {
-            font-size: 0.9rem;
-          }
-
-          .badge {
-            top: 15px;
-            left: 15px;
-            font-size: 0.65rem;
-            padding: 5px 14px;
-          }
-        }
-
-        @media (max-width: 375px) {
-          .mobile-hero-carousel {
-            height: 420px;
-          }
-
-          .slide-title {
-            font-size: 1.4rem;
-          }
-
-          .shop-button {
-            padding: 12px 35px;
-            font-size: 0.85rem;
-          }
-        }
-      `}</style>
-
-      <div
-        ref={carouselRef}
-        className="carousel-container"
-        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {slides.map((slide, index) => (
-          <div key={slide.id} className="carousel-slide">
-            <div className="slide-image-container">
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="slide-image"
-              />
-              <div className="image-overlay"></div>
-              <div className="badge">{slide.badge}</div>
+    <div className="hero-carousel-container">
+      {/* Mobile-only carousel */}
+      <div className="carousel-wrapper">
+        {/* Slides */}
+        <div className="carousel-slides">
+          {slides.map((s, index) => (
+            <div
+              key={s.id}
+              className={`carousel-slide ${index === currentSlide ? "active" : ""}`}
+              style={{
+                backgroundImage: `url(${s.image})`,
+              }}
+            >
+              {/* Gradient overlay */}
+              <div className="carousel-overlay"></div>
             </div>
-            <div className="slide-content" style={{ background: `linear-gradient(180deg, ${slide.bgColor}15 0%, #ffffff 100%)` }}>
-              <h2 className="slide-title">{slide.title}</h2>
-              <p className="slide-subtitle">{slide.subtitle}</p>
-              <button className="shop-button">{slide.buttonText}</button>
-            </div>
+          ))}
+        </div>
+
+        {/* Badge */}
+        {slide.badge && (
+          <div className="carousel-badge">
+            <span className="badge-text">{slide.badge}</span>
           </div>
-        ))}
-      </div>
+        )}
 
-      <div className="carousel-dots">
-        {slides.map((_, index) => (
-          <div
-            key={index}
-            className={`dot ${index === currentSlide ? 'active' : ''}`}
-            onClick={() => goToSlide(index)}
-          ></div>
-        ))}
+        {/* Content overlay */}
+        <div className="carousel-content">
+          {/* Title and subtitle */}
+          <div className="carousel-text">
+            <h1 className="carousel-title">{slide.title}</h1>
+            <p className="carousel-subtitle">{slide.subtitle}</p>
+          </div>
+
+          {/* CTA Button */}
+          <button className="carousel-button">{slide.buttonText}</button>
+        </div>
+
+        {/* Navigation arrows */}
+        <button onClick={prevSlide} className="carousel-arrow carousel-arrow-left" aria-label="Previous slide">
+          &#10094;
+        </button>
+
+        <button onClick={nextSlide} className="carousel-arrow carousel-arrow-right" aria-label="Next slide">
+          &#10095;
+        </button>
+
+        {/* Carousel indicators */}
+        <div className="carousel-indicators">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`indicator ${index === currentSlide ? "active" : ""}`}
+              aria-label={`Go to slide ${index + 1}`}
+            ></button>
+          ))}
+        </div>
       </div>
     </div>
-  );
+  )
 }
+
+export default MobileHeroCarousel
