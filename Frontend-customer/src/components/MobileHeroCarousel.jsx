@@ -10,6 +10,7 @@ export default function MobileHeroCarousel() {
     {
       id: 1,
       image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80',
+    //   <a href="https://ibb.co/YBc6143q"><img src="https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg" alt="1600x900pixel-1" border="0"></a>
       badge: 'NEW ARRIVAL',
       title: 'Stunning Every Ear',
       subtitle: 'Explore our exquisite earring collection',
@@ -18,7 +19,7 @@ export default function MobileHeroCarousel() {
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80',
+      image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg',
       badge: 'BESTSELLER',
       title: 'Luxury Necklaces',
       subtitle: 'Timeless pieces for every occasion',
