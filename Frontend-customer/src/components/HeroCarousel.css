@@ -37,7 +37,7 @@
 .hero-slide-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.25));
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.25));
   z-index: 1;
 }
 
@@ -55,14 +55,14 @@
   padding: 12px 36px !important;
   font-weight: 600 !important;
   font-size: 1.1rem !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important;
   transition: all 0.3s ease !important;
 }
 
 .hero-slide-btn:hover {
   background: linear-gradient(135deg, #c19a2b, #e6c556) !important;
   transform: translateY(-3px);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.6) !important;
 }
 
 /* Dots */
@@ -95,16 +95,16 @@
   }
 }
 
-/* ✅ RESPONSIVE DESIGN */
+/* ✅ Responsive Adjustments */
 
 /* Tablets */
 @media (max-width: 992px) {
   .hero-carousel-container {
-    height: 70vh;
+    height: 65vh;
   }
 
   .hero-slide-item {
-    height: 70vh;
+    height: 65vh;
   }
 
   .hero-slide-content h1,
@@ -114,7 +114,7 @@
 
   .hero-slide-content h2,
   .hero-slide-content .MuiTypography-h5 {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
   }
 
   .hero-slide-btn {
@@ -126,42 +126,57 @@
 /* Mobiles */
 @media (max-width: 600px) {
   .hero-carousel-container {
-    height: 60vh;
-    margin-bottom: 20px;
+    height: 45vh; /* 👈 smaller height for full image visibility */
+    margin-bottom: 10px;
   }
 
   .hero-slide-item {
-    height: 60vh;
+    height: 45vh;
+  }
+
+  .hero-slide-background {
+    background-size: contain; /* 👈 show full image */
+    background-repeat: no-repeat;
+    transform: scale(1); /* remove zoom to fit image fully */
+  }
+
+  .slick-active .hero-slide-background {
+    transform: scale(1); /* disable zoom for mobile */
+  }
+
+  .hero-slide-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
   }
 
   .hero-slide-content {
-    padding: 10px;
+    padding: 5px 10px;
+    bottom: 0;
   }
 
   .hero-slide-content h1,
   .hero-slide-content .MuiTypography-h2 {
-    font-size: 1.6rem !important;
+    font-size: 1.3rem !important;
     line-height: 1.3;
   }
 
   .hero-slide-content h2,
   .hero-slide-content .MuiTypography-h5 {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
     line-height: 1.3;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .hero-slide-btn {
-    padding: 8px 22px !important;
-    font-size: 0.9rem !important;
-    border-radius: 40px !important;
+    padding: 6px 18px !important;
+    font-size: 0.85rem !important;
+    border-radius: 30px !important;
   }
 
   .slick-dots {
-    bottom: 15px;
+    bottom: 10px;
   }
 
   .slick-dots li button:before {
-    font-size: 8px;
+    font-size: 7px;
   }
 }
