@@ -8,12 +8,14 @@ import TestimonialCarousel from '../components/TestimonialCarousel';
 // import ShortVideos from '../components/ShortVideos';
 import SocialFeed from '../components/SocialFeed';
 // import GalleryPage from './GalleryPage';
+import MobileHeroCarousel from '../components/MobileHeroCarousel';
 
 const HomePage = () => {
   return (
     <>
       {/* --- Full-Width Sections --- */}
-      <HeroCarousel />
+      {/* <HeroCarousel /> */}
+      <MobileHeroCarousel />
        <Categories />
        <LatestProducts />
        <MainCarousel />
