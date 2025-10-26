@@ -5,7 +5,7 @@ import MainCarousel from '../components/MainCarousel';
 import Categories from '../components/Categories';
 import LatestProducts from '../components/LatestProducts';
 import TestimonialCarousel from '../components/TestimonialCarousel';
-import ShortVideos from '../components/ShortVideos';
+// import ShortVideos from '../components/ShortVideos';
 import SocialFeed from '../components/SocialFeed';
 // import GalleryPage from './GalleryPage';
 
