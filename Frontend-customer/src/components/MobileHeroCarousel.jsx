@@ -364,37 +364,68 @@ export default function MobileHeroCarousel() {
   const [touchEnd, setTouchEnd] = useState(0);
   const carouselRef = useRef(null);
 
-  const slides = [
-    {
-      id: 1,
-      image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg', // direct image link
-      badge: 'NEW ARRIVAL',
-      title: 'Stunning Every Ear',
-      subtitle: 'Explore our exquisite earring collection',
-      buttonText: 'SHOP NOW',
-      bgColor: '#5a7a8c'
-    },
-    {
-      id: 2,
-      image: 'https://i.ibb.co/ZYW3VTp/bestseller-necklace.jpg', // replace with your direct image link
-      badge: 'BESTSELLER',
-      title: 'Luxury Necklaces',
-      subtitle: 'Timeless pieces for every occasion',
-      buttonText: 'SHOP NOW',
-      bgColor: '#8b7355'
-    },
-    {
-      id: 3,
-      image: 'https://i.ibb.co/4R8cXw75/elegant-rings.jpg', // replace with your direct image link
-      badge: 'TRENDING',
-      title: 'Elegant Rings',
-      subtitle: 'Discover your perfect match',
-      buttonText: 'SHOP NOW',
-      bgColor: '#6b5b7a'
-    }
-  ];
+//   const slides = [
+//     {
+//       id: 1,
+//       image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg', // direct image link
+//       badge: 'NEW ARRIVAL',
+//       title: 'Stunning Every Ear',
+//       subtitle: 'Explore our exquisite earring collection',
+//       buttonText: 'SHOP NOW',
+//       bgColor: '#5a7a8c'
+//     },
+//     {
+//       id: 2,
+//       image: 'https://i.ibb.co/ZYW3VTp/bestseller-necklace.jpg', // replace with your direct image link
+//       badge: 'BESTSELLER',
+//       title: 'Luxury Necklaces',
+//       subtitle: 'Timeless pieces for every occasion',
+//       buttonText: 'SHOP NOW',
+//       bgColor: '#8b7355'
+//     },
+//     {
+//       id: 3,
+//       image: 'https://i.ibb.co/4R8cXw75/elegant-rings.jpg', // replace with your direct image link
+//       badge: 'TRENDING',
+//       title: 'Elegant Rings',
+//       subtitle: 'Discover your perfect match',
+//       buttonText: 'SHOP NOW',
+//       bgColor: '#6b5b7a'
+//     }
+//   ];
 
   // Auto slide
+
+  const slides = [
+  {
+    id: 1,
+    image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg',
+    badge: 'NEW ARRIVAL',
+    title: 'Stunning Every Ear',
+    subtitle: 'Explore our exquisite earring collection',
+    buttonText: 'SHOP NOW',
+    bgColor: '#5a7a8c'
+  },
+  {
+    id: 2,
+    image: 'https://i.ibb.co/4V2nXJD/necklace.jpg',
+    badge: 'BESTSELLER',
+    title: 'Luxury Necklaces',
+    subtitle: 'Timeless pieces for every occasion',
+    buttonText: 'SHOP NOW',
+    bgColor: '#8b7355'
+  },
+  {
+    id: 3,
+    image: 'https://i.ibb.co/7QpKsCX/ring.jpg',
+    badge: 'TRENDING',
+    title: 'Elegant Rings',
+    subtitle: 'Discover your perfect match',
+    buttonText: 'SHOP NOW',
+    bgColor: '#6b5b7a'
+  }
+];
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
