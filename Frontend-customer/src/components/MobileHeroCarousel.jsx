@@ -408,7 +408,7 @@ export default function MobileHeroCarousel() {
   },
   {
     id: 2,
-    image: 'https://i.ibb.co/4V2nXJD/necklace.jpg',
+    image: 'https://i.ibb.co/4R8cXw75/1600x900pixel-1.jpg',
     badge: 'BESTSELLER',
     title: 'Luxury Necklaces',
     subtitle: 'Timeless pieces for every occasion',
