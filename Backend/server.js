@@ -203,6 +203,40 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.options(/.*/, cors());
 
+//ye chatgpt wala locally fix hai
+// ✅ Safe CORS setup (production untouched)
+// let allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_FRONTEND_URL];
+
+// Only add localhost URLs when in development
+// if (process.env.NODE_ENV !== 'production') {
+//   allowedOrigins = [
+//     ...allowedOrigins,
+//     'http://localhost:5173',
+//     'http://localhost:5174',
+//     'http://127.0.0.1:5173',
+//   ];
+//   console.log('🧩 Development Mode: Allowing localhost origins');
+// }
+
+// Apply CORS
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // Allow Postman or no-origin requests
+//       if (!origin) return callback(null, true);
+
+//       if (allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         console.log('❌ CORS blocked origin:', origin);
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     },
+//     credentials: true,
+//   })
+// );
+
+
 // Main Server Logic
 (async () => {
   try {
