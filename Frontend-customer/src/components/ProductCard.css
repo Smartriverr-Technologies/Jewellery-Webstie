@@ -1,7 +1,15 @@
+/* Product Card Base Styles */
+.product-card-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .product-image-container {
   position: relative;
   height: 250px;
-  background-color: #f5f5f5; /* Placeholder color */
+  background-color: #f5f5f5;
+  overflow: hidden;
 }
 
 .product-image {
@@ -11,7 +19,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease;
 }
 
 .product-image.secondary {
@@ -20,4 +28,231 @@
 
 .product-card-container:hover .product-image.secondary {
   opacity: 1;
+}
+
+.product-card-container:hover .product-image {
+  transform: scale(1.06);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Reduce image container height for mobile */
+  .product-image-container {
+    height: 180px;
+  }
+
+  /* Adjust MUI Card styles for mobile */
+  .product-card-container .MuiCard-root {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+  }
+
+  .product-card-container .MuiCard-root:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
+  }
+
+  /* Reduce CardMedia height */
+  .product-card-container .MuiCardMedia-root {
+    height: 180px !important;
+  }
+
+  /* Wishlist button size adjustment */
+  .product-card-container .MuiIconButton-root {
+    width: 32px !important;
+    height: 32px !important;
+    top: 8px !important;
+    right: 8px !important;
+    padding: 4px !important;
+  }
+
+  .product-card-container .MuiIconButton-root svg {
+    font-size: 18px !important;
+  }
+
+  /* Card content padding and text sizing */
+  .product-card-container .MuiCardContent-root {
+    padding: 10px 12px !important;
+  }
+
+  /* Product title */
+  .product-card-container .MuiTypography-subtitle1 {
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Product price */
+  .product-card-container .MuiTypography-body2 {
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+  }
+
+  /* Disable hover zoom on mobile for better performance */
+  .product-card-container:hover .product-image {
+    transform: none;
+  }
+
+  .product-card-container:hover .product-image.secondary {
+    opacity: 0;
+  }
+
+  /* Reduce motion animation intensity on mobile */
+  .product-card-container {
+    transition: transform 0.2s ease !important;
+  }
+}
+
+/* Small mobile devices (phones in portrait) */
+@media (max-width: 480px) {
+  .product-image-container {
+    height: 160px;
+  }
+
+  .product-card-container .MuiCardMedia-root {
+    height: 160px !important;
+  }
+
+  .product-card-container .MuiCard-root {
+    border-radius: 10px !important;
+  }
+
+  .product-card-container .MuiCardContent-root {
+    padding: 8px 10px !important;
+  }
+
+  .product-card-container .MuiTypography-subtitle1 {
+    font-size: 0.8rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  .product-card-container .MuiTypography-body2 {
+    font-size: 0.85rem !important;
+  }
+
+  .product-card-container .MuiIconButton-root {
+    width: 28px !important;
+    height: 28px !important;
+    top: 6px !important;
+    right: 6px !important;
+  }
+
+  .product-card-container .MuiIconButton-root svg {
+    font-size: 16px !important;
+  }
+}
+
+/* Tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .product-image-container {
+    height: 220px;
+  }
+
+  .product-card-container .MuiCardMedia-root {
+    height: 220px !important;
+  }
+
+  .product-card-container .MuiCardContent-root {
+    padding: 12px 14px !important;
+  }
+
+  .product-card-container .MuiTypography-subtitle1 {
+    font-size: 0.9rem !important;
+  }
+
+  .product-card-container .MuiTypography-body2 {
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .product-image-container {
+    height: 140px;
+  }
+
+  .product-card-container .MuiCardMedia-root {
+    height: 140px !important;
+  }
+
+  .product-card-container .MuiTypography-subtitle1 {
+    font-size: 0.75rem !important;
+  }
+
+  .product-card-container .MuiTypography-body2 {
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Desktop optimization (no changes needed but ensuring consistency) */
+@media (min-width: 1025px) {
+  .product-image-container {
+    height: 250px;
+  }
+
+  .product-card-container .MuiCardMedia-root {
+    height: 250px !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover effects on touch devices */
+  .product-card-container:hover .product-image {
+    transform: none !important;
+  }
+
+  .product-card-container:hover .product-image.secondary {
+    opacity: 0 !important;
+  }
+
+  /* Increase tap target size for better mobile UX */
+  .product-card-container .MuiIconButton-root {
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+}
+
+/* Loading state (optional enhancement) */
+.product-card-skeleton {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Price highlight animation */
+.product-card-container .MuiTypography-body2 {
+  background: linear-gradient(135deg, #d4af37 0%, #f4e4c1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Wishlist button enhancement */
+.product-card-container .MuiIconButton-root {
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease !important;
+}
+
+.product-card-container .MuiIconButton-root:active {
+  transform: scale(0.9);
+}
+
+/* Card shadow enhancement on mobile */
+@media (max-width: 768px) {
+  .product-card-container .MuiCard-root {
+    transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+  }
+
+  .product-card-container .MuiCard-root:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+  }
 }
