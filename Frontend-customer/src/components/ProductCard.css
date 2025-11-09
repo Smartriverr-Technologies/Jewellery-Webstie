@@ -8,7 +8,7 @@
 /* Image Container */
 .product-image-container {
   position: relative;
-  height: 150px;
+  height: 200px;
   background-color: #f5f5f5;
   overflow: hidden;
 }
@@ -86,7 +86,8 @@
 /* Price Gradient */
 .product-card-container .MuiTypography-body2 {
   background: linear-gradient(135deg, #d4af37 0%, #f4e4c1 100%);
-  /* -webkit-background-clip: text; */
+  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -99,5 +100,3 @@
 .product-card-container .MuiIconButton-root:active {
   transform: scale(0.9);
 }
-
-

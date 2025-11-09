@@ -348,7 +348,7 @@ const ProductCard = ({ product }) => {
             }}
           >
             {isWishlisted ? (
-              <FavoriteIcon sx={{ fontSize: 18, color: '#d4af37' }} />
+              <FavoriteIcon sx={{ fontSize: 18, color: '#ff0000ff' }} />
             ) : (
               <FavoriteBorderIcon sx={{ fontSize: 18 }} />
             )}
