@@ -1244,7 +1244,7 @@ const Header = () => {
                 "&:hover": { color: "secondary.main" },
               }}
             >
-              Anurag jewels
+              suraj jewels
             </Typography>
 
             {/* Desktop Search */}
