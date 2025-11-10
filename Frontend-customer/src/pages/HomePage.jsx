@@ -36,7 +36,6 @@ const HomePage = () => {
         {/* <ShortVideos /> */}
         
       </Container>
-      
       <SocialFeed />
       <TestimonialCarousel />
     </>
