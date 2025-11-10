@@ -33,10 +33,10 @@ const SocialFeed = () => {
       >
         #AuraInTheWild
       </Typography>
-      <Grid container>
+      <Grid container spacing={0}>
         {isLoading ? (
           Array.from(new Array(6)).map((item, index) => (
-            <Grid item key={index} xs={6} sm={4} md={2}>
+            <Grid item key={index} xs={6} sm={4} md={2} sx={{ p: 0 }}>
               <Skeleton
                 variant="rectangular"
                 sx={{ height: { xs: 280, sm: 350 } }}
@@ -45,7 +45,7 @@ const SocialFeed = () => {
           ))
         ) : (
           videos?.map((video, index) => (
-            <Grid item key={video._id} xs={6} sm={4} md={2}>
+            <Grid item key={video._id} xs={6} sm={4} md={2} sx={{ p: 0 }}>
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
