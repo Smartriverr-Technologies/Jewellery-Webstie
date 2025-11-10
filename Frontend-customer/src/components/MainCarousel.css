@@ -51,3 +51,28 @@
 .slick-dots li.slick-active button:before {
   opacity: 1;
 }
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .carousel-container {
+    border-radius: 12px;
+    margin: 0 16px; /* Add some horizontal margin on mobile */
+  }
+
+  .slide-item {
+    height: 35vh; /* Smaller height for mobile */
+  }
+
+  .slide-content {
+    padding: 1rem;
+    max-width: 90%;
+  }
+
+  .slide-content .MuiTypography-h2 {
+    font-size: 1.7rem !important; /* Smaller headline */
+  }
+
+  .slide-content .MuiTypography-h5 {
+    font-size: 0.9rem !important; /* Smaller caption */
+  }
+}
