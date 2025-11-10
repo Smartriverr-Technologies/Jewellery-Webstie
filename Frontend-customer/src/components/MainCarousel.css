@@ -75,4 +75,9 @@
   .slide-content .MuiTypography-h5 {
     font-size: 0.9rem !important; /* Smaller caption */
   }
+
+  .slide-background {
+    background-size: contain; /* Show the full image */
+    background-repeat: no-repeat; /* Prevent tiling */
+  }
 }
