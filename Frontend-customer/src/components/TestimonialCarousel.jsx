@@ -195,6 +195,7 @@ import api from '../api/axiosConfig';
 const TestimonialCarousel = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sliderKey, setSliderKey] = useState(0);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -209,6 +210,19 @@ const TestimonialCarousel = () => {
     };
     fetchTestimonials();
   }, []);
+
+  // Force slider to re-render on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setSliderKey(prev => prev + 1);
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Trigger initial resize after mount
+    setTimeout(handleResize, 100);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [testimonials]);
 
   const settings = {
     dots: false,
@@ -322,7 +336,7 @@ const TestimonialCarousel = () => {
           }
         }
       }}>
-        <Slider {...settings}>
+        <Slider {...settings} key={sliderKey}>
           {testimonials.map((testimonial, i) => (
             <Box key={testimonial._id} sx={{ px: { xs: 0.5, sm: 1 } }}>
               <motion.div
