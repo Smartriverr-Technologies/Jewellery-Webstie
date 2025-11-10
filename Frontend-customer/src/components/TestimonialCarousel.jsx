@@ -3,7 +3,6 @@ import axios from 'axios';
 import Slider from 'react-slick';
 import { Box, Typography, Card, CardContent, Rating, CardMedia } from '@mui/material';
 import { motion } from 'framer-motion';
-import './TestimonialCarousel.css';
 import api from '../api/axiosConfig';
 
 const TestimonialCarousel = () => {
@@ -25,7 +24,7 @@ const TestimonialCarousel = () => {
   }, []);
 
   const settings = {
-    dots: true,
+    dots: false, // Removed dots as requested
     infinite: testimonials.length > 5,
     speed: 600,
     slidesToShow: 5,
@@ -35,9 +34,8 @@ const TestimonialCarousel = () => {
     pauseOnHover: true,
     responsive: [
       { breakpoint: 1400, settings: { slidesToShow: 4 } },
-      { breakpoint: 1024, settings: { slidesToShow: 3 } },
-      { breakpoint: 768, settings: { slidesToShow: 2 } },
-      { breakpoint: 480, settings: { slidesToShow: 1 } },
+      { breakpoint: 1200, settings: { slidesToShow: 3 } },
+      { breakpoint: 1024, settings: { slidesToShow: 1 } }, // Show 1 slide on tablets and mobile
     ],
   };
 
@@ -46,7 +44,7 @@ const TestimonialCarousel = () => {
   return (
     <Box
       sx={{
-        py: 2,
+        py: { xs: 4, md: 2 },
         px: { xs: 2, sm: 4, md: 8 },
         position: "relative",
         overflow: "hidden",
@@ -118,7 +116,7 @@ const TestimonialCarousel = () => {
       <Slider {...settings}>
         {testimonials.map((testimonial, i) => (
           <Box key={testimonial._id} sx={{ px: 1 }}>
-            <motion.div
+            <motion.div // Using motion.div for animations
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
@@ -126,7 +124,7 @@ const TestimonialCarousel = () => {
             >
               <Card
                 sx={{
-                  minHeight: { xs: 280, sm: 300 },
+                  minHeight: { xs: 320, sm: 300 }, // Adjusted height for mobile
                   display: 'flex',
                   flexDirection: 'column',
                   borderRadius: 3,
@@ -145,7 +143,7 @@ const TestimonialCarousel = () => {
   : `${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
                     alt={testimonial.name}
                     sx={{
-                      height: { xs: 140, sm: 150 },
+                      height: { xs: 180, sm: 150 }, // Taller image on mobile
                       objectFit: "cover",
                       borderTopLeftRadius: 12,
                       borderTopRightRadius: 12
@@ -166,12 +164,12 @@ const TestimonialCarousel = () => {
                 </Box>
 
                 {/* Text Content */}
-                <CardContent sx={{ textAlign: 'center', flexGrow: 1, p: { xs: 1.5, sm: 2 } }}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: '600', mb: 0.5, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+                <CardContent sx={{ textAlign: 'center', flexGrow: 1, p: { xs: 2, sm: 2 } }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: '600', mb: 0.5, fontSize: { xs: '1rem', sm: '1rem' } }}>
                     {testimonial.name}
                   </Typography>
                   <Rating value={testimonial.rating} readOnly size="small" sx={{ my: 0.5 }} />
-                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontSize: { xs: '0.9rem', sm: '0.875rem' } }}>
                     "{testimonial.comment}"
                   </Typography>
                 </CardContent>
