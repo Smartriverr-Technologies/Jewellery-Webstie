@@ -53,17 +53,17 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { Link } from "react-router-dom"
-import { Box, Typography, Button, Skeleton, Paper, Stack } from "@mui/material"
+import { Box, Typography, Button, Skeleton, Grid, Stack } from "@mui/material"
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded"
 import ProductCard from "./ProductCard";
-import { motion } from "framer-motion"
+
 import api from "../api/axiosConfig"
 
 // Fetch products
 const fetchProductsForCategory = async (categoryId) => {
   if (!categoryId) return []
   const { data } = await api.get(
-    `/api/products?category=${categoryId}&pageSize=5`
+    `/api/products?category=${categoryId}&pageSize=8`
   )
   return data.products
 }
@@ -119,42 +119,25 @@ const CategoryRow = ({ category }) => {
       </Stack>
 
       {/* Product Row */}
-      <Paper
-        elevation={0}
-        sx={{
-          p: { xs: 2, md: 3 },
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider",
-          bgcolor: "background.paper",
-        }}
-      >
-        <Stack
-          direction="row"
-          justifyContent="center"
-          spacing={2.5}
-          sx={{
-            flexWrap: "nowrap", // 1 row only
-            overflow: "hidden", // prevent wrapping
-          }}
-        >
-          {isLoading
-            ? Array.from(new Array(5)).map((_, index) => (
+      <Grid container spacing={2}>
+        {isLoading
+          ? Array.from(new Array(8)).map((_, index) => (
+              <Grid item key={index} xs={6} sm={4} md={3} lg={1.5}>
                 <Skeleton
-                  key={index}
                   variant="rounded"
-                  width={220}
-                  height={280}
-                  sx={{ borderRadius: 2 }}
+                  height={250}
+                  sx={{ borderRadius: 2, width: '100%' }}
                 />
-              ))
-            : products?.slice(0, 5).map((product) => (
-                <Box key={product._id} sx={{ flex: "0 0 auto" }}>
-                  <ProductCard product={product} />
-                </Box>
-              ))}
-        </Stack>
-      </Paper>
+                <Skeleton width="80%" />
+                <Skeleton width="40%" />
+              </Grid>
+            ))
+          : products?.slice(0, 8).map((product) => (
+              <Grid item key={product._id} xs={6} sm={4} md={3} lg={1.5}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
+      </Grid>
     </Box>
   )
 }
