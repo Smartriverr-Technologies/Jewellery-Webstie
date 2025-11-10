@@ -237,27 +237,18 @@ const TestimonialCarousel = () => {
     responsive: [
       { 
         breakpoint: 1400, 
-        settings: { slidesToShow: 4 } 
+        settings: { slidesToShow: 4, slidesToScroll: 2 } 
       },
       { 
         breakpoint: 1200, 
-        settings: { slidesToShow: 3 } 
+        settings: { slidesToShow: 3, slidesToScroll: 1 } 
       },
       { 
-        breakpoint: 900, 
+        breakpoint: 1024, // Start showing 2 cards from tablet size
         settings: { 
           slidesToShow: 2,
           arrows: false,
           dots: true
-        } 
-      },
-      { 
-        breakpoint: 600, 
-        settings: { 
-          slidesToShow: 2,
-          arrows: false,
-          dots: true,
-          centerMode: false
         } 
       },
     ],
@@ -347,7 +338,7 @@ const TestimonialCarousel = () => {
               >
                 <Card
                   sx={{
-                    minHeight: { xs: 280, sm: 300, md: 320 },
+                    minHeight: { xs: 260, sm: 280, md: 320 },
                     display: 'flex',
                     flexDirection: 'column',
                     borderRadius: { xs: 2, sm: 3 },
@@ -367,7 +358,7 @@ const TestimonialCarousel = () => {
                         : `${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
                       alt={testimonial.name}
                       sx={{
-                        height: { xs: 140, sm: 150, md: 160 },
+                        height: { xs: 120, sm: 140, md: 160 },
                         objectFit: "cover",
                         borderTopLeftRadius: { xs: 8, sm: 12 },
                         borderTopRightRadius: { xs: 8, sm: 12 }
@@ -400,7 +391,7 @@ const TestimonialCarousel = () => {
                       variant="subtitle1" 
                       sx={{ 
                         fontWeight: '600', 
-                        mb: 0.5, 
+                        mb: { xs: 0, sm: 0.5 }, 
                         fontSize: { xs: '0.9rem', sm: '1rem' },
                         lineHeight: 1.3
                       }}
@@ -414,7 +405,7 @@ const TestimonialCarousel = () => {
                       sx={{ 
                         my: 0.5,
                         '& .MuiRating-icon': {
-                          fontSize: { xs: '1rem', sm: '1.25rem' }
+                          fontSize: { xs: '0.9rem', sm: '1.25rem' }
                         }
                       }} 
                     />
@@ -424,7 +415,7 @@ const TestimonialCarousel = () => {
                       sx={{ 
                         fontStyle: 'italic', 
                         fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                        lineHeight: 1.4,
+                        lineHeight: 1.5,
                         display: '-webkit-box',
                         WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
@@ -446,5 +437,3 @@ const TestimonialCarousel = () => {
 };
 
 export default TestimonialCarousel;
-
-
