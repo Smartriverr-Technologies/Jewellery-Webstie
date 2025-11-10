@@ -323,7 +323,7 @@ const TestimonialCarousel = () => {
               >
                 {/* Image */}
                 <Box sx={{ position: 'relative' }}>
-                  <CardMedia
+                  {/* <CardMedia
                     component="img"
                     image={
                       t.imageUrl?.startsWith('http')
@@ -337,7 +337,23 @@ const TestimonialCarousel = () => {
                       borderTopLeftRadius: 8,
                       borderTopRightRadius: 8,
                     }}
-                  />
+                  /> */}
+                  <CardMedia
+  component="img"
+  image={
+    t.imageUrl?.startsWith('http')
+      ? t.imageUrl
+      : `${import.meta.env.VITE_API_URL}${t.imageUrl}`
+  }
+  alt={t.name}
+  sx={{
+    height: { xs: 140, sm: 150, md: 170 },   // ✅ Increased height
+    objectFit: 'cover',
+    width: '100%',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  }}
+/>
                   <Box
                     sx={{
                       position: 'absolute',
