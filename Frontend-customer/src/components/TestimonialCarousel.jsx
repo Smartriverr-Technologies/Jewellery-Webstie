@@ -240,11 +240,10 @@ const TestimonialCarousel = () => {
       { 
         breakpoint: 600, 
         settings: { 
-          slidesToShow: 1,
+          slidesToShow: 2,
           arrows: false,
           dots: true,
-          centerMode: true,
-          centerPadding: '20px'
+          centerMode: false
         } 
       },
     ],
