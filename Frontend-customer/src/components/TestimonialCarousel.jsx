@@ -190,7 +190,6 @@ import { Box, Typography, Card, CardContent, Rating, CardMedia } from '@mui/mate
 import { motion } from 'framer-motion';
 import api from '../api/axiosConfig';
 
-// Slick Carousel CSS (Make sure you imported these in main.jsx / index.html)
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -213,28 +212,30 @@ const TestimonialCarousel = () => {
   }, []);
 
   const settings = {
-    dots: true,
-    infinite: testimonials.length > 1,
+    dots: false,
+    infinite: testimonials.length > 5,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 5,        // ✅ Show 5 in desktop
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 4500,
+    autoplaySpeed: 4000,
     pauseOnHover: true,
-    centerMode: true,
-    centerPadding: "0px",
     responsive: [
       {
-        breakpoint: 1200,
-        settings: { slidesToShow: 2, centerMode: false }
+        breakpoint: 1400,
+        settings: { slidesToShow: 4 }
+      },
+      {
+        breakpoint: 1100,
+        settings: { slidesToShow: 3 }
       },
       {
         breakpoint: 900,
-        settings: { slidesToShow: 1, centerMode: true }
+        settings: { slidesToShow: 2 }   // ✅ Show 2 in mobile
       },
       {
         breakpoint: 600,
-        settings: { slidesToShow: 1, centerMode: false }
+        settings: { slidesToShow: 1 }   // ✅ Small phones → 1 card
       }
     ],
   };
@@ -246,45 +247,15 @@ const TestimonialCarousel = () => {
       sx={{
         py: { xs: 4, md: 6 },
         px: { xs: 2, sm: 4, md: 10 },
-        background: "linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%)",
         position: "relative",
+        background: "linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%)",
       }}
     >
-      {/* Gradient background overlay circles */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: -80,
-          left: -50,
-          width: 250,
-          height: 250,
-          background: "rgba(184, 134, 11, 0.15)",
-          filter: "blur(90px)",
-          borderRadius: "50%",
-          zIndex: 0,
-        }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: -80,
-          right: -50,
-          width: 260,
-          height: 260,
-          background: "rgba(33, 203, 243, 0.2)",
-          filter: "blur(100px)",
-          borderRadius: "50%",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Section Heading */}
+      {/* Section Title */}
       <motion.div
-        initial={{ opacity: 0, y: -30 }}
+        initial={{ opacity: 0, y: -25 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        style={{ position: "relative", zIndex: 2 }}
+        transition={{ duration: 0.5 }}
       >
         <Typography
           variant="h4"
@@ -294,98 +265,102 @@ const TestimonialCarousel = () => {
             background: "linear-gradient(45deg, #B8860B, #21CBF3)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            mb: 5,
-            fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem" }
+            mb: 4,
+            fontSize: { xs: "1.6rem", sm: "2rem", md: "2.2rem" }
           }}
         >
           What Our Customers Say
         </Typography>
       </motion.div>
 
-      {/* Slider */}
-      <Box sx={{ position: "relative", zIndex: 2 }}>
-        <Slider {...settings}>
-          {testimonials.map((testimonial, i) => (
-            <Box key={testimonial._id} sx={{ px: 1 }}>
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.6 }}
+      <Slider {...settings}>
+        {testimonials.map((testimonial, i) => (
+          <Box key={testimonial._id} sx={{ px: 1 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.4 }}
+            >
+              <Card
+                sx={{
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  minHeight: 260,                      // ✅ Smaller height
+                  background: "rgba(255, 255, 255, 0.85)",
+                  backdropFilter: "blur(10px)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
+                  transition: "0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0 12px 25px rgba(0,0,0,0.15)",
+                  },
+                }}
               >
-                <Card
+                {/* Image */}
+                <CardMedia
+                  component="img"
+                  image={
+                    testimonial.imageUrl?.startsWith("http")
+                      ? testimonial.imageUrl
+                      : `${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`
+                  }
+                  alt={testimonial.name}
                   sx={{
-                    borderRadius: 4,
-                    overflow: "hidden",
-                    minHeight: { xs: 360, sm: 330, md: 350 },
-                    background: "rgba(255, 255, 255, 0.75)",
-                    backdropFilter: "blur(12px)",
-                    boxShadow: "0 8px 25px rgba(0,0,0,0.12)",
-                    transition: "0.35s ease",
-                    "&:hover": {
-                      transform: "translateY(-8px)",
-                      boxShadow: "0 12px 35px rgba(0,0,0,0.18)",
-                    },
+                    height: 120,                     // ✅ Reduced image height
+                    objectFit: "cover",
+                    width: "100%",
+                  }}
+                />
+
+                {/* Text */}
+                <CardContent
+                  sx={{
+                    textAlign: "center",
+                    p: 2,
                   }}
                 >
-
-                  {/* Image */}
-                  <CardMedia
-                    component="img"
-                    image={
-                      testimonial.imageUrl?.startsWith("http")
-                        ? testimonial.imageUrl
-                        : `${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`
-                    }
-                    alt={testimonial.name}
+                  <Typography
+                    variant="h6"
                     sx={{
-                      height: { xs: 180, sm: 160 },
-                      objectFit: "cover",
-                      width: "100%",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      mb: 0.5
+                    }}
+                  >
+                    {testimonial.name}
+                  </Typography>
+
+                  <Rating
+                    value={testimonial.rating}
+                    readOnly
+                    size="small"
+                    sx={{
+                      "& .MuiRating-iconFilled": { color: "#B8860B" }
                     }}
                   />
 
-                  {/* Content */}
-                  <CardContent sx={{ textAlign: "center", px: 2, py: 2 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: 700,
-                        fontSize: { xs: "1rem", sm: "1.1rem" },
-                        mb: 0.8,
-                      }}
-                    >
-                      {testimonial.name}
-                    </Typography>
-
-                    <Rating
-                      value={testimonial.rating}
-                      readOnly
-                      sx={{
-                        my: 0.5,
-                        "& .MuiRating-iconFilled": { color: "#B8860B" }
-                      }}
-                    />
-
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontSize: { xs: "0.9rem", sm: "0.95rem" },
-                        color: "#555",
-                        fontStyle: "italic",
-                        mt: 1,
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      “{testimonial.comment}”
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </Box>
-          ))}
-        </Slider>
-      </Box>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: "0.85rem",
+                      color: "#444",
+                      mt: 1,
+                      fontStyle: "italic",
+                      lineHeight: 1.4,
+                      display: "-webkit-box",
+                      WebkitLineClamp: 3,              // ✅ Limit text to 3 lines
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
+                    “{testimonial.comment}”
+                  </Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Box>
+        ))}
+      </Slider>
     </Box>
   );
 };
