@@ -217,7 +217,7 @@ const LatestProducts = () => {
       <Grid
         container
         spacing={{ xs: 2, sm: 3, md: 4 }}
-        justifyContent="center"
+        justifyContent="center" // This was already here, which is great!
       >
         {loading
           ? Array.from(new Array(5)).map((_, index) => (

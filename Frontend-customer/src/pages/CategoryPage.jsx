@@ -79,7 +79,7 @@ const CategoryPage = () => {
 >
    {capitalize(data.categoryName)} Collections
 </Typography>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} justifyContent="center">
   {data.products.length === 0 ? (
     <Grid item xs={12}>
       <Typography>No products found in this category.</Typography>

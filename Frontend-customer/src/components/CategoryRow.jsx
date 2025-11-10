@@ -119,7 +119,7 @@ const CategoryRow = ({ category }) => {
       </Stack>
 
       {/* Product Row */}
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center">
         {isLoading
           ? Array.from(new Array(8)).map((_, index) => (
               <Grid item key={index} xs={6} sm={4} md={3} lg={1.5}>

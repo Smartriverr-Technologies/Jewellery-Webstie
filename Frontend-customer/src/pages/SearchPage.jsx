@@ -84,7 +84,7 @@ const SearchPage = () => {
           </Typography>
         </Box>
       ) : (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center">
           {products.map((product) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
               <ProductCard product={product} />
