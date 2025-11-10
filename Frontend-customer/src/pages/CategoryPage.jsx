@@ -86,7 +86,7 @@ const CategoryPage = () => {
     </Grid>
   ) : (
     data.products.map((product) => (
-      <Grid item key={product._id} xs={6} sm={4} md={2} lg={2} xl={2}>
+      <Grid item key={product._id} xs={6} sm={4} md={2.4} lg={2.4} xl={2.4}>
         <ProductCard product={product} />
       </Grid>
     ))

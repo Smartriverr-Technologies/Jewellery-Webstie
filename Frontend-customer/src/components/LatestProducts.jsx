@@ -220,8 +220,8 @@ const LatestProducts = () => {
         justifyContent="center"
       >
         {loading
-          ? Array.from(new Array(8)).map((_, index) => (
-              <Grid item key={index} xs={6} sm={4} md={2.4}>
+          ? Array.from(new Array(5)).map((_, index) => (
+              <Grid item key={index} xs={6} sm={4} md={2.4} lg={2.4} xl={2.4}>
                 <Skeleton
                   variant="rectangular"
                   height={200}
@@ -242,7 +242,9 @@ const LatestProducts = () => {
                 key={product._id}
                 xs={6}
                 sm={4}
-                md={2.4}
+                md={2.4} 
+                lg={2.4} 
+                xl={2.4}
                 sx={{
                   display: "flex",
                   justifyContent: "center",
