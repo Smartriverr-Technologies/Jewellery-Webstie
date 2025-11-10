@@ -25,7 +25,7 @@ const HomePage = () => {
       
        <Categories />
        <LatestProducts />
-       <MainCarousel />
+      {!isMobile && <MainCarousel />}
       {/* <GalleryPage /> */}
 
       {/* --- Contained-Width Sections --- */}

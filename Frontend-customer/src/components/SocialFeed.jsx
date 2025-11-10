@@ -16,26 +16,36 @@ const SocialFeed = () => {
   });
 
   return (
-    <Box sx={{ py: 6, bgcolor: 'background.default' }}>
-      <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ 
-              fontWeight: 700,
-              background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              mb: 2,
-            }}>
+    <Box sx={{ py: { xs: 4, md: 6 }, bgcolor: 'background.default' }}>
+      <Typography
+        variant="h4"
+        component="h2"
+        gutterBottom
+        align="center"
+        sx={{
+          fontWeight: 700,
+          background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          mb: { xs: 3, md: 4 },
+          fontSize: { xs: '1.8rem', sm: '2.2rem' },
+        }}
+      >
         #AuraInTheWild
       </Typography>
       <Grid container>
         {isLoading ? (
           Array.from(new Array(6)).map((item, index) => (
-            <Grid item key={index} xs={4} sm={2}>
-              <Skeleton variant="rectangular" height={350} />
+            <Grid item key={index} xs={6} sm={4} md={2}>
+              <Skeleton
+                variant="rectangular"
+                sx={{ height: { xs: 280, sm: 350 } }}
+              />
             </Grid>
           ))
         ) : (
           videos?.map((video, index) => (
-            <Grid item key={video._id} xs={4} sm={2}>
+            <Grid item key={video._id} xs={6} sm={4} md={2}>
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -47,7 +57,7 @@ const SocialFeed = () => {
                   square
                   sx={{
                     position: 'relative',
-                    height: { xs: '250px', sm: '350px' },
+                    height: { xs: '280px', sm: '350px' },
                     overflow: 'hidden',
                     '&:hover .video-overlay': { opacity: 1 },
                     '&:hover video': { transform: 'scale(1.1)' },
