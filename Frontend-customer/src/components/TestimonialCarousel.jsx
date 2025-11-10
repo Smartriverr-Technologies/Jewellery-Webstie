@@ -106,7 +106,8 @@ const TestimonialCarousel = () => {
                         background: 'linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        mb: 2,
+                        mb: { xs: 3, sm: 4, md: 2 },
+                        fontSize: { xs: '1.8rem', sm: '2.2rem' },
                       }}>
             What Our Customers Say
                 </Typography>
@@ -125,7 +126,7 @@ const TestimonialCarousel = () => {
             >
               <Card
                 sx={{
-                  minHeight: 100,
+                  minHeight: { xs: 280, sm: 300 },
                   display: 'flex',
                   flexDirection: 'column',
                   borderRadius: 3,
@@ -139,13 +140,12 @@ const TestimonialCarousel = () => {
                 <Box sx={{ position: "relative" }}>
                   <CardMedia
                     component="img"
-                    height="150"
-                    // image={`${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
                     image = {testimonial.imageUrl?.startsWith('http')
   ? testimonial.imageUrl
   : `${import.meta.env.VITE_API_URL}${testimonial.imageUrl}`}
                     alt={testimonial.name}
                     sx={{
+                      height: { xs: 140, sm: 150 },
                       objectFit: "cover",
                       borderTopLeftRadius: 12,
                       borderTopRightRadius: 12
@@ -166,12 +166,12 @@ const TestimonialCarousel = () => {
                 </Box>
 
                 {/* Text Content */}
-                <CardContent sx={{ textAlign: 'center', flexGrow: 1, p: 2 }}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: '600', mb: 0.5 }}>
+                <CardContent sx={{ textAlign: 'center', flexGrow: 1, p: { xs: 1.5, sm: 2 } }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: '600', mb: 0.5, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                     {testimonial.name}
                   </Typography>
                   <Rating value={testimonial.rating} readOnly size="small" sx={{ my: 0.5 }} />
-                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                     "{testimonial.comment}"
                   </Typography>
                 </CardContent>

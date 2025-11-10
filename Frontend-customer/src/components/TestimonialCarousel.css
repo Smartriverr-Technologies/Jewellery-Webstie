@@ -1,16 +1,25 @@
+/* TestimonialCarousel.css */
+
+/* --- Customizing react-slick dots --- */
 .slick-dots {
-  bottom: -40px;
+  bottom: -25px; /* Position dots below the carousel */
 }
 
 .slick-dots li button:before {
-  font-size: 12px;
-  color: #1976d2;
-  opacity: 0.5;
+  font-size: 10px;
+  color: #b8860b !important; /* Gold color for dots */
+  opacity: 0.4;
   transition: all 0.3s ease;
 }
 
 .slick-dots li.slick-active button:before {
-  color: #1976d2;
   opacity: 1;
-  font-size: 14px;
+  font-size: 14px; /* Make active dot larger */
+}
+
+/* On mobile, make dots smaller and closer */
+@media (max-width: 480px) {
+  .slick-dots li button:before {
+    font-size: 8px;
+  }
 }
