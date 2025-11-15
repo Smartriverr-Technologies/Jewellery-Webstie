@@ -178,7 +178,7 @@
 
 // export default Footer;
 
-// // Footer.jsx
+// Footer.jsx
 // import React from 'react';
 // import { Box, Container, Grid, Typography, Link, IconButton, Divider } from '@mui/material';
 // import { styled } from '@mui/material/styles';
@@ -191,7 +191,7 @@
 // import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 // const FooterWrapper = styled(Box)(({ theme }) => ({
-//   background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+//   background: 'black',
 //   color: '#ffffff',
 //   paddingTop: theme.spacing(8),
 //   paddingBottom: theme.spacing(3),
@@ -369,7 +369,7 @@ import {
   Box,
   Container,
   Grid,
-  Typography,
+  Typography, 
   Link,
   IconButton,
   Divider,
