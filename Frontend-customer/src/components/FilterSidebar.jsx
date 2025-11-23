@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-const FilterSidebar = ({ onFilterChange }) => {
+const FilterSidebar = ({ onFilterChange , closeDrawer}) => {
   const [searchParams] = useSearchParams();
 
   const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
@@ -31,24 +31,41 @@ const FilterSidebar = ({ onFilterChange }) => {
     setSortBy(searchParams.get("sortBy") || "latest");
   }, [searchParams]);
 
+  // const handleApplyFilters = () => {
+  //   const newFilters = { sortBy };
+  //   if (minPrice) newFilters.minPrice = minPrice;
+  //   if (maxPrice) newFilters.maxPrice = maxPrice;
+  //   newFilters.pageNumber = 1;
+  //   onFilterChange(newFilters);
+  // };
   const handleApplyFilters = () => {
     const newFilters = { sortBy };
     if (minPrice) newFilters.minPrice = minPrice;
     if (maxPrice) newFilters.maxPrice = maxPrice;
     newFilters.pageNumber = 1;
     onFilterChange(newFilters);
+    if (closeDrawer) closeDrawer();
   };
+
+
+  // const handleClearFilters = () => {
+  //   setMinPrice("");
+  //   setMaxPrice("");
+  //   setSortBy("latest");
+  //   onFilterChange({
+  //     sortBy: "latest",
+  //     pageNumber: 1,
+  //     minPrice: "",
+  //     maxPrice: "",
+  //   });
+  // };
 
   const handleClearFilters = () => {
     setMinPrice("");
     setMaxPrice("");
     setSortBy("latest");
-    onFilterChange({
-      sortBy: "latest",
-      pageNumber: 1,
-      minPrice: "",
-      maxPrice: "",
-    });
+    onFilterChange({ sortBy: "latest", pageNumber: 1 });
+    if (closeDrawer) closeDrawer();
   };
 
   // Completely hide sidebar including white space
@@ -102,3 +119,5 @@ const FilterSidebar = ({ onFilterChange }) => {
 };
 
 export default FilterSidebar;
+
+
