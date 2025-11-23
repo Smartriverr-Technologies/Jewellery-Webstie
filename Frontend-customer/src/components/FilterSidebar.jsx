@@ -23,7 +23,7 @@ const FilterSidebar = ({ onFilterChange }) => {
   const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "latest");
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md")); // detects screen < md
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     setMinPrice(searchParams.get("minPrice") || "");
@@ -51,7 +51,7 @@ const FilterSidebar = ({ onFilterChange }) => {
     });
   };
 
-  // Hide Sidebar on Mobile Screens
+  // Completely hide sidebar including white space
   if (isMobile) return null;
 
   return (
