@@ -143,9 +143,9 @@ const ShopLayout = ({ children, onFilterChange }) => {
     <Container maxWidth="xl" sx={{ p: 0, mt: 1 }}>
       <Grid container spacing={3}>
 
-        {/* Desktop Sidebar */}
+        {/* Desktop Sticky Sidebar */}
         {!isMobile && (
-          <Grid item md={3}>
+          <Grid item md={3} sx={{ position: "sticky", top: "90px", height: "fit-content" }}>
             <FilterSidebar onFilterChange={onFilterChange} />
           </Grid>
         )}
@@ -156,7 +156,7 @@ const ShopLayout = ({ children, onFilterChange }) => {
         </Grid>
       </Grid>
 
-      {/* Mobile Filter FAB */}
+      {/* Mobile Filter Button */}
       {isMobile && (
         <Fab
           color="warning"
@@ -174,7 +174,7 @@ const ShopLayout = ({ children, onFilterChange }) => {
         </Fab>
       )}
 
-      {/* Drawer for Filters */}
+      {/* Mobile Drawer Filter */}
       <Drawer
         anchor="bottom"
         open={drawerOpen}
