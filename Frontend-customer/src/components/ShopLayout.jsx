@@ -1,45 +1,55 @@
 import React from "react";
-import { Grid, Container, Box } from "@mui/material";
+import { Grid, Container, Box, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import FilterSidebar from "./FilterSidebar";
 
 const ShopLayout = ({ children, onFilterChange }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
-    <Container maxWidth="xl" sx={{ py: 0, mt: 0 }}>
-      <Grid container spacing={0} alignItems="flex-start">
+    <Container
+      maxWidth="xl"
+      sx={{
+        px: { xs: 1, md: 2 },   // remove vertical padding
+        py: { xs: 0, md: 1 },   // no gap under navbar on mobile
+      }}
+    >
+      <Grid
+        container
+        spacing={isMobile ? 0 : 3} // no grid spacing in mobile
+        alignItems="flex-start"
+      >
+        {!isMobile && (
+          <Grid
+            item
+            xs={12}
+            md={3}
+            sx={{
+              position: "relative",
+              height: "fit-content",
+              width: "23%",
+            }}
+          >
+            <FilterSidebar onFilterChange={onFilterChange} />
+          </Grid>
+        )}
 
-        {/* Desktop Filter Sidebar */}
-        <Grid
-          item
-          xs={12}
-          md={3}
-          sx={{
-            display: { xs: "none", md: "block" },  // Hide completely on mobile
-            position: "sticky",
-            top: "90px",  // adjust based on navbar height if needed
-            height: "fit-content",
-          }}
-        >
-          <FilterSidebar onFilterChange={onFilterChange} />
-        </Grid>
-
-        {/* Products Section */}
         <Grid
           item
           xs={12}
           md={9}
           sx={{
-            width: { xs: "100%", md: "100%" },   // Full width on mobile & desktop
-            height: "auto",
-            overflowY: { xs: "visible", md: "auto" }, // no scroll container on mobile
-            mt: { xs: 2, md: 0 },
-            px: { xs: 1, md: 4 },
+            width: isMobile ? "100%" : "75%",
+            float: "right",
+            overflowY: "auto",
+            maxHeight: { md: "calc(100vh - 100px)" },
+            px: { xs: 0, md: 2 },
+            mt: { xs: 0, md: 2 },  // remove top margin in mobile
           }}
         >
-          <Box sx={{ width: "100%" }}>
-            {children}
-          </Box>
+          <Box>{children}</Box>
         </Grid>
-
       </Grid>
     </Container>
   );
