@@ -1380,12 +1380,14 @@ const Header = () => {
                 onSubmit={searchHandler}
                 sx={{
                   position: "absolute",
+                  position: "fixed",
                   top: "100%",
                   left: 0,
                   width: "100%",
                   backgroundColor: "#fff",
                   borderTop: "1px solid rgba(0,0,0,0.05)",
                   p: 1.5,
+                  p: 1.5, // Padding for the search bar itself
                   zIndex: 1200, // Below header, above content
                 }}
               >
