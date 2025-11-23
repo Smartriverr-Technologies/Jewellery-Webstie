@@ -55,35 +55,9 @@ const CategoryPage = () => {
         </>
       ) : data && (
         <>
-          <Breadcrumbs 
-  separator={<NavigateNextIcon fontSize="small" />} 
-  sx={{ mb: { xs: 0.5, md: 2 }, mt: { xs: 0, md: 1 } }}
->
-
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mb: 2 }}>
             <MuiLink component={RouterLink} underline="hover" color="inherit" to="/">Home</MuiLink>
-            {/* <Typography color="text.primary">{capitalize(data.categoryName)}</Typography> */}
-            <Typography
-  variant="h4"
-  component="h2"
-  gutterBottom
-  sx={{
-    mt: { xs: 0.5, md: 1 },   // reduce space on mobile
-    mb: { xs: 1, md: 2 },
-    textAlign: "center",
-    position: "relative",
-    "&::after": {
-      content: '""',
-      display: "block",
-      width: "15%",
-      height: "3px",
-      backgroundColor: "#B8860B",
-      margin: "10px auto 0",
-    },
-  }}
->
-  {capitalize(data.categoryName)} Collections
-</Typography>
-
+            <Typography color="text.primary">{capitalize(data.categoryName)}</Typography>
           </Breadcrumbs>
           <Typography
   variant="h4"
