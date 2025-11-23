@@ -55,7 +55,13 @@ const CategoryPage = () => {
         </>
       ) : data && (
         <>
-          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mb: 2 }}>
+          <Breadcrumbs
+            separator={<NavigateNextIcon fontSize="small" />}
+            sx={{
+              mb: 2,
+              display: { xs: 'none', md: 'block' } // Hide on mobile
+            }}
+          >
             <MuiLink component={RouterLink} underline="hover" color="inherit" to="/">Home</MuiLink>
             <Typography color="text.primary">{capitalize(data.categoryName)}</Typography>
           </Breadcrumbs>
