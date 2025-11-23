@@ -13,25 +13,38 @@ const ShopLayout = ({ children, onFilterChange }) => {
 
         {/* ---- Only render this grid when not mobile ---- */}
         {!isMobile && (
-          <Grid
-            item
-            md={3}
-            sx={{
-              position: "relative",
-              height: "fit-content",
-              width: "23%",
-              float: "left",
-            }}
-          >
-            <FilterSidebar onFilterChange={onFilterChange} />
-          </Grid>
+          // <Grid
+          //   item
+          //   md={3}
+          //   sx={{
+          //     position: "relative",
+          //     height: "fit-content",
+          //     width: "23%",
+          //     float: "left",
+          //   }}
+          // >
+          //   <FilterSidebar onFilterChange={onFilterChange} />
+          // </Grid>
+          <Grid item
+  xs={12}
+  md={3}
+  sx={{
+    display: { xs: 'none', md: 'block' },  // hide completely on mobile
+    position: 'relative',
+    height: 'fit-content',
+    width: { xs: '0%', md: '23%' },        // remove width on mobile
+    float: { xs: 'none', md: 'left' },
+  }}
+>
+  <FilterSidebar onFilterChange={onFilterChange} />
+</Grid>
         )}
 
         {/* ---- Product Section always visible ---- */}
-        <Grid
+        {/* <Grid
           item
           xs={12}
-          md={9}
+          md={3}
           sx={{
             maxHeight: "calc(100vh - 100px)",
             overflowY: "auto",
@@ -45,7 +58,28 @@ const ShopLayout = ({ children, onFilterChange }) => {
           }}
         >
           <Box>{children}</Box>
-        </Grid>
+        </Grid> */}
+
+        <Grid
+  item
+  xs={12}
+  md={9}
+  sx={{
+    maxHeight: 'calc(100vh - 100px)',
+    overflowY: 'auto',
+    pr: 1,
+    '&::-webkit-scrollbar': { width: '6px' },
+    '&::-webkit-scrollbar-thumb': { background: '#B8860B', borderRadius: '3px' },
+    width: { xs: '100%', md: '75%' },    // full width on mobile
+    float: { xs: 'none', md: 'right' },
+    px: { xs: 1, md: 4 },
+    marginTop: 2,
+  }}
+>
+  <Box>
+    {children}
+  </Box>
+</Grid>
       </Grid>
     </Container>
   );
