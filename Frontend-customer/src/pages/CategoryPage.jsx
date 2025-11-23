@@ -61,21 +61,17 @@ const CategoryPage = () => {
           </Breadcrumbs>
           <Typography
   variant="h4"
-  component="h2"
-  gutterBottom
-  sx={{
-    textAlign: 'center',        // Text horizontally center
-    position: 'relative',       // Underline ke liye relative position
-    '&::after': {
-      content: '""',            // Empty content for underline
-      display: 'block',
-      width: '15%',             // 75% width of the text container
-      height: '3px',            // underline height
-      backgroundColor: '#B8860B', // underline color
-      margin: '10px auto 0', 
-        // center underline and thoda space upar se
-    },
-  }}
+        component="h2"
+        align="center"
+        gutterBottom
+        sx={{
+          fontWeight: 700,
+          background: "linear-gradient(45deg, #B8860B 30%, #21CBF3 90%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          mb: { xs: 3, sm: 5 },
+          fontSize: { xs: "1.6rem", sm: "2rem", md: "2.4rem" },
+        }}
 >
    {capitalize(data.categoryName)} Collections
 </Typography>
