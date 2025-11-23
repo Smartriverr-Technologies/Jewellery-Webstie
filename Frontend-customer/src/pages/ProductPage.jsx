@@ -69,7 +69,7 @@ const ProductPage = () => {
   }));
 
   return (
-    <Container maxWidth="lg" sx={{ py: { xs: 2, md: 5 } }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 } }}>
       <Grid container spacing={{ xs: 3, md: 6 }}>
         {/* --- Left: Image Gallery --- */}
         <Grid item xs={12} md={6}>
@@ -77,7 +77,7 @@ const ProductPage = () => {
             sx={{
               width: '100%',
               position: 'sticky',
-              top: { xs: 80, md: 120 }, // Adjust for header height
+              top: { xs: 80, md: 100 }, // Adjust for header height
               '& .image-gallery-slide img': {
                 borderRadius: 2,
                 maxHeight: { xs: '60vh', md: '70vh' },
