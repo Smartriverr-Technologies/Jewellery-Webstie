@@ -1380,14 +1380,12 @@ const Header = () => {
                 onSubmit={searchHandler}
                 sx={{
                   position: "absolute",
-                  position: "fixed",
                   top: "100%",
                   left: 0,
                   width: "100%",
                   backgroundColor: "#fff",
                   borderTop: "1px solid rgba(0,0,0,0.05)",
                   p: 1.5,
-                  p: 1.5, // Padding for the search bar itself
                   zIndex: 1200, // Below header, above content
                 }}
               >
@@ -1414,6 +1412,7 @@ const Header = () => {
               </Box>
             </Grow>
           )}
+        </Container>
 
         {/* Desktop Navigation */}
         {/* {!isMobile && (
@@ -1465,9 +1464,7 @@ const Header = () => {
             </Container>
           </Box>
         )} */}
-        </Container>
-      </AppBar>
-      
+
         {/* ✅ Desktop Navigation (Only visible on large screens) */}
 {!isMobile && (
   <Box
@@ -1476,7 +1473,6 @@ const Header = () => {
     width: "100%",
     bgcolor: "rgba(255,255,255,0.95)",
     borderTop: "1px solid rgba(0,0,0,0.05)",
-    pt: isShrunk ? 10.5 : 14.5, // Push it down below the fixed AppBar
   }}
 >
    <Container maxWidth="lg">
@@ -1521,6 +1517,8 @@ const Header = () => {
   </Container>
   </Box>
 )}
+
+      </AppBar>
 
       {/* ✅ Fixed Mobile Drawer Menu */}
       <Drawer
