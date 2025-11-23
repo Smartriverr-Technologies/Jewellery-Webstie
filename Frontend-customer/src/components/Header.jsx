@@ -1174,6 +1174,8 @@ const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  const isHomePage = location.pathname === '/';
+
   const cartItemCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
   const handleMenu = (event) => setAnchorEl(event.currentTarget);
@@ -1211,7 +1213,7 @@ const Header = () => {
   useEffect(() => {
     if (isMobile) {
       // Open if not on homepage, close if on homepage
-      setMobileSearchOpen(location.pathname !== '/');
+      setMobileSearchOpen(!isHomePage);
     }
   }, [location.pathname, isMobile]);
 
@@ -1294,14 +1296,15 @@ const Header = () => {
               {/* Mobile Search Toggle */}
               {isMobile && (
                 <IconButton
-                  onClick={() => setMobileSearchOpen((prev) => !prev)}
+                  onClick={isHomePage ? () => setMobileSearchOpen((prev) => !prev) : undefined}
                   sx={{
                     color: "text.primary",
                     "&:hover": { transform: "scale(1.1)" },
                     zIndex: 140, // Higher than drawer
+                    cursor: isHomePage ? 'pointer' : 'default',
                   }}
                 >
-                  {mobileSearchOpen ? <CloseIcon /> : <SearchIcon />}
+                  {isHomePage && mobileSearchOpen ? <CloseIcon /> : <SearchIcon />}
                 </IconButton>
               )}
 
