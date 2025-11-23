@@ -1,85 +1,45 @@
 import React from "react";
-import { Grid, Container, Box, useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Grid, Container, Box } from "@mui/material";
 import FilterSidebar from "./FilterSidebar";
 
 const ShopLayout = ({ children, onFilterChange }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md")); // detects screen < md
-
   return (
-    <Container maxWidth="xl" sx={{ py: 1 }}>
-      <Grid container spacing={3} alignItems="flex-start">
+    <Container maxWidth="xl" sx={{ py: 0, mt: 0 }}>
+      <Grid container spacing={0} alignItems="flex-start">
 
-        {/* ---- Only render this grid when not mobile ---- */}
-        {!isMobile && (
-          // <Grid
-          //   item
-          //   md={3}
-          //   sx={{
-          //     position: "relative",
-          //     height: "fit-content",
-          //     width: "23%",
-          //     float: "left",
-          //   }}
-          // >
-          //   <FilterSidebar onFilterChange={onFilterChange} />
-          // </Grid>
-          <Grid item
-  xs={12}
-  md={3}
-  sx={{
-    display: { xs: 'none', md: 'block' },  // hide completely on mobile
-    position: 'relative',
-    height: 'fit-content',
-    width: { xs: '0%', md: '23%' },        // remove width on mobile
-    float: { xs: 'none', md: 'left' },
-  }}
->
-  <FilterSidebar onFilterChange={onFilterChange} />
-</Grid>
-        )}
-
-        {/* ---- Product Section always visible ---- */}
-        {/* <Grid
+        {/* Desktop Filter Sidebar */}
+        <Grid
           item
           xs={12}
           md={3}
           sx={{
-            maxHeight: "calc(100vh - 100px)",
-            overflowY: "auto",
-            pr: 1,
-            "&::-webkit-scrollbar": { width: "6px" },
-            "&::-webkit-scrollbar-thumb": { background: "#B8860B", borderRadius: "3px" },
-            width: isMobile ? "100%" : "75%",
-            float: "right",
-            px: isMobile ? 0 : 4,
-            mt: 2,
+            display: { xs: "none", md: "block" },  // Hide completely on mobile
+            position: "sticky",
+            top: "90px",  // adjust based on navbar height if needed
+            height: "fit-content",
           }}
         >
-          <Box>{children}</Box>
-        </Grid> */}
+          <FilterSidebar onFilterChange={onFilterChange} />
+        </Grid>
 
+        {/* Products Section */}
         <Grid
-  item
-  xs={12}
-  md={9}
-  sx={{
-    maxHeight: 'calc(100vh - 100px)',
-    overflowY: 'auto',
-    pr: 1,
-    '&::-webkit-scrollbar': { width: '6px' },
-    '&::-webkit-scrollbar-thumb': { background: '#B8860B', borderRadius: '3px' },
-    width: { xs: '100%', md: '75%' },    // full width on mobile
-    float: { xs: 'none', md: 'right' },
-    px: { xs: 1, md: 4 },
-    marginTop: 2,
-  }}
->
-  <Box>
-    {children}
-  </Box>
-</Grid>
+          item
+          xs={12}
+          md={9}
+          sx={{
+            width: { xs: "100%", md: "100%" },   // Full width on mobile & desktop
+            height: "auto",
+            overflowY: { xs: "visible", md: "auto" }, // no scroll container on mobile
+            mt: { xs: 2, md: 0 },
+            px: { xs: 1, md: 4 },
+          }}
+        >
+          <Box sx={{ width: "100%" }}>
+            {children}
+          </Box>
+        </Grid>
+
       </Grid>
     </Container>
   );
