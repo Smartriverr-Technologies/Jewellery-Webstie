@@ -89,7 +89,7 @@ import GalleryPage from './pages/GalleryPage';
 import ShopPage from './pages/ShopPage';
 import Aboutus from './pages/Aboutus';
 import Contactus from './pages/Contactus';
-import FloatingContact from './components/FloatingContact';
+// import FloatingContact from './components/FloatingContact';
 import ShippingAndDelivery from './pages/ShippingAndDelivery';
 // import EmailVerifyPage from './pages/EmailVerifyPage';
 
@@ -127,7 +127,7 @@ function App() {
             <Route path="/wishlist" element={<WishlistPage />} />
           </Route>
         </Routes>
-        <FloatingContact />
+        {/* <FloatingContact /> */}
       </main>
       <Footer />
     </>
