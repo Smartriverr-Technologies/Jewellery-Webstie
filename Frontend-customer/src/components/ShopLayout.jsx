@@ -12,7 +12,7 @@ const ShopLayout = ({ children, onFilterChange }) => {
       maxWidth="xl"
       sx={{
         px: { xs: 1, md: 2 },   // remove vertical padding
-        py: { xs: 0, md: 1 },   // no gap under navbar on mobile
+        py: { xs: 0, md: 0 },   // no gap under navbar on mobile
       }}
     >
       <Grid
