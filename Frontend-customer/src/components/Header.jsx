@@ -1414,7 +1414,6 @@ const Header = () => {
               </Box>
             </Grow>
           )}
-        </Container>
 
         {/* Desktop Navigation */}
         {/* {!isMobile && (
@@ -1466,7 +1465,9 @@ const Header = () => {
             </Container>
           </Box>
         )} */}
-
+        </Container>
+      </AppBar>
+      
         {/* ✅ Desktop Navigation (Only visible on large screens) */}
 {!isMobile && (
   <Box
@@ -1475,6 +1476,7 @@ const Header = () => {
     width: "100%",
     bgcolor: "rgba(255,255,255,0.95)",
     borderTop: "1px solid rgba(0,0,0,0.05)",
+    pt: isShrunk ? 10.5 : 14.5, // Push it down below the fixed AppBar
   }}
 >
    <Container maxWidth="lg">
@@ -1519,8 +1521,6 @@ const Header = () => {
   </Container>
   </Box>
 )}
-
-      </AppBar>
 
       {/* ✅ Fixed Mobile Drawer Menu */}
       <Drawer
