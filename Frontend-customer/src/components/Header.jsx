@@ -1117,7 +1117,7 @@
 
 
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -1161,6 +1161,7 @@ const navLinks = [
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { cartItems } = useCart();
   const { userInfo, logout } = useAuth();
 
@@ -1205,6 +1206,14 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Open search bar on mobile for non-home pages
+  useEffect(() => {
+    if (isMobile) {
+      // Open if not on homepage, close if on homepage
+      setMobileSearchOpen(location.pathname !== '/');
+    }
+  }, [location.pathname, isMobile]);
 
   return (
     <>
@@ -1379,7 +1388,7 @@ const Header = () => {
                 component="form"
                 onSubmit={searchHandler}
                 sx={{
-                  position: "absolute",
+                  position: "fixed",
                   top: "100%",
                   left: 0,
                   width: "100%",
