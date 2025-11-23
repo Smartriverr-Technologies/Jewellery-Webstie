@@ -11,8 +11,8 @@ const ShopLayout = ({ children, onFilterChange }) => {
     <Container
       maxWidth="xl"
       sx={{
-        px: { xs: 1, md: 2 },   // remove vertical padding
-        py: { xs: 0, md: 0 },   // no gap under navbar on mobile
+        px: { xs: 1, md: 2 },
+        py: { xs: 2, md: 3 }, // Add vertical padding for spacing from header
       }}
     >
       <Grid
