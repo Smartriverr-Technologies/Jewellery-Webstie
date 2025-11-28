@@ -57,59 +57,157 @@
 
 // export default ShopLayout;
 
+// import React, { useState } from "react";
+// import { Grid, Container, Box, Drawer, Button, useMediaQuery } from "@mui/material";
+// import { useTheme } from "@mui/material/styles";
+// import FilterSidebar from "./FilterSidebar";
+
+// const ShopLayout = ({ children, onFilterChange }) => {
+//   const [drawerOpen, setDrawerOpen] = useState(false);
+
+//   const theme = useTheme();
+//   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+//   return (
+//     <Container maxWidth="xl" sx={{ py: 0, mt: 1 }}>
+//       <Grid container spacing={3}>
+
+//         {/* Desktop Sidebar */}
+//         {!isMobile && (
+//           <Grid item md={3}>
+//             <FilterSidebar onFilterChange={onFilterChange} />
+//           </Grid>
+//         )}
+
+//         {/* Products */}
+//         <Grid item xs={12} md={9}>
+//           <Box sx={{ mt: isMobile ? 0 : 2 }}>{children}</Box>
+//         </Grid>
+//       </Grid>
+
+//       {/* Mobile Floating Filter Button */}
+//       {isMobile && (
+//         <Button
+//           variant="contained"
+//           sx={{
+//             position: "fixed",
+//             bottom: 20,
+//             right: 20,
+//             borderRadius: "50px",
+//             px: 4,
+//           }}
+//           onClick={() => setDrawerOpen(true)}
+//         >
+//           Filters
+//         </Button>
+//       )}
+
+//       {/* Mobile Bottom Drawer */}
+//       <Drawer anchor="bottom" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+//         <Box sx={{ p: 2 }}>
+//           <FilterSidebar onFilterChange={onFilterChange} closeDrawer={() => setDrawerOpen(false)} />
+//         </Box>
+//       </Drawer>
+//     </Container>
+//   );
+// }
+
+// export default ShopLayout;
+
 import React, { useState } from "react";
-import { Grid, Container, Box, Drawer, Button, useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Box, Grid, Drawer, IconButton, useMediaQuery, useTheme, Fab } from "@mui/material";
 import FilterSidebar from "./FilterSidebar";
+import TuneIcon from "@mui/icons-material/Tune";
 
 const ShopLayout = ({ children, onFilterChange }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <Container maxWidth="xl" sx={{ py: 0, mt: 1 }}>
-      <Grid container spacing={3}>
-
-        {/* Desktop Sidebar */}
-        {!isMobile && (
-          <Grid item md={3}>
-            <FilterSidebar onFilterChange={onFilterChange} />
-          </Grid>
-        )}
-
-        {/* Products */}
-        <Grid item xs={12} md={9}>
-          <Box sx={{ mt: isMobile ? 0 : 2 }}>{children}</Box>
-        </Grid>
-      </Grid>
-
-      {/* Mobile Floating Filter Button */}
+    <Box sx={{ position: "relative", pt: { xs: 1, md: 2 } }}>
+      
+      {/* --------------------- MOBILE FILTER BUTTON --------------------- */}
       {isMobile && (
-        <Button
-          variant="contained"
+        <Fab
+          color="primary"
+          size="medium"
+          onClick={() => setDrawerOpen(true)}
           sx={{
             position: "fixed",
             bottom: 20,
             right: 20,
-            borderRadius: "50px",
-            px: 4,
+            zIndex: 999,
+            background: "#B8860B",
+            "&:hover": { background: "#a4750a" },
+            boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
           }}
-          onClick={() => setDrawerOpen(true)}
         >
-          Filters
-        </Button>
+          <TuneIcon />
+        </Fab>
       )}
 
-      {/* Mobile Bottom Drawer */}
-      <Drawer anchor="bottom" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <Box sx={{ p: 2 }}>
-          <FilterSidebar onFilterChange={onFilterChange} closeDrawer={() => setDrawerOpen(false)} />
-        </Box>
+      {/* --------------------- MOBILE DRAWER FILTER --------------------- */}
+      <Drawer
+        anchor="bottom"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{ zIndex: 2000 }}
+        PaperProps={{
+          sx: {
+            height: "70vh",
+            borderRadius: "20px 20px 0 0",
+            p: 2,
+            overflowY: "auto",
+          },
+        }}
+      >
+        <FilterSidebar
+          onFilterChange={onFilterChange}
+          closeDrawer={() => setDrawerOpen(false)}
+        />
       </Drawer>
-    </Container>
+
+      {/* --------------------- DESKTOP LAYOUT --------------------- */}
+      <Grid container spacing={3}>
+        {/* LEFT FILTER (VISIBLE ONLY ON DESKTOP) */}
+        {!isMobile && (
+          <Grid
+            item
+            md={3}
+            sx={{
+              position: "sticky",
+              top: "100px",
+              height: "max-content",
+              alignSelf: "flex-start",
+            }}
+          >
+            <FilterSidebar onFilterChange={onFilterChange} />
+          </Grid>
+        )}
+
+        {/* RIGHT PRODUCTS AREA */}
+        <Grid
+          item
+          xs={12}
+          md={9}
+          sx={{
+            px: { xs: 1, md: 2 },
+            maxHeight: { md: "calc(100vh - 120px)" },
+            overflowY: { md: "auto" },
+            "&::-webkit-scrollbar": { width: "6px" },
+            "&::-webkit-scrollbar-thumb": {
+              background: "#B8860B",
+              borderRadius: "10px",
+            },
+          }}
+        >
+          {children}
+        </Grid>
+      </Grid>
+    </Box>
   );
-}
+};
 
 export default ShopLayout;
+
