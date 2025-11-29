@@ -307,10 +307,10 @@ const Footer = () => {
           <Grid item xs={12} sm={6} md={3}>
             <SectionTitle variant="h6">Customer Care</SectionTitle>
             <FooterLink href="/shipping-delivery">Shipping & Delivery</FooterLink>
-            <FooterLink href="/returns">Returns & Exchange</FooterLink>
+            <FooterLink href="/">Returns & Exchange</FooterLink>
             {/* <FooterLink href="/size-guide">Size Guide</FooterLink> */}
             {/* <FooterLink href="/care">Jewellery Care</FooterLink> */}
-            <FooterLink href="/faq">FAQs</FooterLink>
+            <FooterLink href="/">FAQs</FooterLink>
           </Grid>
 
           {/* Contact Info */}
@@ -346,13 +346,13 @@ const Footer = () => {
             © {new Date().getFullYear()} Your Jewellery Brand. All rights reserved.
           </Typography>
           <Box sx={{ display: 'flex', gap: 3 }}>
-            <FooterLink href="/privacy" sx={{ mb: 0, fontSize: '0.85rem' }}>
+            <FooterLink href="/" sx={{ mb: 0, fontSize: '0.85rem' }}>
               Privacy Policy
             </FooterLink>
-            <FooterLink href="/terms" sx={{ mb: 0, fontSize: '0.85rem' }}>
+            <FooterLink href="/" sx={{ mb: 0, fontSize: '0.85rem' }}>
               Terms & Conditions
             </FooterLink>
-            <FooterLink href="/cookies" sx={{ mb: 0, fontSize: '0.85rem' }}>
+            <FooterLink href="/" sx={{ mb: 0, fontSize: '0.85rem' }}>
               Cookie Policy
             </FooterLink>
           </Box>
