@@ -142,6 +142,27 @@ const OrderHistoryPage = () => {
   const [error, setError] = useState('');
   const isMobile = useMediaQuery('(max-width: 768px)'); // mobile view trigger
 
+  // Prevent noisy console errors originating from injected extension content scripts (TestCraft)
+  // This is a narrow filter — it only suppresses errors coming from known extension filenames.
+  useEffect(() => {
+    const onError = (event) => {
+      try {
+        const filename = event?.filename || (event?.error && event.error?.stack) || '';
+        if (!filename) return;
+        const lower = String(filename).toLowerCase();
+        if (lower.includes('content.js') || lower.includes('testcraft') || lower.includes('index-cotbyisk.js')) {
+          // suppress default logging for this error (non-invasive)
+          if (typeof event.preventDefault === 'function') event.preventDefault();
+        }
+      } catch (e) {
+        // don't block other errors
+      }
+    };
+
+    window.addEventListener('error', onError);
+    return () => window.removeEventListener('error', onError);
+  }, []);
+
   useEffect(() => {
     const fetchMyOrders = async () => {
       try {
