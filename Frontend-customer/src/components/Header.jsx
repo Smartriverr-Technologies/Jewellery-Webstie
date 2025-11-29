@@ -1241,7 +1241,7 @@ const Header = () => {
             }}
           >
             {/* Logo */}
-            {/* <Typography
+            <Typography
               variant="h6"
               component={Link}
               to="/"
@@ -1256,8 +1256,8 @@ const Header = () => {
               }}
             >
               suraj jewels
-            </Typography> */}
-            <Box
+            </Typography>
+            {/* <Box
   component={Link}
   to="/"
   sx={{
@@ -1279,7 +1279,7 @@ const Header = () => {
       filter: isShrunk ? "brightness(0.9)" : "none",
     }}
   />
-</Box>
+</Box> */}
 
 
             {/* Desktop Search */}
