@@ -17,6 +17,8 @@
   flex-wrap: wrap;
 }
 
+
+
 /* ---- Mobile First ---- */
 .cart-items {
   width: 100%;
@@ -65,6 +67,78 @@
 /* --- Desktop Only Section --- */
 .desktop-only {
   display: none;
+}
+
+/* Desktop Only Sidebar */
+.cart-summary {
+  width: 320px;
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 120px; /* Optimal scroll sticking */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: fit-content;
+  margin-left: auto;
+}
+
+/* Heading Style */
+.cart-summary h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111;
+}
+
+/* Text Rows */
+.cart-summary p {
+  font-size: 16px;
+  color: #444;
+  margin: 0;
+}
+
+/* Making subtotal stand out */
+.cart-summary .subtotal {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.cart-summary .subtotal strong {
+  color: #1a1a1a;
+}
+
+/* Items count smaller */
+.cart-summary .total-items {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* Checkout Button */
+.checkout-btn {
+  width: 100%;
+  background-color: #c89b21;
+  color: #fff;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 500;
+}
+
+.checkout-btn:hover:not(:disabled) {
+  background-color: #b98a18;
+}
+
+.checkout-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 @media (min-width: 768px) {
