@@ -90,12 +90,12 @@ const Sidebar = () => {
                 {!isCollapsed && <span>Categories</span>}
               </NavLink>
             </li>
-            {/* <li>
+            <li>
               <NavLink to="/gallery">
                 <FaImages className="icon" />
                 {!isCollapsed && <span>Gallery</span>}
               </NavLink>
-            </li> */}
+            </li>
             <li>
               <NavLink to="/social-videos">
                 <FaVideo className="icon" />

@@ -178,206 +178,10 @@
 
 // export default Footer;
 
-// Footer.jsx
-// import React from 'react';
-// import { Box, Container, Grid, Typography, Link, IconButton, Divider } from '@mui/material';
-// import { styled } from '@mui/material/styles';
-// import FacebookIcon from '@mui/icons-material/Facebook';
-// import InstagramIcon from '@mui/icons-material/Instagram';
-// import TwitterIcon from '@mui/icons-material/Twitter';
-// import PinterestIcon from '@mui/icons-material/Pinterest';
-// import EmailIcon from '@mui/icons-material/Email';
-// import PhoneIcon from '@mui/icons-material/Phone';
-// import LocationOnIcon from '@mui/icons-material/LocationOn';
-
-// const FooterWrapper = styled(Box)(({ theme }) => ({
-//   background: 'black',
-//   color: '#ffffff',
-//   paddingTop: theme.spacing(8),
-//   paddingBottom: theme.spacing(3),
-//   // marginTop: theme.spacing(1),
-//   position: 'relative',
-//   '&::before': {
-//     content: '""',
-//     position: 'absolute',
-//     top: 0,
-//     left: 0,
-//     right: 0,
-//     height: '1px',
-//     background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
-//   },
-// }));
-
-// const FooterLink = styled(Link)({
-//   color: '#b8b8b8',
-//   textDecoration: 'none',
-//   display: 'block',
-//   marginBottom: '12px',
-//   fontSize: '0.95rem',
-//   transition: 'all 0.3s ease',
-//   '&:hover': {
-//     color: '#d4af37',
-//     paddingLeft: '8px',
-//   },
-// });
-
-// const SocialIconButton = styled(IconButton)({
-//   color: '#b8b8b8',
-//   border: '1px solid #444',
-//   marginRight: '12px',
-//   transition: 'all 0.3s ease',
-//   '&:hover': {
-//     color: '#d4af37',
-//     borderColor: '#d4af37',
-//     transform: 'translateY(-3px)',
-//     backgroundColor: 'rgba(212, 175, 55, 0.1)',
-//   },
-// });
-
-// const SectionTitle = styled(Typography)({
-//   color: '#d4af37',
-//   fontWeight: 600,
-//   marginBottom: '24px',
-//   fontSize: '1.1rem',
-//   letterSpacing: '1px',
-//   textTransform: 'uppercase',
-//   position: 'relative',
-//   paddingBottom: '12px',
-//   '&::after': {
-//     content: '""',
-//     position: 'absolute',
-//     bottom: 0,
-//     left: 0,
-//     width: '40px',
-//     height: '2px',
-//     background: '#d4af37',
-//   },
-// });
-
-// const ContactItem = styled(Box)({
-//   display: 'flex',
-//   alignItems: 'flex-start',
-//   marginBottom: '16px',
-//   color: '#b8b8b8',
-//   '& svg': {
-//     color: '#d4af37',
-//     marginRight: '12px',
-//     marginTop: '2px',
-//   },
-// });
-
-// const Footer = () => {
-//   return (
-//     <FooterWrapper>
-//       <Container maxWidth="xl">
-//         <Grid container spacing={4}>
-//           {/* About Section */}
-//           <Grid item xs={12} sm={6} md={3}>
-//             <SectionTitle variant="h6">About Us</SectionTitle>
-//             <Typography variant="body2" sx={{ color: '#b8b8b8', mb: 3, lineHeight: 1.8 }}>
-//               Crafting timeless elegance since 1990. We specialize in exquisite jewellery that celebrates life's precious moments.
-//             </Typography>
-//             <Box>
-//               <SocialIconButton size="small">
-//                 <FacebookIcon />
-//               </SocialIconButton>
-//               <SocialIconButton size="small">
-//                 <InstagramIcon />
-//               </SocialIconButton>
-//               <SocialIconButton size="small">
-//                 <TwitterIcon />
-//               </SocialIconButton>
-//               <SocialIconButton size="small">
-//                 <PinterestIcon />
-//               </SocialIconButton>
-//             </Box>
-//           </Grid>
-
-//           {/* Quick Links */}
-//           <Grid item xs={12} sm={6} md={3}>
-//             <SectionTitle variant="h6">Quick Links</SectionTitle>
-//             <FooterLink href="/">Home</FooterLink>
-//             <FooterLink href="/gallery">Gallery</FooterLink>
-//             <FooterLink href="/shop">Collections</FooterLink>
-//             <FooterLink href="/about-us">About Us</FooterLink>
-//             <FooterLink href="/contact-us">Contact</FooterLink>
-//           </Grid>
-
-//           {/* Customer Service */}
-//           <Grid item xs={12} sm={6} md={3}>
-//             <SectionTitle variant="h6">Customer Care</SectionTitle>
-//             <FooterLink href="/shipping-delivery">Shipping & Delivery</FooterLink>
-//             <FooterLink href="/returns">Returns & Exchange</FooterLink>
-//             <FooterLink href="/size-guide">Size Guide</FooterLink>
-//             <FooterLink href="/care">Jewellery Care</FooterLink>
-//             <FooterLink href="/faq">FAQs</FooterLink>
-//           </Grid>
-
-//           {/* Contact Info */}
-//           <Grid item xs={12} sm={6} md={3}>
-//             <SectionTitle variant="h6">Contact Us</SectionTitle>
-//             <ContactItem>
-//               <LocationOnIcon fontSize="small" />
-//               <Typography variant="body2">
-//                 123 Jewel Street, Diamond District<br />
-//                 New York, NY 10001
-//               </Typography>
-//             </ContactItem>
-//             <ContactItem>
-//               <PhoneIcon fontSize="small" />
-//               <Typography variant="body2">
-//                 +1 (555) 123-4567
-//               </Typography>
-//             </ContactItem>
-//             <ContactItem>
-//               <EmailIcon fontSize="small" />
-//               <Typography variant="body2">
-//                 info@yourbrand.com
-//               </Typography>
-//             </ContactItem>
-//           </Grid>
-//         </Grid>
-
-//         <Divider sx={{ my: 4, borderColor: '#444' }} />
-
-//         {/* Bottom Bar */}
-//         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
-//           <Typography variant="body2" sx={{ color: '#888' }}>
-//             © {new Date().getFullYear()} Your Jewellery Brand. All rights reserved.
-//           </Typography>
-//           <Box sx={{ display: 'flex', gap: 3 }}>
-//             <FooterLink href="/privacy" sx={{ mb: 0, fontSize: '0.85rem' }}>
-//               Privacy Policy
-//             </FooterLink>
-//             <FooterLink href="/terms" sx={{ mb: 0, fontSize: '0.85rem' }}>
-//               Terms & Conditions
-//             </FooterLink>
-//             <FooterLink href="/cookies" sx={{ mb: 0, fontSize: '0.85rem' }}>
-//               Cookie Policy
-//             </FooterLink>
-//           </Box>
-//         </Box>
-//       </Container>
-//     </FooterWrapper>
-//   );
-// };
-
-// export default Footer;
-
+//Footer.jsx
 import React from 'react';
-import {
-  Box,
-  Container,
-  Grid,
-  Typography, 
-  Link,
-  IconButton,
-  Divider,
-  TextField,
-  Button
-} from '@mui/material';
+import { Box, Container, Grid, Typography, Link, IconButton, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -387,135 +191,121 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const FooterWrapper = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #111 0%, #1b1b1b 100%)',
-  color: '#fff',
+  background: 'black',
+  color: '#ffffff',
   paddingTop: theme.spacing(8),
-  paddingBottom: theme.spacing(4),
+  paddingBottom: theme.spacing(3),
+  // marginTop: theme.spacing(1),
   position: 'relative',
-  overflow: 'hidden',
   '&::before': {
     content: '""',
     position: 'absolute',
-    top: '-40%',
-    left: '-20%',
-    width: '450px',
-    height: '450px',
-    background: 'rgba(212, 175, 55, 0.08)',
-    filter: 'blur(120px)',
-    borderRadius: '50%',
-    zIndex: 0,
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: '-30%',
-    right: '-15%',
-    width: '350px',
-    height: '350px',
-    background: 'rgba(255, 255, 255, 0.05)',
-    filter: 'blur(90px)',
-    borderRadius: '50%',
-    zIndex: 0,
-  },
-}));
-
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  color: '#d4af37',
-  fontWeight: 600,
-  marginBottom: theme.spacing(3),
-  fontSize: '1.15rem',
-  textTransform: 'uppercase',
-  letterSpacing: '1px',
-  position: 'relative',
-  paddingBottom: '10px',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    width: '45px',
-    height: '2px',
-    background: '#d4af37',
-    bottom: 0,
+    top: 0,
     left: 0,
+    right: 0,
+    height: '1px',
+    background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
   },
 }));
 
-const FooterLink = styled(Link)(({ theme }) => ({
-  color: '#bfbfbf',
+const FooterLink = styled(Link)({
+  color: '#b8b8b8',
   textDecoration: 'none',
   display: 'block',
   marginBottom: '12px',
-  fontSize: '0.97rem',
-  transition: '0.3s',
+  fontSize: '0.95rem',
+  transition: 'all 0.3s ease',
   '&:hover': {
     color: '#d4af37',
-    paddingLeft: '6px',
+    paddingLeft: '8px',
   },
-}));
+});
 
-const SocialIconButton = styled(IconButton)(({ theme }) => ({
-  color: '#bfbfbf',
+const SocialIconButton = styled(IconButton)({
+  color: '#b8b8b8',
   border: '1px solid #444',
   marginRight: '12px',
-  width: 42,
-  height: 42,
-  transition: '0.3s',
+  transition: 'all 0.3s ease',
   '&:hover': {
     color: '#d4af37',
     borderColor: '#d4af37',
     transform: 'translateY(-3px)',
-    backgroundColor: 'rgba(212,175,55,0.12)',
+    backgroundColor: 'rgba(212, 175, 55, 0.1)',
   },
-}));
+});
 
-const ContactItem = styled(Box)(({ theme }) => ({
+const SectionTitle = styled(Typography)({
+  color: '#d4af37',
+  fontWeight: 600,
+  marginBottom: '24px',
+  fontSize: '1.1rem',
+  letterSpacing: '1px',
+  textTransform: 'uppercase',
+  position: 'relative',
+  paddingBottom: '12px',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '40px',
+    height: '2px',
+    background: '#d4af37',
+  },
+});
+
+const ContactItem = styled(Box)({
   display: 'flex',
   alignItems: 'flex-start',
   marginBottom: '16px',
-  color: '#bfbfbf',
-  fontSize: '0.95rem',
+  color: '#b8b8b8',
   '& svg': {
     color: '#d4af37',
-    marginRight: '10px',
-    marginTop: '4px',
+    marginRight: '12px',
+    marginTop: '2px',
   },
-}));
+});
 
 const Footer = () => {
   return (
     <FooterWrapper>
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 2 }}>
-
-        {/* Top Section */}
-        <Grid container spacing={5}>
-
-          {/* ABOUT */}
+      <Container maxWidth="xl">
+        <Grid container spacing={4}>
+          {/* About Section */}
           <Grid item xs={12} sm={6} md={3}>
-            <SectionTitle>About Us</SectionTitle>
-            <Typography variant="body2" sx={{ color: '#bfbfbf', lineHeight: 1.8, pr: 2 }}>
-              Crafting timeless elegance since 1990. Our expert artisans create premium, handcrafted jewellery that celebrates life’s precious moments.
+            <SectionTitle variant="h6">About Us</SectionTitle>
+            <Typography variant="body2" sx={{ color: '#b8b8b8', mb: 3, lineHeight: 1.8 }}>
+              Crafting timeless elegance since 1990. We specialize in exquisite jewellery that celebrates life's precious moments.
             </Typography>
-
-            <Box sx={{ mt: 3 }}>
-              <SocialIconButton size="small"><FacebookIcon /></SocialIconButton>
-              <SocialIconButton size="small"><InstagramIcon /></SocialIconButton>
-              <SocialIconButton size="small"><TwitterIcon /></SocialIconButton>
-              <SocialIconButton size="small"><PinterestIcon /></SocialIconButton>
+            <Box>
+              <SocialIconButton size="small">
+                <FacebookIcon />
+              </SocialIconButton>
+              <SocialIconButton size="small">
+                <InstagramIcon />
+              </SocialIconButton>
+              <SocialIconButton size="small">
+                <TwitterIcon />
+              </SocialIconButton>
+              <SocialIconButton size="small">
+                <PinterestIcon />
+              </SocialIconButton>
             </Box>
           </Grid>
 
-          {/* LINKS */}
-          <Grid item xs={6} sm={6} md={3}>
-            <SectionTitle>Quick Links</SectionTitle>
+          {/* Quick Links */}
+          <Grid item xs={12} sm={6} md={3}>
+            <SectionTitle variant="h6">Quick Links</SectionTitle>
             <FooterLink href="/">Home</FooterLink>
             <FooterLink href="/gallery">Gallery</FooterLink>
             <FooterLink href="/shop">Collections</FooterLink>
             <FooterLink href="/about-us">About Us</FooterLink>
-            <FooterLink href="/contact-us">Contact Us</FooterLink>
+            <FooterLink href="/contact-us">Contact</FooterLink>
           </Grid>
 
-          {/* CUSTOMER CARE */}
-          <Grid item xs={6} sm={6} md={3}>
-            <SectionTitle>Customer Care</SectionTitle>
+          {/* Customer Service */}
+          <Grid item xs={12} sm={6} md={3}>
+            <SectionTitle variant="h6">Customer Care</SectionTitle>
             <FooterLink href="/shipping-delivery">Shipping & Delivery</FooterLink>
             <FooterLink href="/returns">Returns & Exchange</FooterLink>
             <FooterLink href="/size-guide">Size Guide</FooterLink>
@@ -523,106 +313,48 @@ const Footer = () => {
             <FooterLink href="/faq">FAQs</FooterLink>
           </Grid>
 
-          {/* CONTACT */}
+          {/* Contact Info */}
           <Grid item xs={12} sm={6} md={3}>
-            <SectionTitle>Contact Us</SectionTitle>
-
+            <SectionTitle variant="h6">Contact Us</SectionTitle>
             <ContactItem>
               <LocationOnIcon fontSize="small" />
-              <Typography variant="body2">123 Jewel Street, Diamond District, New York, NY 10001</Typography>
+              <Typography variant="body2">
+                123 Jewel Street, Diamond District<br />
+                New York, NY 10001
+              </Typography>
             </ContactItem>
-
             <ContactItem>
               <PhoneIcon fontSize="small" />
-              <Typography variant="body2">+1 (555) 123-4567</Typography>
+              <Typography variant="body2">
+                +1 (555) 123-4567
+              </Typography>
             </ContactItem>
-
             <ContactItem>
               <EmailIcon fontSize="small" />
-              <Typography variant="body2">info@yourbrand.com</Typography>
+              <Typography variant="body2">
+                info@yourbrand.com
+              </Typography>
             </ContactItem>
           </Grid>
         </Grid>
 
-        {/* NEWSLETTER */}
-        <Box sx={{ mt: 6, textAlign: 'center' }}>
-          <Typography
-            variant="h6"
-            sx={{
-              color: '#d4af37',
-              fontWeight: 600,
-              mb: 2,
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-            }}
-          >
-            Join Our Newsletter
-          </Typography>
-
-          <Typography variant="body2" sx={{ color: '#bfbfbf', mb: 3 }}>
-            Get exclusive updates, new arrivals, special discounts – straight to your inbox.
-          </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              justifyContent: 'center',
-              gap: 2,
-              maxWidth: 500,
-              mx: 'auto',
-            }}
-          >
-            <TextField
-              placeholder="Enter your email"
-              variant="outlined"
-              fullWidth
-              sx={{
-                background: '#fff',
-                borderRadius: '6px',
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: '8px',
-                },
-              }}
-            />
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: '#d4af37',
-                fontWeight: 600,
-                color: '#000',
-                px: 4,
-                borderRadius: '8px',
-                '&:hover': {
-                  backgroundColor: '#e2c15d',
-                },
-              }}
-            >
-              Subscribe
-            </Button>
-          </Box>
-        </Box>
-
-        <Divider sx={{ my: 5, borderColor: '#444' }} />
+        <Divider sx={{ my: 4, borderColor: '#444' }} />
 
         {/* Bottom Bar */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: 3,
-          }}
-        >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
           <Typography variant="body2" sx={{ color: '#888' }}>
             © {new Date().getFullYear()} Your Jewellery Brand. All rights reserved.
           </Typography>
-
           <Box sx={{ display: 'flex', gap: 3 }}>
-            <FooterLink href="/privacy" sx={{ mb: 0 }}>Privacy Policy</FooterLink>
-            <FooterLink href="/terms" sx={{ mb: 0 }}>Terms & Conditions</FooterLink>
-            <FooterLink href="/cookies" sx={{ mb: 0 }}>Cookie Policy</FooterLink>
+            <FooterLink href="/privacy" sx={{ mb: 0, fontSize: '0.85rem' }}>
+              Privacy Policy
+            </FooterLink>
+            <FooterLink href="/terms" sx={{ mb: 0, fontSize: '0.85rem' }}>
+              Terms & Conditions
+            </FooterLink>
+            <FooterLink href="/cookies" sx={{ mb: 0, fontSize: '0.85rem' }}>
+              Cookie Policy
+            </FooterLink>
           </Box>
         </Box>
       </Container>
