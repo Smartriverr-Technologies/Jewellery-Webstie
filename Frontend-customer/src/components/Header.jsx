@@ -1264,7 +1264,7 @@ const Header = () => {
     display: "flex",
     alignItems: "center",
     textDecoration: "none",
-    height: isShrunk ? 45 : 60, // responsive shrink effect
+    height: isShrunk ? 35 : 50, // responsive shrink effect
     transition: "all 0.3s ease",
   }}
 >
