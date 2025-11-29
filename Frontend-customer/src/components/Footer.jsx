@@ -308,8 +308,8 @@ const Footer = () => {
             <SectionTitle variant="h6">Customer Care</SectionTitle>
             <FooterLink href="/shipping-delivery">Shipping & Delivery</FooterLink>
             <FooterLink href="/returns">Returns & Exchange</FooterLink>
-            <FooterLink href="/size-guide">Size Guide</FooterLink>
-            <FooterLink href="/care">Jewellery Care</FooterLink>
+            {/* <FooterLink href="/size-guide">Size Guide</FooterLink> */}
+            {/* <FooterLink href="/care">Jewellery Care</FooterLink> */}
             <FooterLink href="/faq">FAQs</FooterLink>
           </Grid>
 

@@ -1148,7 +1148,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-
+import logo from '../assets/Logo100.png'; 
 const navLinks = [
   "rings",
   "chains",
@@ -1241,7 +1241,7 @@ const Header = () => {
             }}
           >
             {/* Logo */}
-            <Typography
+            {/* <Typography
               variant="h6"
               component={Link}
               to="/"
@@ -1256,7 +1256,31 @@ const Header = () => {
               }}
             >
               suraj jewels
-            </Typography>
+            </Typography> */}
+            <Box
+  component={Link}
+  to="/"
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    textDecoration: "none",
+    height: isShrunk ? 45 : 60, // responsive shrink effect
+    transition: "all 0.3s ease",
+  }}
+>
+  <img
+    src={logo}
+    alt="Suraj Jewels Logo"
+    style={{
+      height: "100%",
+      objectFit: "contain",
+      cursor: "pointer",
+      transition: "all 0.3s ease",
+      filter: isShrunk ? "brightness(0.9)" : "none",
+    }}
+  />
+</Box>
+
 
             {/* Desktop Search */}
             {!isMobile && (
