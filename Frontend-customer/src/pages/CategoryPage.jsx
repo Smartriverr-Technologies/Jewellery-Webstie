@@ -75,7 +75,7 @@ const CategoryPage = () => {
 >
    {capitalize(data.categoryName)} Collections
 </Typography>
-          <Grid container spacing={3} justifyContent="center">
+          {/* <Grid container spacing={3} justifyContent="center">
   {data.products.length === 0 ? (
     <Grid item xs={12}>
       <Typography>No products found in this category.</Typography>
@@ -87,7 +87,30 @@ const CategoryPage = () => {
       </Grid>
     ))
   )}
-</Grid>
+</Grid> */}
+
+<Box
+  sx={{
+    display: "grid",
+    gap: "20px",
+    gridTemplateColumns: {
+      xs: "repeat(2, 1fr)",
+      sm: "repeat(3, 1fr)",
+      md: "repeat(3, 1fr)",
+      lg: "repeat(4, 1fr)",
+      xl: "repeat(5, 1fr)",
+    },
+  }}
+>
+  {data.products.length === 0 ? (
+    <Typography>No products found.</Typography>
+  ) : (
+    data.products.map((product) => (
+      <ProductCard key={product._id} product={product} />
+    ))
+  )}
+</Box>
+
 
           <Box sx={{ display: 'flex', justifyContent: 'center', pt: 4 }}>
             {data.pages > 1 && (
