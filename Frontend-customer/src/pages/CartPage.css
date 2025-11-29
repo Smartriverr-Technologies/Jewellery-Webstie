@@ -215,8 +215,14 @@
   cursor: pointer;
 }
 
-@media (max-width: 768px){
-  order-summary {
-    display: none;
+@media (max-width: 768px) {
+  /* Ensure any summary (desktop sidebar, mobile sticky, or .order-summary) stays hidden on small screens */
+  .cart-summary,
+  .mobile-sticky-summary,
+  .order-summary {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
   }
 }
