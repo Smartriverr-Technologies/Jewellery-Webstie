@@ -205,7 +205,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 import "./CartPage.css";
-
+import { MdDeleteOutline } from 'react-icons/md';
 const CartPage = () => {
   const { cartItems, removeFromCart } = useCart();
   const subtotal = cartItems
