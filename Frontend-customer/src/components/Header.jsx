@@ -1241,7 +1241,7 @@ const Header = () => {
             }}
           >
             {/* Logo */}
-            <Typography
+            {/* <Typography
               variant="h6"
               component={Link}
               to="/"
@@ -1256,8 +1256,8 @@ const Header = () => {
               }}
             >
               suraj jewels
-            </Typography>
-            {/* <Box
+            </Typography> */}
+            <Box
   component={Link}
   to="/"
   sx={{
@@ -1272,14 +1272,14 @@ const Header = () => {
     src={logo}
     alt="Suraj Jewels Logo"
     style={{
-      height: "100%",
+      height: "80%",
       objectFit: "contain",
       cursor: "pointer",
       transition: "all 0.3s ease",
       filter: isShrunk ? "brightness(0.9)" : "none",
     }}
   />
-</Box> */}
+</Box>
 
 
             {/* Desktop Search */}
