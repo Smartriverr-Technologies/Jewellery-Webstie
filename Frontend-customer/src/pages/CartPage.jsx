@@ -279,13 +279,17 @@ const CartPage = () => {
                       <p className="cart-item-qty">Qty: {item.qty}</p>
                     </div>
 
-                    <motion.button
+                    {/* <motion.button
                       whileTap={{ scale: 0.93 }}
                       onClick={() => removeFromCart(item._id)}
                       className="remove-btn"
                     >
                       ✕
-                    </motion.button>
+                    </motion.button> */}
+                    <button className="remove-btn" whileTap={{ scale: 0.93 }}
+                      onClick={() => removeFromCart(item._id)}>
+  <MdDeleteOutline size={22} />
+</button>
                   </motion.div>
                 ))}
               </AnimatePresence>
