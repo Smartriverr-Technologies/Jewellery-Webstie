@@ -1273,7 +1273,7 @@ const Header = () => {
     alt="Suraj Jewels Logo"
     style={{
       height: "80%",
-      objectFit: "contain",
+      // objectFit: "contain",
       cursor: "pointer",
       transition: "all 0.3s ease",
       filter: isShrunk ? "brightness(0.9)" : "none",
