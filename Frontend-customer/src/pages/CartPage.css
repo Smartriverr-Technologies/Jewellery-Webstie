@@ -85,7 +85,7 @@
 }
 
 /* ---- Sticky Bottom Summary for Mobile ---- */
-.mobile-sticky-summary {
+/* .mobile-sticky-summary {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -97,6 +97,28 @@
   justify-content: space-between;
   align-items: center;
   z-index: 50;
+} */
+
+/* Hidden by default (desktop/tablet) */
+.mobile-sticky-summary {
+  display: none;
+}
+
+/* Enable only for screens below 768px */
+@media (max-width: 768px) {
+  .mobile-sticky-summary {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
+    padding: 0.8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+  }
 }
 
 .subtotal-mobile {
